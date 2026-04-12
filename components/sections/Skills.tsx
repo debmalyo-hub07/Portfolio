@@ -116,7 +116,7 @@ export default function Skills() {
           <motion.h2
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.3 }}
-            className="text-5xl md:text-6xl font-black heading-font mb-4 cursor-default"
+            className="text-4xl md:text-6xl font-black heading-font mb-4 cursor-default"
           >
             <motion.span whileHover={{ color: "#00f0ff" }} transition={{ duration: 0.3 }}>Technical</motion.span>{" "}
             <motion.span
@@ -142,7 +142,7 @@ export default function Skills() {
           <div className="flex flex-wrap justify-center gap-3 p-1.5 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-md">
             <button
               onClick={() => setActiveTab("all")}
-              className={`px-5 py-2 rounded-xl text-sm font-bold transition-all ${
+              className={`px-3 py-1.5 sm:px-5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
                 activeTab === "all" 
                   ? "bg-white/10 text-white shadow-lg border border-white/20" 
                   : "text-gray-400 hover:text-white"
@@ -154,7 +154,7 @@ export default function Skills() {
               <button
                 key={cat.id}
                 onClick={() => setActiveTab(cat.id)}
-                className={`px-5 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2 ${
+                className={`px-3 py-1.5 sm:px-5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 ${
                   activeTab === cat.id 
                     ? `bg-${cat.color}-500/20 text-${cat.color}-400 border border-${cat.color}-500/30 shadow-[0_0_15px_rgba(0,0,0,0.5)]` 
                     : "text-gray-400 hover:text-white"
@@ -175,7 +175,7 @@ export default function Skills() {
           <div className="flex items-center gap-2 bg-white/5 p-1.5 rounded-2xl border border-white/10 backdrop-blur-md">
             <button
               onClick={() => setViewMode("bars")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all ${
+              className={`flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
                 viewMode === "bars" ? "bg-white/10 text-white shadow-lg" : "text-gray-400 hover:text-white"
               }`}
             >
@@ -183,7 +183,7 @@ export default function Skills() {
             </button>
             <button
               onClick={() => setViewMode("badges")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold transition-all ${
+              className={`flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
                 viewMode === "badges" ? "bg-white/10 text-white shadow-lg" : "text-gray-400 hover:text-white"
               }`}
             >

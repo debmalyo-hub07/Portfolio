@@ -71,7 +71,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-7xl xl:text-8xl font-black heading-font leading-[0.9] tracking-tighter uppercase mb-4"
+            className="text-4xl sm:text-6xl md:text-7xl lg:text-7xl xl:text-8xl font-black heading-font leading-[0.9] tracking-tighter uppercase mb-4"
           >
             <motion.span
               whileHover={{ color: "#00f0ff" }}
@@ -205,7 +205,7 @@ export default function Hero() {
               
               <div className="relative z-10 text-center">
                 <motion.div 
-                  className="font-black heading-font text-5xl sm:text-6xl text-transparent bg-clip-text bg-gradient-to-br from-white to-gray-400 drop-shadow-2xl"
+                  className="font-black heading-font text-4xl sm:text-6xl text-transparent bg-clip-text bg-gradient-to-br from-white to-gray-400 drop-shadow-2xl"
                 >
                   DB
                 </motion.div>
@@ -218,7 +218,7 @@ export default function Hero() {
 
           {/* Floating Technology Badges fixed to absolute percentages */}
           <motion.div
-            className="absolute top-[12%] right-[10%] glass border border-cyan-400/40 px-3 py-1.5 rounded-lg text-xs font-mono text-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.3)] bg-black/50 backdrop-blur-md"
+            className="hidden sm:block absolute top-[12%] right-[10%] glass border border-cyan-400/40 px-3 py-1.5 rounded-lg text-xs font-mono text-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.3)] bg-black/50 backdrop-blur-md"
             animate={{ y: [0, -10, 0] }}
             transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
           >
@@ -226,7 +226,7 @@ export default function Hero() {
           </motion.div>
 
           <motion.div
-            className="absolute bottom-[22%] left-[2%] glass border border-fuchsia-500/40 px-3 py-1.5 rounded-lg text-xs font-mono text-fuchsia-400 shadow-[0_0_20px_rgba(232,121,249,0.3)] bg-black/50 backdrop-blur-md"
+            className="hidden sm:block absolute bottom-[22%] left-[2%] glass border border-fuchsia-500/40 px-3 py-1.5 rounded-lg text-xs font-mono text-fuchsia-400 shadow-[0_0_20px_rgba(232,121,249,0.3)] bg-black/50 backdrop-blur-md"
             animate={{ y: [0, 10, 0] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
           >
@@ -234,7 +234,7 @@ export default function Hero() {
           </motion.div>
 
           <motion.div
-            className="absolute top-[35%] left-[0%] glass border border-emerald-400/40 px-3 py-1.5 rounded-lg text-xs font-mono text-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.3)] bg-black/50 backdrop-blur-md"
+            className="hidden sm:block absolute top-[35%] left-[0%] glass border border-emerald-400/40 px-3 py-1.5 rounded-lg text-xs font-mono text-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.3)] bg-black/50 backdrop-blur-md"
             animate={{ y: [0, -8, 0] }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
           >
@@ -242,7 +242,7 @@ export default function Hero() {
           </motion.div>
           
           <motion.div
-            className="absolute bottom-[10%] right-[15%] glass border border-yellow-400/40 px-3 py-1.5 rounded-lg text-xs font-mono text-yellow-400 shadow-[0_0_20px_rgba(250,204,21,0.3)] bg-black/50 backdrop-blur-md"
+            className="hidden sm:block absolute bottom-[10%] right-[15%] glass border border-yellow-400/40 px-3 py-1.5 rounded-lg text-xs font-mono text-yellow-400 shadow-[0_0_20px_rgba(250,204,21,0.3)] bg-black/50 backdrop-blur-md"
             animate={{ y: [0, 8, 0] }}
             transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
           >

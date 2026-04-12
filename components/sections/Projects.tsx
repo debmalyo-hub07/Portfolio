@@ -119,14 +119,14 @@ export default function Projects() {
               {/* Dynamic Top Gradient Bar */}
               <div className={`h-1.5 w-full rounded-t-2xl bg-gradient-to-r ${project.colorTheme.stroke} opacity-80 group-hover:opacity-100 transition-opacity`} />
               
-              <div className="p-8 flex flex-col flex-1 relative z-10">
+              <div className="p-5 sm:p-8 flex flex-col flex-1 relative z-10">
                 {/* Header Row: Title + Category Tags */}
                 <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-6">
                   <div className="flex items-center gap-3">
                     <div className="p-3 rounded-xl bg-white/5 border border-white/10 text-white/50 group-hover:text-white transition-colors shadow-inner">
                       <FiFolder size={24} />
                     </div>
-                    <h3 className={`text-2xl font-black heading-font tracking-tight transition-colors duration-300 group-hover:${project.colorTheme.primary} text-gray-100`}>
+                    <h3 className={`text-xl sm:text-2xl font-black heading-font tracking-tight transition-colors duration-300 group-hover:${project.colorTheme.primary} text-gray-100`}>
                       {project.title}
                     </h3>
                   </div>
@@ -159,7 +159,7 @@ export default function Projects() {
                 </div>
 
                 {/* Buttons Component */}
-                <div className="flex gap-4 mt-auto">
+                <div className="flex flex-col sm:flex-row gap-4 mt-auto">
                   <motion.a
                     href={project.github}
                     target="_blank"
