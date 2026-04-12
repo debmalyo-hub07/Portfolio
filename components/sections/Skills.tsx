@@ -138,57 +138,62 @@ export default function Skills() {
         {/* Controls: Tabs & View Toggle */}
         <div className="flex flex-col md:flex-row gap-6 justify-between items-center mb-12">
           
-          {/* Category Tabs */}
-          <div className="flex flex-wrap justify-center gap-3 p-1.5 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-md">
-            <button
-              onClick={() => setActiveTab("all")}
-              className={`px-3 py-1.5 sm:px-5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-                activeTab === "all" 
-                  ? "bg-white/10 text-white shadow-lg border border-white/20" 
-                  : "text-gray-400 hover:text-white"
-              }`}
-            >
-              All Domains
-            </button>
-            {skillCategories.map(cat => (
-              <button
-                key={cat.id}
-                onClick={() => setActiveTab(cat.id)}
-                className={`px-3 py-1.5 sm:px-5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 ${
-                  activeTab === cat.id 
-                    ? `bg-${cat.color}-500/20 text-${cat.color}-400 border border-${cat.color}-500/30 shadow-[0_0_15px_rgba(0,0,0,0.5)]` 
-                    : "text-gray-400 hover:text-white"
-                }`}
-                style={activeTab === cat.id ? { 
-                  backgroundColor: cat.color === "cyan" ? "rgba(34,211,238,0.15)" : cat.color === "fuchsia" ? "rgba(232,121,249,0.15)" : "rgba(52,211,153,0.15)",
-                  borderColor: cat.color === "cyan" ? "rgba(34,211,238,0.3)" : cat.color === "fuchsia" ? "rgba(232,121,249,0.3)" : "rgba(52,211,153,0.3)",
-                  color: cat.color === "cyan" ? "#22d3ee" : cat.color === "fuchsia" ? "#e879f9" : "#34d399",
-                } : {}}
-              >
-                <span className="hidden sm:inline">{cat.icon}</span>
-                {cat.title.split(" ")[0]} 
-              </button>
-            ))}
+          {/* Category Tabs (Segmented Glow Slider) */}
+          <div className="flex flex-wrap justify-center gap-2 p-1 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-md relative">
+            {["all", ...skillCategories.map(c => c.id)].map((tabId) => {
+              const cat = skillCategories.find(c => c.id === tabId);
+              const isActive = activeTab === tabId;
+              const title = tabId === "all" ? "All Domains" : cat?.title.split(" ")[0] || "";
+              
+              return (
+                <button
+                  key={tabId}
+                  onClick={() => setActiveTab(tabId)}
+                  className={`relative px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-colors duration-300 z-10 ${
+                    isActive ? "text-white" : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeTab"
+                      className="absolute inset-0 bg-white/10 rounded-xl border border-white/20 shadow-[0_0_20px_rgba(255,255,255,0.1)]"
+                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                    />
+                  )}
+                  <span className="relative z-20 flex items-center gap-2">
+                    {cat?.icon && <span className="hidden sm:inline">{cat.icon}</span>}
+                    {title}
+                  </span>
+                </button>
+              );
+            })}
           </div>
 
-          {/* View Toggles */}
-          <div className="flex items-center gap-2 bg-white/5 p-1.5 rounded-2xl border border-white/10 backdrop-blur-md">
-            <button
-              onClick={() => setViewMode("bars")}
-              className={`flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-                viewMode === "bars" ? "bg-white/10 text-white shadow-lg" : "text-gray-400 hover:text-white"
-              }`}
-            >
-              <FiList /> Bars
-            </button>
-            <button
-              onClick={() => setViewMode("badges")}
-              className={`flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-                viewMode === "badges" ? "bg-white/10 text-white shadow-lg" : "text-gray-400 hover:text-white"
-              }`}
-            >
-              <FiGrid /> Badges
-            </button>
+          {/* View Toggles (Smooth Slider) */}
+          <div className="flex items-center gap-1 bg-white/5 p-1 rounded-2xl border border-white/10 backdrop-blur-md relative">
+            {[
+              { id: "bars", label: "Bars", icon: <FiList /> },
+              { id: "badges", label: "Badges", icon: <FiGrid /> }
+            ].map(mode => (
+              <button
+                key={mode.id}
+                onClick={() => setViewMode(mode.id as "bars" | "badges")}
+                className={`relative flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-colors duration-300 z-10 ${
+                  viewMode === mode.id ? "text-white" : "text-gray-400 hover:text-white"
+                }`}
+              >
+                {viewMode === mode.id && (
+                  <motion.div
+                    layoutId="viewMode"
+                    className="absolute inset-0 bg-white/10 rounded-xl border border-white/20 shadow-[0_0_15px_rgba(255,255,255,0.1)]"
+                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                  />
+                )}
+                <span className="relative z-20 flex items-center gap-2">
+                  {mode.icon} {mode.label}
+                </span>
+              </button>
+            ))}
           </div>
         </div>
 

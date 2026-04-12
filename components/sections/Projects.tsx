@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 import { FiGithub, FiExternalLink, FiFolder } from "react-icons/fi";
 
 const projects = [
@@ -56,7 +57,15 @@ const techBadgeColors: Record<string, string> = {
   "Socket.io": "border-indigo-500/30 text-indigo-400 bg-indigo-500/5",
 };
 
+const filterCategories = ["All", "Full Stack", "Gaming", "E-Commerce", "Platform"];
+
 export default function Projects() {
+  const [activeFilter, setActiveFilter] = useState("All");
+
+  const filteredProjects = activeFilter === "All"
+    ? projects
+    : projects.filter(p => p.categories.includes(activeFilter));
+
   return (
     <section id="projects" className="py-32 px-6 relative overflow-hidden bg-black">
 
@@ -78,7 +87,7 @@ export default function Projects() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-20"
+          className="text-center mb-16"
         >
           <motion.h2
             whileHover={{ scale: 1.02 }}
@@ -99,100 +108,133 @@ export default function Projects() {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8 lg:gap-10">
-          {projects.map((project, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: idx * 0.15 }}
-              viewport={{ once: true, amount: 0.2 }}
-              className="group flex flex-col relative rounded-2xl bg-[#0a0a0e] border border-white/5 transition-all duration-300 hover:border-white/20"
-              style={{ boxShadow: "0 10px 40px -10px rgba(0,0,0,0.5)" }}
-            >
-              {/* Outer Hover Glow effect */}
+        {/* Unified Filter Toggle */}
+        <div className="flex justify-center mb-16 px-4">
+          <div className="flex flex-wrap justify-center gap-2 p-1 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-md relative">
+            {filterCategories.map((cat) => {
+              const isActive = activeFilter === cat;
+              return (
+                <button
+                  key={cat}
+                  onClick={() => setActiveFilter(cat)}
+                  className={`relative px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-colors duration-300 z-10 ${
+                    isActive ? "text-white" : "text-gray-400 hover:text-white"
+                  }`}
+                >
+                  {isActive && (
+                    <motion.div
+                      layoutId="projectTab"
+                      className="absolute inset-0 bg-white/10 rounded-xl border border-white/20 shadow-[0_0_20px_rgba(255,255,255,0.1)]"
+                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                    />
+                  )}
+                  <span className="relative z-20">{cat}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <motion.div 
+          layout
+          className="grid md:grid-cols-2 gap-8 lg:gap-10"
+        >
+          <AnimatePresence mode="popLayout">
+            {filteredProjects.map((project) => (
               <motion.div
-                className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                style={{ boxShadow: `0 0 40px ${project.colorTheme.glow}, inset 0 0 20px ${project.colorTheme.glow}` }}
-              />
+                key={project.title}
+                layout
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.4 }}
+                className="group flex flex-col relative rounded-2xl bg-[#0a0a0e] border border-white/5 transition-all duration-300 hover:border-white/20"
+                style={{ boxShadow: "0 10px 40px -10px rgba(0,0,0,0.5)" }}
+              >
+                {/* Outer Hover Glow effect */}
+                <motion.div
+                  className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                  style={{ boxShadow: `0 0 40px ${project.colorTheme.glow}, inset 0 0 20px ${project.colorTheme.glow}` }}
+                />
 
-              {/* Dynamic Top Gradient Bar */}
-              <div className={`h-1.5 w-full rounded-t-2xl bg-gradient-to-r ${project.colorTheme.stroke} opacity-80 group-hover:opacity-100 transition-opacity`} />
-              
-              <div className="p-5 sm:p-8 flex flex-col flex-1 relative z-10">
-                {/* Header Row: Title + Category Tags */}
-                <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-6">
-                  <div className="flex items-center gap-3">
-                    <div className="p-3 rounded-xl bg-white/5 border border-white/10 text-white/50 group-hover:text-white transition-colors shadow-inner">
-                      <FiFolder size={24} />
+                {/* Dynamic Top Gradient Bar */}
+                <div className={`h-1.5 w-full rounded-t-2xl bg-gradient-to-r ${project.colorTheme.stroke} opacity-80 group-hover:opacity-100 transition-opacity`} />
+                
+                <div className="p-5 sm:p-8 flex flex-col flex-1 relative z-10">
+                  {/* Header Row: Title + Category Tags */}
+                  <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-6">
+                    <div className="flex items-center gap-3">
+                      <div className="p-3 rounded-xl bg-white/5 border border-white/10 text-white/50 group-hover:text-white transition-colors shadow-inner">
+                        <FiFolder size={24} />
+                      </div>
+                      <h3 className={`text-xl sm:text-2xl font-black heading-font tracking-tight transition-colors duration-300 group-hover:${project.colorTheme.primary} text-gray-100`}>
+                        {project.title}
+                      </h3>
                     </div>
-                    <h3 className={`text-xl sm:text-2xl font-black heading-font tracking-tight transition-colors duration-300 group-hover:${project.colorTheme.primary} text-gray-100`}>
-                      {project.title}
-                    </h3>
+                    
+                    {/* Category Tags */}
+                    <div className="flex flex-wrap gap-2">
+                      {project.categories.map(cat => (
+                        <span key={cat} className="text-[10px] sm:text-xs px-3 py-1 rounded-full border border-white/10 bg-white/5 text-gray-400 font-medium">
+                          {cat}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                  
-                  {/* Category Tags */}
-                  <div className="flex flex-wrap gap-2">
-                    {project.categories.map(cat => (
-                      <span key={cat} className="text-[10px] sm:text-xs px-3 py-1 rounded-full border border-white/10 bg-white/5 text-gray-400 font-medium">
-                        {cat}
-                      </span>
-                    ))}
+
+                  {/* Description Text */}
+                  <p className="text-gray-400 text-sm leading-relaxed mb-8 flex-1 group-hover:text-gray-300 transition-colors">
+                    {project.desc}
+                  </p>
+
+                  {/* Tech Stack Listing */}
+                  <div className="flex flex-wrap gap-2 mb-8">
+                    {project.tech.map(t => {
+                      const badgeClass = techBadgeColors[t] || "border-white/10 text-gray-400 bg-white/5";
+                      return (
+                        <span key={t} className={`px-2.5 py-1 rounded-md border text-[10px] sm:text-xs font-mono transition-colors shadow-sm ${badgeClass} hover:opacity-80`}>
+                          {t}
+                        </span>
+                      )
+                    })}
                   </div>
-                </div>
 
-                {/* Description Text */}
-                <p className="text-gray-400 text-sm leading-relaxed mb-8 flex-1 group-hover:text-gray-300 transition-colors">
-                  {project.desc}
-                </p>
-
-                {/* Tech Stack Listing */}
-                <div className="flex flex-wrap gap-2 mb-8">
-                  {project.tech.map(t => {
-                    const badgeClass = techBadgeColors[t] || "border-white/10 text-gray-400 bg-white/5";
-                    return (
-                      <span key={t} className={`px-2.5 py-1 rounded-md border text-[10px] sm:text-xs font-mono transition-colors shadow-sm ${badgeClass} hover:opacity-80`}>
-                        {t}
-                      </span>
-                    )
-                  })}
-                </div>
-
-                {/* Buttons Component */}
-                <div className="flex flex-col sm:flex-row gap-4 mt-auto">
-                  <motion.a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    whileHover={{ scale: 1.02, y: -2 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border border-white/10 text-gray-300 hover:text-white hover:bg-white/5 transition-all text-sm font-bold tracking-wide"
-                  >
-                    <FiGithub size={18} /> Source Code
-                  </motion.a>
-                  
-                  {project.live !== "#" ? (
+                  {/* Buttons Component */}
+                  <div className="flex flex-col sm:flex-row gap-4 mt-auto">
                     <motion.a
-                      href={project.live}
+                      href={project.github}
                       target="_blank"
                       rel="noopener noreferrer"
                       whileHover={{ scale: 1.02, y: -2 }}
                       whileTap={{ scale: 0.98 }}
-                      className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-gradient-to-r ${project.colorTheme.stroke} text-white font-bold text-sm tracking-wide shadow-lg hover:shadow-xl transition-all`}
+                      className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border border-white/10 text-gray-300 hover:text-white hover:bg-white/5 transition-all text-sm font-bold tracking-wide"
                     >
-                      <FiExternalLink size={18} /> Live Demo
+                      <FiGithub size={18} /> Source Code
                     </motion.a>
-                  ) : (
-                    <div className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border border-white/5 bg-white/5 text-gray-500 font-medium text-sm cursor-not-allowed">
-                      Development Phase
-                    </div>
-                  )}
+                    
+                    {project.live !== "#" ? (
+                      <motion.a
+                        href={project.live}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        whileHover={{ scale: 1.02, y: -2 }}
+                        whileTap={{ scale: 0.98 }}
+                        className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-gradient-to-r ${project.colorTheme.stroke} text-white font-bold text-sm tracking-wide shadow-lg hover:shadow-xl transition-all`}
+                      >
+                        <FiExternalLink size={18} /> Live Demo
+                      </motion.a>
+                    ) : (
+                      <div className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border border-white/5 bg-white/5 text-gray-500 font-medium text-sm cursor-not-allowed">
+                        Development Phase
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
 
-            </motion.div>
-          ))}
-        </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
       </div>
     </section>
   );
