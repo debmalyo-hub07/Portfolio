@@ -18,7 +18,7 @@ export default function Hero() {
     <section
       id="home"
       ref={containerRef}
-      className="relative min-h-screen flex flex-col justify-center px-6 pt-24 pb-16 overflow-hidden"
+      className="relative min-h-screen flex flex-col justify-start lg:justify-center px-6 pt-32 lg:pt-24 pb-16 overflow-hidden"
     >
       {/* Parallax Background Elements */}
       <div className="absolute inset-0 bg-grid opacity-10 -z-20" />
