@@ -4,6 +4,8 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { TypeAnimation } from "react-type-animation";
 import { FiDownload, FiExternalLink } from "react-icons/fi";
+import { FaReact, FaNodeJs } from "react-icons/fa";
+import { SiNextdotjs, SiMongodb } from "react-icons/si";
 
 export default function Hero() {
   const containerRef = useRef(null);
@@ -168,9 +170,19 @@ export default function Hero() {
             animate={{ rotate: 360 }}
             transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
           >
-            {/* Glowing comet head acting as satellite on the orbit path */}
-            <div className="absolute top-0 left-1/2 w-2 h-2 bg-cyan-400 rounded-full shadow-[0_0_20px_#22d3ee] -translate-x-1/2 -translate-y-1/2" />
-            <div className="absolute bottom-0 left-1/4 w-1.5 h-1.5 bg-fuchsia-400 rounded-full shadow-[0_0_15px_#e879f9]" />
+            {/* Glowing comet satellites with Tech Icons */}
+            <div className="absolute top-0 left-1/2 w-8 h-8 bg-black/80 backdrop-blur-md border border-cyan-500/30 rounded-full shadow-[0_0_20px_#22d3ee] flex items-center justify-center -translate-x-1/2 -translate-y-1/2">
+               <FaReact className="text-cyan-400 text-sm animate-spin" style={{ animationDuration: '3s' }} />
+            </div>
+            <div className="absolute bottom-0 left-1/4 w-8 h-8 bg-black/80 backdrop-blur-md border border-fuchsia-500/30 rounded-full shadow-[0_0_15px_#e879f9] flex items-center justify-center -translate-x-1/2 translate-y-1/2">
+               <SiNextdotjs className="text-white text-sm" />
+            </div>
+            <div className="absolute top-1/4 right-0 w-8 h-8 bg-black/80 backdrop-blur-md border border-emerald-500/30 rounded-full shadow-[0_0_15px_#10b981] flex items-center justify-center translate-x-1/2 -translate-y-1/2">
+               <FaNodeJs className="text-emerald-400 text-sm" />
+            </div>
+            <div className="absolute bottom-1/4 right-0 w-8 h-8 bg-black/80 backdrop-blur-md border border-yellow-500/30 rounded-full shadow-[0_0_15px_#fbbf24] flex items-center justify-center translate-x-1/2 translate-y-1/2">
+               <SiMongodb className="text-yellow-400 text-sm" />
+            </div>
           </motion.div>
 
           {/* Minimal reverse guide ring */}

@@ -95,7 +95,7 @@ export default function About() {
             <motion.h2 
               whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.3 }}
-              className="text-6xl font-black heading-font mb-10 leading-tight cursor-default"
+              className="text-4xl md:text-6xl font-black heading-font mb-10 leading-tight cursor-default"
             >
               <motion.span whileHover={{ color: "#00f0ff" }} transition={{ duration: 0.3 }}>Transforming</motion.span> <br />
               <motion.span 
@@ -123,14 +123,14 @@ export default function About() {
             <motion.div 
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.3 }}
-              className="mt-16 flex gap-16"
+              className="mt-16 flex flex-wrap gap-8 sm:gap-16 justify-center lg:justify-start"
             >
               <motion.div 
                 whileHover={{ y: -5 }}
                 transition={{ duration: 0.3 }}
                 className="relative cursor-pointer"
               >
-                <span className="block text-5xl font-black text-white mb-2">
+                <span className="block text-4xl sm:text-5xl font-black text-white mb-2">
                   <CountUp end={4} suffix="+" />
                 </span>
                 <span className="text-xs text-gray-500 uppercase tracking-[0.3em] font-bold">Major Projects</span>
@@ -140,7 +140,7 @@ export default function About() {
                 transition={{ duration: 0.3 }}
                 className="relative cursor-pointer"
               >
-                <span className="block text-5xl font-black text-white mb-2">
+                <span className="block text-4xl sm:text-5xl font-black text-white mb-2">
                   <CountUp end={10} suffix="+" />
                 </span>
                 <span className="text-xs text-gray-500 uppercase tracking-[0.3em] font-bold">Technologies</span>
@@ -160,11 +160,11 @@ export default function About() {
                 whileHover={{ scale: 1.02 }}
               >
                 <Card3D>
-                  <div className="flex gap-8 items-start p-2">
+                  <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 items-start p-2">
                     <motion.div 
                       whileHover={{ scale: 1.1, rotate: 5 }}
                       transition={{ duration: 0.3 }}
-                      className="p-5 rounded-3xl bg-white/5 border border-white/10 shadow-inner"
+                      className="p-4 sm:p-5 rounded-2xl sm:rounded-3xl bg-white/5 border border-white/10 shadow-inner inline-flex"
                     >
                       {item.icon}
                     </motion.div>
@@ -172,12 +172,12 @@ export default function About() {
                       <motion.h3 
                         whileHover={{ color: "#00f0ff", x: 5 }}
                         transition={{ duration: 0.3 }}
-                        className="text-2xl font-bold text-white mb-3 cursor-default"
+                        className="text-xl sm:text-2xl font-bold text-white mb-2 sm:mb-3 cursor-default"
                       >{item.title}</motion.h3>
                       <motion.p 
                         whileHover={{ color: "#d1d5db" }}
                         transition={{ duration: 0.3 }}
-                        className="text-gray-400 leading-relaxed text-lg cursor-default"
+                        className="text-gray-400 leading-relaxed text-base sm:text-lg cursor-default"
                       >
                         {item.desc}
                       </motion.p>
