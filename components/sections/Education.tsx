@@ -141,9 +141,13 @@ export default function Education() {
                 className={`w-full md:w-[45%] ${i % 2 === 0 ? "md:text-right" : "md:text-left order-2 md:order-none pl-12 md:pl-0"}`}
               >
                 <motion.div
-                  whileHover={{ y: -3 }}
-                  transition={{ duration: 0.3 }}
-                  className="panel p-6 md:p-8 group hover:border-cyan-400/30 transition-all duration-500"
+                  whileHover={{ 
+                    y: -5,
+                    boxShadow: "0 0 40px rgba(34, 211, 238, 0.25)",
+                    borderColor: "rgba(34, 211, 238, 0.4)"
+                  }}
+                  transition={{ duration: 0.4 }}
+                  className="panel p-6 md:p-8 group bg-black/40 backdrop-blur-3xl border-white/10 transition-all duration-500 rounded-[2rem]"
                 >
                   <motion.span
                     whileHover={{ scale: 1.1, color: "#00f0ff" }}

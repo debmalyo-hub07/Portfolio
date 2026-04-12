@@ -47,7 +47,6 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    // Restore scroll position on mount
     const savedScrollY = sessionStorage.getItem("scrollPosition");
     if (savedScrollY) {
       window.scrollTo({ top: parseInt(savedScrollY), behavior: "instant" });
@@ -71,7 +70,6 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Scroll Progress Bar */}
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-400 via-fuchsia-500 to-cyan-400 z-[100] origin-left"
         style={{ scaleX }}
@@ -87,19 +85,17 @@ export default function Navbar() {
               : "bg-transparent border-transparent"
           }`}
         >
-          {/* Logo */}
           <motion.h1
             whileHover={{ scale: 1.1, rotate: [-5, 5, -5] }}
             whileTap={{ scale: 0.95 }}
             transition={{ duration: 0.3, repeat: Infinity, repeatType: "reverse" }}
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             className="text-2xl font-black neon-text cursor-pointer"
-            aria-label="Debmalyo Barman Portfolio - Scroll to Top"
+            aria-label="DB Logo"
           >
             DB.
           </motion.h1>
 
-          {/* Desktop Links */}
           <div className="hidden md:flex gap-8">
             {links.map((item) => (
               <motion.a
@@ -110,50 +106,45 @@ export default function Navbar() {
                   document.getElementById(item)?.scrollIntoView({ behavior: "smooth" });
                   setActive(item);
                 }}
-                whileHover={{ y: -2, scale: 1.05 }}
+                whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                transition={{ duration: 0.2 }}
-                className="relative group py-1"
+                className="relative group px-4 py-2"
               >
+                {active === item && (
+                  <motion.div
+                    layoutId="navbarActivePill"
+                    className="absolute inset-0 bg-cyan-500/15 rounded-full border border-cyan-400/30 shadow-[0_0_20px_rgba(34,211,238,0.3)]"
+                    transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                  />
+                )}
+                {/* Hover Ghost Pill */}
+                <motion.div
+                  className="absolute inset-0 bg-white/5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"
+                />
                 <motion.span
-                  whileHover={{ color: "#00f0ff" }}
-                  transition={{ duration: 0.2 }}
-                  className={`text-sm font-medium tracking-widest uppercase transition-colors duration-300 ${
-                    active === item ? "text-cyan-400" : "text-gray-400"
+                  className={`relative z-10 text-xs font-bold tracking-[0.2em] uppercase transition-colors duration-300 ${
+                    active === item ? "text-cyan-400" : "text-gray-400 group-hover:text-white"
                   }`}
                 >
                   {item}
                 </motion.span>
-
-                {active === item && (
-                  <motion.div
-                    layoutId="activeTab"
-                    className="absolute -bottom-1 left-0 right-0 h-[2px] bg-gradient-to-r from-cyan-400 to-fuchsia-500 rounded-full"
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                  />
-                )}
               </motion.a>
             ))}
           </div>
 
-          {/* Mobile menu toggle */}
           <motion.button
             whileHover={{ scale: 1.1, rotate: 90 }}
             whileTap={{ scale: 0.9 }}
-            transition={{ duration: 0.3 }}
             className="md:hidden text-white p-2"
             onClick={() => setIsOpen(!isOpen)}
-            aria-label={isOpen ? "Close Menu" : "Open Menu"}
           >
             {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
           </motion.button>
         </motion.div>
 
-        {/* Mobile Menu Overlay */}
         <AnimatePresence>
           {isOpen && (
             <>
-              {/* Backdrop */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -180,8 +171,6 @@ export default function Navbar() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.07 }}
-                    whileHover={{ x: 10, scale: 1.1, color: "#00f0ff" }}
-                    whileTap={{ scale: 0.95 }}
                     className={`text-lg font-bold tracking-widest uppercase cursor-pointer ${
                       active === item ? "text-cyan-400" : "text-gray-400"
                     }`}

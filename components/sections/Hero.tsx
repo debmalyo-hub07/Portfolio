@@ -216,12 +216,12 @@ export default function Hero() {
               
               <div className="relative z-10 text-center">
                 <motion.div 
-                  className="font-black heading-font text-2xl sm:text-4xl text-transparent bg-clip-text bg-gradient-to-br from-white to-gray-400 drop-shadow-2xl uppercase tracking-tighter"
+                  className="font-black heading-font text-4xl sm:text-6xl text-transparent bg-clip-text bg-gradient-to-br from-white to-gray-400 drop-shadow-2xl"
                 >
-                  System
+                  DB
                 </motion.div>
-                <div className="text-cyan-400 text-[10px] sm:text-xs font-mono font-bold tracking-[0.3em] uppercase mt-1">
-                  Architect
+                <div className="text-cyan-400 text-[10px] sm:text-xs font-mono font-bold tracking-widest uppercase mt-1">
+                  Creator
                 </div>
               </div>
             </div>

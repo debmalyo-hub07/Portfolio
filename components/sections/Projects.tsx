@@ -124,10 +124,12 @@ export default function Projects() {
                   {isActive && (
                     <motion.div
                       layoutId="projectTab"
-                      className="absolute inset-0 bg-white/10 rounded-xl border border-white/20 shadow-[0_0_20px_rgba(255,255,255,0.1)]"
+                      className="absolute inset-0 bg-white/10 rounded-xl border border-white/20 shadow-[0_0_25px_rgba(255,255,255,0.15)]"
                       transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                     />
                   )}
+                  {/* Hover Ghost Pill Effect */}
+                  <div className="absolute inset-0 bg-white/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <span className="relative z-20">{cat}</span>
                 </button>
               );
