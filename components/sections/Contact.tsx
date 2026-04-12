@@ -45,14 +45,14 @@ export default function Contact() {
           className="text-center mb-20"
         >
           <motion.h2
-            whileHover={{ scale: 1.02 }}
+            whileHover={{ textShadow: "0 0 15px rgba(255, 255, 255, 0.2)" }}
             transition={{ duration: 0.3 }}
             className="text-4xl md:text-6xl font-black heading-font mb-4 cursor-default"
           >
             <motion.span whileHover={{ color: "#00f0ff" }} transition={{ duration: 0.3 }}>Strategic</motion.span>{" "}
             <motion.span
-              whileHover={{ scale: 1.05, rotate: [-1, 1, -1] }}
-              transition={{ duration: 0.5, repeat: Infinity, repeatType: "reverse" }}
+              whileHover={{ textShadow: "0 0 15px rgba(0, 240, 255, 0.4)" }}
+              transition={{ duration: 0.3 }}
               className="neon-text inline-block cursor-default"
             >Connection</motion.span>
           </motion.h2>

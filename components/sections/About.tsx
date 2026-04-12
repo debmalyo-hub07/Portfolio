@@ -99,8 +99,8 @@ export default function About() {
             >
               <motion.span whileHover={{ color: "#00f0ff" }} transition={{ duration: 0.3 }}>Transforming</motion.span> <br />
               <motion.span 
-                whileHover={{ scale: 1.05, rotate: [-1, 1, -1] }}
-                transition={{ duration: 0.5, repeat: Infinity, repeatType: "reverse" }}
+                whileHover={{ textShadow: "0 0 15px rgba(0, 240, 255, 0.4)" }}
+                transition={{ duration: 0.3 }}
                 className="neon-text inline-block cursor-default"
               >Ideas into Impact</motion.span>
             </motion.h2>

@@ -68,14 +68,14 @@ export default function Education() {
         className="text-center mb-32"
       >
         <motion.h2
-          whileHover={{ scale: 1.02 }}
+          whileHover={{ textShadow: "0 0 15px rgba(255, 255, 255, 0.2)" }}
           transition={{ duration: 0.3 }}
           className="text-4xl sm:text-6xl font-black heading-font mb-4 cursor-default"
         >
           <motion.span whileHover={{ color: "#00f0ff" }} transition={{ duration: 0.3 }}>Personal</motion.span>{" "}
           <motion.span
-            whileHover={{ scale: 1.05, rotate: [-1, 1, -1] }}
-            transition={{ duration: 0.5, repeat: Infinity, repeatType: "reverse" }}
+            whileHover={{ textShadow: "0 0 15px rgba(0, 240, 255, 0.4)" }}
+            transition={{ duration: 0.3 }}
             className="neon-text inline-block cursor-default"
           >Odyssey</motion.span>
         </motion.h2>
@@ -142,11 +142,11 @@ export default function Education() {
               >
                 <motion.div
                   whileHover={{ 
-                    y: -5,
-                    boxShadow: "0 0 40px rgba(34, 211, 238, 0.25)",
-                    borderColor: "rgba(34, 211, 238, 0.4)"
+                    y: -2,
+                    boxShadow: "0 0 30px rgba(34, 211, 238, 0.2)",
+                    borderColor: "rgba(34, 211, 238, 0.3)"
                   }}
-                  transition={{ duration: 0.4 }}
+                  transition={{ duration: 0.3 }}
                   className="panel p-6 md:p-8 group bg-black/40 backdrop-blur-3xl border-white/10 transition-all duration-500 rounded-[2rem]"
                 >
                   <motion.span

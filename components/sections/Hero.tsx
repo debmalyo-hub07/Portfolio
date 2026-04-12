@@ -49,13 +49,13 @@ export default function Hero() {
             className="flex flex-wrap items-center justify-center lg:justify-start gap-4 mb-6"
           >
             <motion.div
-              whileHover={{ scale: 1.05, borderColor: "rgba(0, 240, 255, 0.5)" }}
+              whileHover={{ scale: 1.02, borderColor: "rgba(0, 240, 255, 0.5)", backgroundColor: "rgba(0, 240, 255, 0.1)" }}
               className="px-5 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-cyan-400 text-[10px] font-bold tracking-[0.2em] uppercase transition-all shadow-[0_0_15px_rgba(34,211,238,0.1)]"
             >
               Digital Architect &amp; Futurist
             </motion.div>
             <motion.div
-              whileHover={{ scale: 1.05, borderColor: "rgba(16, 185, 129, 0.5)" }}
+              whileHover={{ scale: 1.02, borderColor: "rgba(16, 185, 129, 0.5)", backgroundColor: "rgba(16, 185, 129, 0.1)" }}
               className="flex items-center gap-2 px-4 py-2 rounded-full border border-green-500/20 bg-green-500/10 backdrop-blur-md transition-all shadow-[0_0_15px_rgba(16,185,129,0.1)]"
             >
               <span className="relative flex h-2 w-2">
@@ -82,7 +82,7 @@ export default function Hero() {
             >Debmalyo</motion.span>{" "}
             <br className="hidden sm:block" />
             <motion.span
-              whileHover={{ scale: 1.02 }}
+              whileHover={{ textShadow: "0 0 15px rgba(0, 240, 255, 0.5)" }}
               className="neon-text inline-block mt-2 sm:mt-0"
             >Barman</motion.span>
           </motion.h1>
@@ -134,8 +134,8 @@ export default function Hero() {
                 e.preventDefault();
                 document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
               }}
-              whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(0,240,255,0.4)" }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.02, boxShadow: "0 0 30px rgba(0,240,255,0.4)" }}
+              whileTap={{ scale: 0.98 }}
               className="btn-primary flex items-center justify-center gap-3 w-full sm:w-auto px-8"
             >
               <span className="relative z-10">View Projects</span>
@@ -147,8 +147,8 @@ export default function Hero() {
               download="Debmalyo_Barman_Resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(255,0,255,0.3)", borderColor: "rgba(255, 0, 255, 0.5)" }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.02, boxShadow: "0 0 20px rgba(255,0,255,0.3)", borderColor: "rgba(255, 0, 255, 0.5)" }}
+              whileTap={{ scale: 0.98 }}
               className="btn-secondary flex items-center justify-center gap-3 w-full sm:w-auto px-8 border border-white/20"
             >
               <span className="relative z-10">Download CV</span>

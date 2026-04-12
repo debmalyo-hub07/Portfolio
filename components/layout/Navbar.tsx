@@ -1,8 +1,7 @@
-"use client";
-
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import { FiMenu, FiX } from "react-icons/fi";
+import { useLenis } from "lenis/react";
 
 // Moved outside component to prevent useEffect dep changes on every render
 const links = ["home", "about", "education", "skills", "projects", "contact"];
@@ -11,6 +10,7 @@ export default function Navbar() {
   const [active, setActive] = useState("home");
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const lenis = useLenis();
 
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
@@ -86,11 +86,10 @@ export default function Navbar() {
           }`}
         >
           <motion.h1
-            whileHover={{ scale: 1.1, rotate: [-5, 5, -5] }}
+            whileHover={{ scale: 1.05, color: "#00f0ff" }}
             whileTap={{ scale: 0.95 }}
-            transition={{ duration: 0.3, repeat: Infinity, repeatType: "reverse" }}
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="text-2xl font-black neon-text cursor-pointer"
+            onClick={() => lenis?.scrollTo(0)}
+            className="text-2xl font-black neon-text cursor-pointer transition-colors duration-300"
             aria-label="DB Logo"
           >
             DB.
@@ -103,7 +102,10 @@ export default function Navbar() {
                 href={`#${item}`}
                 onClick={(e) => {
                   e.preventDefault();
-                  document.getElementById(item)?.scrollIntoView({ behavior: "smooth" });
+                  lenis?.scrollTo(`#${item}`, { 
+                    duration: 1.2, 
+                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) 
+                  });
                   setActive(item);
                 }}
                 whileHover={{ y: -2 }}
@@ -114,7 +116,12 @@ export default function Navbar() {
                   <motion.div
                     layoutId="navbarActivePill"
                     className="absolute inset-0 bg-cyan-500/15 rounded-full border border-cyan-400/30 shadow-[0_0_20px_rgba(34,211,238,0.3)]"
-                    transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                    transition={{ 
+                      type: "spring", 
+                      stiffness: 220, 
+                      damping: 35,
+                      mass: 0.8
+                    }}
                   />
                 )}
                 {/* Hover Ghost Pill */}
@@ -164,7 +171,7 @@ export default function Navbar() {
                     href={`#${item}`}
                     onClick={(e) => {
                       e.preventDefault();
-                      document.getElementById(item)?.scrollIntoView({ behavior: "smooth" });
+                      lenis?.scrollTo(`#${item}`, { duration: 1.2 });
                       setActive(item);
                       closeMenu();
                     }}

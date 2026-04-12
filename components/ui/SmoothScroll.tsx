@@ -18,7 +18,7 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
   if (isMobile) return <>{children}</>;
 
   return (
-    <ReactLenis root options={{ lerp: 0.1, duration: 1.5, smoothWheel: true }}>
+    <ReactLenis root options={{ lerp: 0.08, duration: 1.2, smoothWheel: true, syncTouch: true }}>
       {children}
     </ReactLenis>
   );
