@@ -252,11 +252,12 @@ export default function Skills() {
                         </div>
                         <div className="h-1.5 bg-white/5 rounded-full relative">
                           <motion.div
-                            initial={{ width: 0 }}
-                            whileInView={{ width: `${skill.mastery}%` }}
+                            initial={{ scaleX: 0 }}
+                            whileInView={{ scaleX: skill.mastery / 100 }}
                             viewport={{ once: true }}
                             transition={{ duration: 1, delay: skillIdx * 0.1, ease: "easeOut" }}
-                            className={`h-full rounded-full ${getBarColor(cat.color as SkillCategoryColor)}`}
+                            style={{ transformOrigin: "left" }}
+                            className={`h-full w-full rounded-full ${getBarColor(cat.color as SkillCategoryColor)}`}
                           />
                         </div>
                       </div>
@@ -278,11 +279,12 @@ export default function Skills() {
                         <span className="text-xs font-bold text-white tracking-wider text-center">{skill.name}</span>
                         <div className="w-full h-1 bg-white/5 rounded-full mt-2 relative">
                            <motion.div
-                              initial={{ width: 0 }}
-                              whileInView={{ width: `${skill.mastery}%` }}
+                              initial={{ scaleX: 0 }}
+                              whileInView={{ scaleX: skill.mastery / 100 }}
                               viewport={{ once: true }}
                               transition={{ duration: 1, delay: 0.2 }}
-                              className={`h-full rounded-full ${getBarColor(cat.color as SkillCategoryColor)}`}
+                              style={{ transformOrigin: "left" }}
+                              className={`h-full w-full rounded-full ${getBarColor(cat.color as SkillCategoryColor)}`}
                             />
                         </div>
                       </motion.div>

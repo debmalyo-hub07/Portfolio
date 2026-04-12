@@ -194,18 +194,18 @@ export default function Hero() {
 
           {/* Dual Interlocking Spirals */}
           <motion.div
-            className="absolute inset-[20%] rounded-full border-[2px] border-transparent border-t-cyan-400/80 border-r-fuchsia-500/80 mix-blend-screen"
+            className="absolute inset-[20%] rounded-full border-[2px] border-transparent border-t-cyan-400/80 border-r-fuchsia-500/80 opacity-80"
             animate={{ rotate: 360 }}
             transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
           />
           <motion.div
-            className="absolute inset-[20%] rounded-full border-[2px] border-transparent border-b-emerald-400/80 border-l-cyan-400/80 mix-blend-screen"
+            className="absolute inset-[20%] rounded-full border-[2px] border-transparent border-b-emerald-400/80 border-l-cyan-400/80 opacity-80"
             animate={{ rotate: -360 }}
             transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
           />
 
           {/* Central Avatar Focus Component */}
-          <div className="absolute inset-[30%] rounded-full p-2 bg-gradient-to-br from-cyan-400 via-fuchsia-500 to-emerald-400 shadow-[0_0_80px_rgba(34,211,238,0.4)] hover:shadow-[0_0_100px_rgba(34,211,238,0.6)] transition-shadow duration-500">
+          <div className="absolute inset-[30%] rounded-full p-2 bg-gradient-to-br from-cyan-400 via-fuchsia-500 to-emerald-400 shadow-[0_0_40px_rgba(34,211,238,0.4)] md:shadow-[0_0_80px_rgba(34,211,238,0.4)] hover:shadow-[0_0_60px_rgba(34,211,238,0.6)] md:hover:shadow-[0_0_100px_rgba(34,211,238,0.6)] transition-shadow duration-500">
             <div className="w-full h-full bg-black rounded-full overflow-hidden flex flex-col justify-center items-center relative group">
               
               {/* Internal Moving Glare */}

@@ -70,7 +70,7 @@ export default function Education() {
         <motion.h2
           whileHover={{ scale: 1.02 }}
           transition={{ duration: 0.3 }}
-          className="text-6xl font-black heading-font mb-4 cursor-default"
+          className="text-4xl sm:text-6xl font-black heading-font mb-4 cursor-default"
         >
           <motion.span whileHover={{ color: "#00f0ff" }} transition={{ duration: 0.3 }}>Personal</motion.span>{" "}
           <motion.span
@@ -96,6 +96,14 @@ export default function Education() {
           <motion.div
             style={{ scaleY }}
             className="absolute top-0 w-full h-full bg-gradient-to-b from-cyan-400 via-fuchsia-500 to-emerald-400 origin-top shadow-[0_0_20px_rgba(0,240,255,0.5)]"
+          />
+        </div>
+
+        {/* Mobile Tracking Line */}
+        <div className="absolute left-[14px] top-0 bottom-0 w-[2px] bg-white/5 md:hidden">
+          <motion.div
+            style={{ scaleY }}
+            className="absolute top-0 w-full h-full bg-gradient-to-b from-cyan-400 to-emerald-400 origin-top"
           />
         </div>
 
