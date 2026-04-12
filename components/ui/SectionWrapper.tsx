@@ -1,8 +1,9 @@
 "use client";
 
+import { ReactNode } from "react";
 import { motion } from "framer-motion";
 
-export default function SectionWrapper({ children }: { children: React.ReactNode }) {
+export default function SectionWrapper({ children }: { children: ReactNode }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 80 }}

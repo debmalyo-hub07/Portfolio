@@ -36,71 +36,144 @@ export default function Education() {
   const scaleY = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
-    restDelta: 0.001
+    restDelta: 0.001,
   });
 
   return (
     <section id="education" className="py-32 px-6 relative overflow-hidden">
-      
-      <motion.div 
+
+      {/* Subtle Background Glows */}
+      <motion.div
+        animate={{
+          scale: [1, 1.25, 1],
+          opacity: [0.04, 0.08, 0.04],
+        }}
+        transition={{ duration: 13, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-1/4 right-0 w-[550px] h-[550px] bg-cyan-500/5 blur-[140px] -z-10 rounded-full"
+      />
+      <motion.div
+        animate={{
+          scale: [1, 1.3, 1],
+          opacity: [0.04, 0.09, 0.04],
+        }}
+        transition={{ duration: 17, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute bottom-1/4 left-0 w-[450px] h-[450px] bg-fuchsia-500/5 blur-[120px] -z-10 rounded-full"
+      />
+
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
+        viewport={{ once: false, amount: 0.5 }}
+        transition={{ duration: 0.8 }}
         className="text-center mb-32"
       >
-        <h2 className="text-6xl font-black heading-font mb-4">
-          Personal <span className="neon-text">Odyssey</span>
-        </h2>
-        <p className="text-gray-400 max-w-xl mx-auto">
-          Tracing the evolution of a developer's mind through academic excellence 
+        <motion.h2
+          whileHover={{ scale: 1.02 }}
+          transition={{ duration: 0.3 }}
+          className="text-6xl font-black heading-font mb-4 cursor-default"
+        >
+          <motion.span whileHover={{ color: "#00f0ff" }} transition={{ duration: 0.3 }}>Personal</motion.span>{" "}
+          <motion.span
+            whileHover={{ scale: 1.05, rotate: [-1, 1, -1] }}
+            transition={{ duration: 0.5, repeat: Infinity, repeatType: "reverse" }}
+            className="neon-text inline-block cursor-default"
+          >Odyssey</motion.span>
+        </motion.h2>
+        <motion.p
+          whileHover={{ scale: 1.02, color: "#d1d5db" }}
+          transition={{ duration: 0.3 }}
+          className="text-gray-400 max-w-xl mx-auto cursor-default"
+        >
+          Tracing the evolution of a developer&apos;s mind through academic excellence
           and technical milestones.
-        </p>
+        </motion.p>
       </motion.div>
 
       <div ref={containerRef} className="max-w-4xl mx-auto relative">
-        
+
         {/* Central Dynamic Timeline Line */}
         <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-[2px] bg-white/5 hidden md:block">
-          <motion.div 
+          <motion.div
             style={{ scaleY }}
             className="absolute top-0 w-full h-full bg-gradient-to-b from-cyan-400 via-fuchsia-500 to-emerald-400 origin-top shadow-[0_0_20px_rgba(0,240,255,0.5)]"
           />
         </div>
 
-        <div className="space-y-32">
+        <div className="space-y-16 md:space-y-32">
           {milestones.map((item, i) => (
             <div key={i} className="relative flex items-center justify-between gap-8 flex-col md:flex-row">
-              
+
+              {/* Mobile Timeline Point */}
+              <motion.div
+                whileHover={{ scale: 1.2 }}
+                transition={{ duration: 0.3 }}
+                className="absolute left-0 top-0 md:hidden flex items-center justify-center z-10 -ml-6"
+              >
+                <motion.div
+                  initial={{ scale: 0 }}
+                  whileInView={{ scale: 1 }}
+                  viewport={{ once: false, amount: 0.5, margin: "-100px" }}
+                  className="w-10 h-10 rounded-full border-2 border-white/10 bg-black/50 backdrop-blur-md flex items-center justify-center"
+                >
+                  <motion.div
+                    animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_15px_#00f0ff]"
+                  />
+                </motion.div>
+              </motion.div>
+
               {/* Content Side */}
               <motion.div
                 initial={{ opacity: 0, x: i % 2 === 0 ? -50 : 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                viewport={{ once: true, margin: "-100px" }}
-                className={`w-full md:w-[45%] ${i % 2 === 0 ? "md:text-right" : "md:text-left order-2 md:order-none"}`}
+                viewport={{ once: false, amount: 0.5, margin: "-100px" }}
+                whileHover={{ scale: 1.02, y: -5 }}
+                className={`w-full md:w-[45%] ${i % 2 === 0 ? "md:text-right" : "md:text-left order-2 md:order-none pl-12 md:pl-0"}`}
               >
-                <div className="panel p-8 group hover:border-cyan-400/30 transition-all duration-500">
-                  <span className="text-cyan-400 font-mono text-sm tracking-widest mb-2 block">{item.date}</span>
-                  <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-cyan-400 transition-colors">{item.title}</h3>
-                  <p className="text-gray-400 leading-relaxed italic">{item.desc}</p>
-                </div>
+                <motion.div
+                  whileHover={{ y: -3 }}
+                  transition={{ duration: 0.3 }}
+                  className="panel p-6 md:p-8 group hover:border-cyan-400/30 transition-all duration-500"
+                >
+                  <motion.span
+                    whileHover={{ scale: 1.1, color: "#00f0ff" }}
+                    transition={{ duration: 0.3 }}
+                    className="text-cyan-400 font-mono text-xs md:text-sm tracking-widest mb-2 block cursor-default"
+                  >{item.date}</motion.span>
+                  <motion.h3
+                    whileHover={{ color: "#00f0ff", x: i % 2 === 0 ? -5 : 5 }}
+                    transition={{ duration: 0.3 }}
+                    className="text-xl md:text-2xl font-bold text-white mb-4 cursor-default"
+                  >{item.title}</motion.h3>
+                  <motion.p
+                    whileHover={{ color: "#d1d5db" }}
+                    transition={{ duration: 0.3 }}
+                    className="text-gray-400 leading-relaxed italic text-sm md:text-base cursor-default"
+                  >{item.desc}</motion.p>
+                </motion.div>
               </motion.div>
 
-              {/* Central Point */}
-              <div className="absolute left-1/2 -translate-x-1/2 hidden md:flex items-center justify-center z-10">
+              {/* Desktop Central Point */}
+              <motion.div
+                whileHover={{ scale: 1.2 }}
+                transition={{ duration: 0.3 }}
+                className="absolute left-1/2 -translate-x-1/2 hidden md:flex items-center justify-center z-10"
+              >
                 <motion.div
                   initial={{ scale: 0 }}
                   whileInView={{ scale: 1 }}
-                  viewport={{ once: true, margin: "-100px" }}
+                  viewport={{ once: false, amount: 0.5, margin: "-100px" }}
                   className="w-12 h-12 rounded-full border-2 border-white/10 bg-black/50 backdrop-blur-md flex items-center justify-center"
                 >
-                  <motion.div 
+                  <motion.div
                     animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
                     transition={{ duration: 2, repeat: Infinity }}
-                    className="w-3 h-3 rounded-full bg-cyan-400 shadow-[0_0_15px_#00f0ff]" 
+                    className="w-3 h-3 rounded-full bg-cyan-400 shadow-[0_0_15px_#00f0ff]"
                   />
                 </motion.div>
-              </div>
+              </motion.div>
 
               {/* Spacer for alternating layout */}
               <div className="w-[45%] hidden md:block" />

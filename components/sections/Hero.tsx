@@ -3,19 +3,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { TypeAnimation } from "react-type-animation";
-import { FiArrowDown, FiDownload, FiExternalLink } from "react-icons/fi";
-import { FaReact, FaNodeJs, FaJava } from "react-icons/fa";
-import { SiNextdotjs, SiTypescript, SiTailwindcss, SiMongodb } from "react-icons/si";
-
-const techIcons = [
-  { icon: <FaReact />, name: "React" },
-  { icon: <SiNextdotjs />, name: "Next.js" },
-  { icon: <SiTypescript />, name: "TypeScript" },
-  { icon: <FaNodeJs />, name: "Node.js" },
-  { icon: <FaJava />, name: "Java" },
-  { icon: <SiTailwindcss />, name: "Tailwind" },
-  { icon: <SiMongodb />, name: "MongoDB" },
-];
+import { FiDownload, FiExternalLink } from "react-icons/fi";
 
 export default function Hero() {
   const containerRef = useRef(null);
@@ -25,132 +13,245 @@ export default function Hero() {
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
   return (
-    <section 
-      id="home" 
+    <section
+      id="home"
       ref={containerRef}
-      className="relative min-h-[90vh] flex flex-col justify-center items-center text-center px-6 pt-32 pb-20 overflow-hidden"
+      className="relative min-h-screen flex flex-col justify-center px-6 pt-24 pb-16 overflow-hidden"
     >
-      
       {/* Parallax Background Elements */}
-      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] opacity-10 -z-20" />
-      
-      <motion.div 
+      <div className="absolute inset-0 bg-grid opacity-10 -z-20" />
+
+      <motion.div
         style={{ y: y1, opacity }}
+        animate={{ scale: [1, 1.1, 1], opacity: [0.1, 0.15, 0.1] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         className="absolute top-1/4 left-1/4 w-64 h-64 bg-cyan-500/10 rounded-full blur-[80px] -z-10"
       />
-      <motion.div 
+      <motion.div
         style={{ y: y2, opacity }}
-        className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-fuchsia-500/10 rounded-full blur-[100px] -z-10"
+        animate={{ scale: [1, 1.15, 1], opacity: [0.1, 0.18, 0.1] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-emerald-500/10 rounded-full blur-[100px] -z-10"
       />
 
-      {/* Intro Tag & Status */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="flex items-center gap-4 mb-10"
-      >
-        <div className="px-6 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-cyan-400 text-[10px] font-bold tracking-[0.3em] uppercase">
-          Digital Architect & Futurist
+      <div className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-8 z-10 relative">
+        
+        {/* LEFT COMPONENT: Typography & CTAs */}
+        <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left">
+          
+          {/* Intro Tag & Status */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-wrap items-center justify-center lg:justify-start gap-4 mb-6"
+          >
+            <motion.div
+              whileHover={{ scale: 1.05, borderColor: "rgba(0, 240, 255, 0.5)" }}
+              className="px-5 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-cyan-400 text-[10px] font-bold tracking-[0.2em] uppercase transition-all shadow-[0_0_15px_rgba(34,211,238,0.1)]"
+            >
+              Digital Architect &amp; Futurist
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.05, borderColor: "rgba(16, 185, 129, 0.5)" }}
+              className="flex items-center gap-2 px-4 py-2 rounded-full border border-green-500/20 bg-green-500/10 backdrop-blur-md transition-all shadow-[0_0_15px_rgba(16,185,129,0.1)]"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+              </span>
+              <span className="text-[10px] font-bold tracking-widest text-green-400 uppercase">
+                Open to Work
+              </span>
+            </motion.div>
+          </motion.div>
+
+          {/* Hero Name (Font sizes clamped for clean rendering) */}
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="text-5xl sm:text-6xl md:text-7xl lg:text-7xl xl:text-8xl font-black heading-font leading-[0.9] tracking-tighter uppercase mb-4"
+          >
+            <motion.span
+              whileHover={{ color: "#00f0ff" }}
+              transition={{ duration: 0.3 }}
+              className="text-white drop-shadow-lg inline-block break-words"
+            >Debmalyo</motion.span>{" "}
+            <br className="hidden sm:block" />
+            <motion.span
+              whileHover={{ scale: 1.02 }}
+              className="neon-text inline-block mt-2 sm:mt-0"
+            >Barman</motion.span>
+          </motion.h1>
+
+          {/* Typewriter */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="h-16 sm:h-12 mb-4"
+          >
+            <TypeAnimation
+              sequence={[
+                "Building high-performance web systems.",
+                2000,
+                "Designing immersive digital futures.",
+                2000,
+                "Mastering the art of full-stack engineering.",
+                2000,
+                "Turning ideas into extraordinary products.",
+                2000,
+              ]}
+              speed={50}
+              repeat={Infinity}
+              className="text-lg md:text-xl text-gray-400 font-medium tracking-tight max-w-lg mx-auto lg:mx-0"
+            />
+          </motion.div>
+
+          {/* Personal Tagline */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="text-slate-500 text-sm italic mb-10 font-mono"
+          >
+            ✦ &quot;Complexity is just an unorganized system&quot; ✦
+          </motion.p>
+
+          {/* CTAs */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto"
+          >
+            <motion.a
+              href="#projects"
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
+              }}
+              whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(0,240,255,0.4)" }}
+              whileTap={{ scale: 0.95 }}
+              className="btn-primary flex items-center justify-center gap-3 w-full sm:w-auto px-8"
+            >
+              <span className="relative z-10">View Projects</span>
+              <FiExternalLink className="relative z-10" />
+            </motion.a>
+
+            <motion.a
+              href="/projects/Debmalyo_Barman_Resume.pdf"
+              download="Debmalyo_Barman_Resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(255,0,255,0.3)", borderColor: "rgba(255, 0, 255, 0.5)" }}
+              whileTap={{ scale: 0.95 }}
+              className="btn-secondary flex items-center justify-center gap-3 w-full sm:w-auto px-8 border border-white/20"
+            >
+              <span className="relative z-10">Download CV</span>
+              <FiDownload className="relative z-10" />
+            </motion.a>
+          </motion.div>
         </div>
-        <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-green-500/20 bg-green-500/5 backdrop-blur-md">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-          </span>
-          <span className="text-[10px] font-bold tracking-widest text-green-500 uppercase">System: Online</span>
-        </div>
-      </motion.div>
 
-      {/* Hero Branding: Name Change */}
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-      >
-        <h1 className="text-5xl xs:text-6xl md:text-[7rem] lg:text-[9rem] font-black heading-font leading-[0.85] tracking-tighter uppercase">
-          <span className="text-white drop-shadow-2xl">Debmalyo</span> <br />
-          <span className="neon-text inline-block transform hover:scale-105 transition-transform duration-500 cursor-default">Barman</span>
-        </h1>
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5 }}
-        className="mt-10 h-8"
-      >
-        <TypeAnimation
-          sequence={[
-            "Building high-performance web systems.",
-            2000,
-            "Designing immersive digital futures.",
-            2000,
-            "Mastering the art of full-stack engineering.",
-            2000,
-          ]}
-          speed={50}
-          repeat={Infinity}
-          className="text-lg md:text-xl text-gray-500 font-medium tracking-tight"
-        />
-      </motion.div>
-
-      {/* CTAs */}
-      <motion.div 
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.8 }}
-        className="flex flex-col sm:flex-row gap-6 mt-16"
-      >
-        <a href="#projects" className="btn-primary flex items-center justify-center gap-3 group">
-          View Projects
-          <FiExternalLink className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-        </a>
-
-        <a 
-          href="/projects/Debmalyo_Barman_Resume.pdf" 
-          download="Debmalyo_Barman_Resume.pdf" 
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn-secondary flex items-center justify-center gap-3 group"
-        >
-          Download CV
-          <FiDownload className="group-hover:translate-y-0.5 transition-transform" />
-        </a>
-      </motion.div>
-
-      {/* Tech Stack Strip */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.2 }}
-        className="mt-32 w-full max-w-4xl border-t border-white/5 pt-12"
-      >
-        <div className="flex flex-wrap justify-center gap-8 md:gap-12 opacity-40 hover:opacity-100 transition-opacity duration-500">
-          {techIcons.map((item, i) => (
-            <div key={i} className="flex items-center gap-2 group cursor-default">
-              <span className="text-2xl group-hover:text-cyan-400 group-hover:scale-110 transition-all">{item.icon}</span>
-              <span className="text-[10px] font-bold uppercase tracking-widest hidden md:block">{item.name}</span>
-            </div>
-          ))}
-        </div>
-      </motion.div>
-
-      {/* Scroll Indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
-        className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 text-gray-500"
-      >
+        {/* RIGHT COMPONENT: Avatar & Orbitals */}
         <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="w-5 h-8 border-2 border-white/10 rounded-full flex justify-center p-1"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
+          className="w-full lg:w-1/2 flex justify-center items-center relative aspect-square max-w-[450px]"
         >
-          <motion.div className="w-1 h-1.5 bg-cyan-400 rounded-full" />
-        </motion.div>
-      </motion.div>
+          {/* Advanced Orbital Spiral System */}
+          <motion.div
+            className="absolute inset-[0%] rounded-full border border-white/5"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
+          >
+            {/* Glowing comet head acting as satellite on the orbit path */}
+            <div className="absolute top-0 left-1/2 w-2 h-2 bg-cyan-400 rounded-full shadow-[0_0_20px_#22d3ee] -translate-x-1/2 -translate-y-1/2" />
+            <div className="absolute bottom-0 left-1/4 w-1.5 h-1.5 bg-fuchsia-400 rounded-full shadow-[0_0_15px_#e879f9]" />
+          </motion.div>
 
+          {/* Minimal reverse guide ring */}
+          <motion.div
+            className="absolute inset-[10%] rounded-full border border-dashed border-white/5"
+            animate={{ rotate: -360 }}
+            transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+          />
+
+          {/* Dual Interlocking Spirals */}
+          <motion.div
+            className="absolute inset-[20%] rounded-full border-[2px] border-transparent border-t-cyan-400/80 border-r-fuchsia-500/80 mix-blend-screen"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+          />
+          <motion.div
+            className="absolute inset-[20%] rounded-full border-[2px] border-transparent border-b-emerald-400/80 border-l-cyan-400/80 mix-blend-screen"
+            animate={{ rotate: -360 }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          />
+
+          {/* Central Avatar Focus Component */}
+          <div className="absolute inset-[30%] rounded-full p-2 bg-gradient-to-br from-cyan-400 via-fuchsia-500 to-emerald-400 shadow-[0_0_80px_rgba(34,211,238,0.4)] hover:shadow-[0_0_100px_rgba(34,211,238,0.6)] transition-shadow duration-500">
+            <div className="w-full h-full bg-black rounded-full overflow-hidden flex flex-col justify-center items-center relative group">
+              
+              {/* Internal Moving Glare */}
+              <motion.div 
+                className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent"
+                animate={{ x: ["-100%", "200%"] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "linear", repeatDelay: 1 }}
+              />
+              
+              <div className="relative z-10 text-center">
+                <motion.div 
+                  className="font-black heading-font text-5xl sm:text-6xl text-transparent bg-clip-text bg-gradient-to-br from-white to-gray-400 drop-shadow-2xl"
+                >
+                  DB
+                </motion.div>
+                <div className="text-cyan-400 text-[10px] sm:text-xs font-mono font-bold tracking-widest uppercase mt-1">
+                  Creator
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Floating Technology Badges fixed to absolute percentages */}
+          <motion.div
+            className="absolute top-[12%] right-[10%] glass border border-cyan-400/40 px-3 py-1.5 rounded-lg text-xs font-mono text-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.3)] bg-black/50 backdrop-blur-md"
+            animate={{ y: [0, -10, 0] }}
+            transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
+          >
+            ⚡ Full Stack
+          </motion.div>
+
+          <motion.div
+            className="absolute bottom-[22%] left-[2%] glass border border-fuchsia-500/40 px-3 py-1.5 rounded-lg text-xs font-mono text-fuchsia-400 shadow-[0_0_20px_rgba(232,121,249,0.3)] bg-black/50 backdrop-blur-md"
+            animate={{ y: [0, 10, 0] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          >
+            🚀 Next.js 16
+          </motion.div>
+
+          <motion.div
+            className="absolute top-[35%] left-[0%] glass border border-emerald-400/40 px-3 py-1.5 rounded-lg text-xs font-mono text-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.3)] bg-black/50 backdrop-blur-md"
+            animate={{ y: [0, -8, 0] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+          >
+            🛡️ Architecture
+          </motion.div>
+          
+          <motion.div
+            className="absolute bottom-[10%] right-[15%] glass border border-yellow-400/40 px-3 py-1.5 rounded-lg text-xs font-mono text-yellow-400 shadow-[0_0_20px_rgba(250,204,21,0.3)] bg-black/50 backdrop-blur-md"
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
+          >
+            🧠 AI Systems
+          </motion.div>
+
+        </motion.div>
+
+      </div>
     </section>
   );
 }

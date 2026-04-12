@@ -31,7 +31,12 @@ function CountUp({ end, duration = 2, suffix = "" }: { end: number; duration?: n
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) setIsInView(true);
+        if (entry.isIntersecting) {
+          setIsInView(true);
+        } else {
+          setIsInView(false);
+          setCount(0);
+        }
       },
       { threshold: 0.1 }
     );
@@ -58,7 +63,7 @@ function CountUp({ end, duration = 2, suffix = "" }: { end: number; duration?: n
     return () => clearInterval(timer);
   }, [isInView, end, duration]);
 
-  return <span ref={ref}>{count}{suffix}</span>;
+  return <motion.span ref={ref} whileHover={{ scale: 1.1, color: "#00f0ff" }} transition={{ duration: 0.3 }}>{count}{suffix}</motion.span>;
 }
 
 export default function About() {
@@ -83,40 +88,64 @@ export default function About() {
           <motion.div 
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: false, amount: 0.5 }}
+            transition={{ duration: 0.8 }}
             className="flex-1 text-left"
           >
-            <h2 className="text-6xl font-black heading-font mb-10 leading-tight">
-              Transforming <br />
-              <span className="neon-text">Ideas into Impact</span>
-            </h2>
+            <motion.h2 
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.3 }}
+              className="text-6xl font-black heading-font mb-10 leading-tight cursor-default"
+            >
+              <motion.span whileHover={{ color: "#00f0ff" }} transition={{ duration: 0.3 }}>Transforming</motion.span> <br />
+              <motion.span 
+                whileHover={{ scale: 1.05, rotate: [-1, 1, -1] }}
+                transition={{ duration: 0.5, repeat: Infinity, repeatType: "reverse" }}
+                className="neon-text inline-block cursor-default"
+              >Ideas into Impact</motion.span>
+            </motion.h2>
             
-            <motion.div style={{ y: y1 }} className="space-y-8 text-gray-400 text-xl leading-relaxed">
-              <p>
+            <motion.div 
+              style={{ y: y1 }} 
+              className="space-y-8 text-gray-400 text-xl leading-relaxed"
+            >
+              <motion.p whileHover={{ x: 10, color: "#e5e7eb" }} transition={{ duration: 0.3 }} className="cursor-default">
                 I am a Computer Science student and Full Stack Developer with an obsession for building 
                 modern, scalable, and visually immersive web applications.
-              </p>
-              <p>
+              </motion.p>
+              <motion.p whileHover={{ x: 10, color: "#e5e7eb" }} transition={{ duration: 0.3 }} className="cursor-default">
                 My work blends technical precision with creative design, pushing the boundaries 
                 of what&apos;s possible in the digital realm. I focus on performance, scalability, 
                 and creating futuristic experiences that leave a lasting impression.
-              </p>
+              </motion.p>
             </motion.div>
             
-            <div className="mt-16 flex gap-16">
-              <div className="relative">
+            <motion.div 
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.3 }}
+              className="mt-16 flex gap-16"
+            >
+              <motion.div 
+                whileHover={{ y: -5 }}
+                transition={{ duration: 0.3 }}
+                className="relative cursor-pointer"
+              >
                 <span className="block text-5xl font-black text-white mb-2">
                   <CountUp end={4} suffix="+" />
                 </span>
                 <span className="text-xs text-gray-500 uppercase tracking-[0.3em] font-bold">Major Projects</span>
-              </div>
-              <div className="relative">
+              </motion.div>
+              <motion.div 
+                whileHover={{ y: -5 }}
+                transition={{ duration: 0.3 }}
+                className="relative cursor-pointer"
+              >
                 <span className="block text-5xl font-black text-white mb-2">
                   <CountUp end={10} suffix="+" />
                 </span>
                 <span className="text-xs text-gray-500 uppercase tracking-[0.3em] font-bold">Technologies</span>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </motion.div>
 
           {/* Right Side: Highlight Cards */}
@@ -126,19 +155,32 @@ export default function About() {
                 key={idx}
                 initial={{ opacity: 0, x: 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                transition={{ delay: idx * 0.1 }}
-                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1, duration: 0.6 }}
+                viewport={{ once: false, amount: 0.5 }}
+                whileHover={{ scale: 1.02 }}
               >
                 <Card3D>
                   <div className="flex gap-8 items-start p-2">
-                    <div className="p-5 rounded-3xl bg-white/5 border border-white/10 shadow-inner group-hover:border-cyan-400/30 transition-colors">
+                    <motion.div 
+                      whileHover={{ scale: 1.1, rotate: 5 }}
+                      transition={{ duration: 0.3 }}
+                      className="p-5 rounded-3xl bg-white/5 border border-white/10 shadow-inner"
+                    >
                       {item.icon}
-                    </div>
+                    </motion.div>
                     <div>
-                      <h3 className="text-2xl font-bold text-white mb-3">{item.title}</h3>
-                      <p className="text-gray-400 leading-relaxed text-lg">
+                      <motion.h3 
+                        whileHover={{ color: "#00f0ff", x: 5 }}
+                        transition={{ duration: 0.3 }}
+                        className="text-2xl font-bold text-white mb-3 cursor-default"
+                      >{item.title}</motion.h3>
+                      <motion.p 
+                        whileHover={{ color: "#d1d5db" }}
+                        transition={{ duration: 0.3 }}
+                        className="text-gray-400 leading-relaxed text-lg cursor-default"
+                      >
                         {item.desc}
-                      </p>
+                      </motion.p>
                     </div>
                   </div>
                 </Card3D>

@@ -2,6 +2,7 @@ import "./globals.css";
 import { Outfit, Syne } from "next/font/google";
 import ParticlesBg from "@/components/ui/ParticlesBg";
 import CursorGlow from "@/components/ui/CursorGlow";
+import FloatingLogos from "@/components/ui/FloatingLogos";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -58,6 +59,7 @@ export default function RootLayout({
           <div className="bg-grid" />
           
           {/* Interactive Elements */}
+          <FloatingLogos />
           <ParticlesBg />
           <CursorGlow />
 
