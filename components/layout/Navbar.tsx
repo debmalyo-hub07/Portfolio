@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import { FiMenu, FiX } from "react-icons/fi";
@@ -10,6 +12,7 @@ export default function Navbar() {
   const [active, setActive] = useState("home");
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const lenis = useLenis();
 
   const { scrollYProgress } = useScroll();
@@ -47,11 +50,16 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
+    setMounted(true);
+
     const savedScrollY = sessionStorage.getItem("scrollPosition");
     if (savedScrollY) {
       window.scrollTo({ top: parseInt(savedScrollY), behavior: "instant" });
       sessionStorage.removeItem("scrollPosition");
     }
+
+    // Immediate sync
+    handleScroll();
 
     const handleBeforeUnload = () => {
       sessionStorage.setItem("scrollPosition", window.scrollY.toString());
@@ -79,7 +87,7 @@ export default function Navbar() {
         <motion.div
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className={`panel px-6 py-3 flex items-center justify-between md:justify-center gap-8 md:gap-12 w-full max-w-4xl transition-all duration-500 ${
+          className={`panel px-6 py-3 flex items-center justify-between md:justify-center gap-8 md:gap-12 w-full max-w-4xl ${mounted ? "transition-all duration-500" : "transition-none"} ${
             scrolled
               ? "bg-black/40 shadow-2xl border-white/20 backdrop-blur-xl"
               : "bg-transparent border-transparent"
@@ -116,12 +124,12 @@ export default function Navbar() {
                   <motion.div
                     layoutId="navbarActivePill"
                     className="absolute inset-0 bg-cyan-500/15 rounded-full border border-cyan-400/30 shadow-[0_0_20px_rgba(34,211,238,0.3)]"
-                    transition={{ 
+                    transition={mounted ? { 
                       type: "spring", 
                       stiffness: 220, 
                       damping: 35,
                       mass: 0.8
-                    }}
+                    } : { duration: 0 }}
                   />
                 )}
                 {/* Hover Ghost Pill */}
