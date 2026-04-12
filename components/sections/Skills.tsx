@@ -96,12 +96,12 @@ export default function Skills() {
       <motion.div
         animate={{ scale: [1, 1.2, 1], opacity: [0.05, 0.08, 0.05] }}
         transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-cyan-500/5 blur-[120px] -z-10 rounded-full pointer-events-none"
+        className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-cyan-500/5 blur-[120px] -z-10 rounded-full pointer-events-none will-change-gpu"
       />
       <motion.div
         animate={{ scale: [1, 1.25, 1], opacity: [0.05, 0.1, 0.05] }}
         transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-fuchsia-500/5 blur-[120px] -z-10 rounded-full pointer-events-none"
+        className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-fuchsia-500/5 blur-[120px] -z-10 rounded-full pointer-events-none will-change-gpu"
       />
 
       <div className="max-w-6xl mx-auto">
@@ -257,7 +257,7 @@ export default function Skills() {
                             viewport={{ once: true }}
                             transition={{ duration: 1, delay: skillIdx * 0.1, ease: "easeOut" }}
                             style={{ transformOrigin: "left" }}
-                            className={`h-full w-full rounded-full ${getBarColor(cat.color as SkillCategoryColor)}`}
+                            className={`h-full w-full rounded-full will-change-gpu ${getBarColor(cat.color as SkillCategoryColor)}`}
                           />
                         </div>
                       </div>
@@ -284,7 +284,7 @@ export default function Skills() {
                               viewport={{ once: true }}
                               transition={{ duration: 1, delay: 0.2 }}
                               style={{ transformOrigin: "left" }}
-                              className={`h-full w-full rounded-full ${getBarColor(cat.color as SkillCategoryColor)}`}
+                              className={`h-full w-full rounded-full will-change-gpu ${getBarColor(cat.color as SkillCategoryColor)}`}
                             />
                         </div>
                       </motion.div>

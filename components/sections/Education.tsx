@@ -49,7 +49,7 @@ export default function Education() {
           opacity: [0.04, 0.08, 0.04],
         }}
         transition={{ duration: 13, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-1/4 right-0 w-[550px] h-[550px] bg-cyan-500/5 blur-[140px] -z-10 rounded-full"
+        className="absolute top-1/4 right-0 w-[550px] h-[550px] bg-cyan-500/5 blur-[140px] -z-10 rounded-full will-change-gpu"
       />
       <motion.div
         animate={{
@@ -57,7 +57,7 @@ export default function Education() {
           opacity: [0.04, 0.09, 0.04],
         }}
         transition={{ duration: 17, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute bottom-1/4 left-0 w-[450px] h-[450px] bg-fuchsia-500/5 blur-[120px] -z-10 rounded-full"
+        className="absolute bottom-1/4 left-0 w-[450px] h-[450px] bg-fuchsia-500/5 blur-[120px] -z-10 rounded-full will-change-gpu"
       />
 
       <motion.div
@@ -115,7 +115,7 @@ export default function Education() {
               <motion.div
                 whileHover={{ scale: 1.2 }}
                 transition={{ duration: 0.3 }}
-                className="absolute left-0 top-0 md:hidden flex items-center justify-center z-10 -ml-6"
+                className="absolute left-[14px] top-4 md:hidden flex items-center justify-center z-10 -translate-x-1/2"
               >
                 <motion.div
                   initial={{ scale: 0 }}

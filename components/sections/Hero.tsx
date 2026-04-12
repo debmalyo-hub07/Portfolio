@@ -27,13 +27,13 @@ export default function Hero() {
         style={{ y: y1, opacity }}
         animate={{ scale: [1, 1.1, 1], opacity: [0.1, 0.15, 0.1] }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-1/4 left-1/4 w-64 h-64 bg-cyan-500/10 rounded-full blur-[80px] -z-10"
+        className="absolute top-1/4 left-1/4 w-64 h-64 bg-cyan-500/10 rounded-full blur-[80px] -z-10 will-change-gpu"
       />
       <motion.div
         style={{ y: y2, opacity }}
         animate={{ scale: [1, 1.15, 1], opacity: [0.1, 0.18, 0.1] }}
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-emerald-500/10 rounded-full blur-[100px] -z-10"
+        className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-emerald-500/10 rounded-full blur-[100px] -z-10 will-change-gpu"
       />
 
       <div className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-8 z-10 relative">
@@ -166,7 +166,7 @@ export default function Hero() {
         >
           {/* Advanced Orbital Spiral System */}
           <motion.div
-            className="absolute inset-[0%] rounded-full border border-white/5"
+            className="absolute inset-[0%] rounded-full border border-white/5 will-change-gpu"
             animate={{ rotate: 360 }}
             transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
           >
@@ -187,19 +187,18 @@ export default function Hero() {
 
           {/* Minimal reverse guide ring */}
           <motion.div
-            className="absolute inset-[10%] rounded-full border border-dashed border-white/5"
+            className="absolute inset-[10%] rounded-full border border-dashed border-white/5 will-change-gpu"
             animate={{ rotate: -360 }}
             transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
           />
 
-          {/* Dual Interlocking Spirals */}
           <motion.div
-            className="absolute inset-[20%] rounded-full border-[2px] border-transparent border-t-cyan-400/80 border-r-fuchsia-500/80 opacity-80"
+            className="absolute inset-[20%] rounded-full border-[2px] border-transparent border-t-cyan-400/80 border-r-fuchsia-500/80 opacity-80 will-change-gpu"
             animate={{ rotate: 360 }}
             transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
           />
           <motion.div
-            className="absolute inset-[20%] rounded-full border-[2px] border-transparent border-b-emerald-400/80 border-l-cyan-400/80 opacity-80"
+            className="absolute inset-[20%] rounded-full border-[2px] border-transparent border-b-emerald-400/80 border-l-cyan-400/80 opacity-80 will-change-gpu"
             animate={{ rotate: -360 }}
             transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
           />

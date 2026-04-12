@@ -79,7 +79,7 @@ export default function About() {
     <section id="about" ref={containerRef} className="py-32 px-6 relative overflow-hidden">
       
       {/* Background Decor */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cyan-500/5 rounded-full blur-[120px] -z-10" />
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cyan-500/5 rounded-full blur-[120px] -z-10 will-change-gpu" />
 
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col lg:flex-row gap-20 items-center">
