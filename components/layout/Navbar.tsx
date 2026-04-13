@@ -141,20 +141,10 @@ export default function Navbar() {
                 }}
                 whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                className="relative group px-4 py-2"
+                className={`relative group px-4 py-2 transition-all duration-300 ${
+                  mounted && active === item ? "bg-cyan-500/15 rounded-full border border-cyan-400/30 shadow-[0_0_20px_rgba(34,211,238,0.3)]" : ""
+                }`}
               >
-                {active === item && mounted && (
-                  <motion.div
-                    layoutId="navbarActivePill"
-                    className="absolute inset-0 bg-cyan-500/15 rounded-full border border-cyan-400/30 shadow-[0_0_20px_rgba(34,211,238,0.3)]"
-                    transition={mounted ? { 
-                      type: "spring", 
-                      stiffness: 300, 
-                      damping: 30,
-                      mass: 0.5
-                    } : { duration: 0 }}
-                  />
-                )}
                 <motion.div
                   className="absolute inset-0 bg-white/5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"
                 />
