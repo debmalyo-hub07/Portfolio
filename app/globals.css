@@ -48,8 +48,9 @@ h1, h2, h3, .heading-font {
     linear-gradient(var(--panel-border) 1px, transparent 1px),
     linear-gradient(90deg, var(--panel-border) 1px, transparent 1px);
   background-size: 50px 50px;
-  mask-image: radial-gradient(circle at center, black, transparent 80%);
-  opacity: 0.4;
+  /* Fade out edges to prevent 1px lines at viewport borders */
+  mask-image: radial-gradient(circle at center, black 30%, transparent 95%);
+  opacity: 0.3;
 }
 
 /* Custom Utilities */

@@ -245,7 +245,7 @@ export default function Hero() {
           </motion.div>
 
           <motion.div
-            className="absolute top-[25%] left-[-5%] sm:top-[35%] sm:left-[0%] glass border border-emerald-400/40 px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg text-[8px] sm:text-xs font-mono text-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.3)] bg-black/50 backdrop-blur-md z-20"
+            className="absolute top-[25%] left-[5%] sm:top-[35%] sm:left-[0%] glass border border-emerald-400/40 px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg text-[8px] sm:text-xs font-mono text-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.3)] bg-black/50 backdrop-blur-md z-20"
             animate={{ y: [0, -8, 0] }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
           >

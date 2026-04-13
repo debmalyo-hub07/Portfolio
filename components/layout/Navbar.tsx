@@ -85,10 +85,10 @@ export default function Navbar() {
     const target = document.getElementById(id);
     if (!target) return;
 
-    // Force an immediate unlock and close
+    // Immediately close menu
     closeMenu();
 
-    // Small delay to allow the state update and body unlock to propagate
+    // Small delay to allow sidebar to start closing
     setTimeout(() => {
       if (lenis) {
         lenis.scrollTo(`#${id}`, { 
@@ -96,11 +96,10 @@ export default function Navbar() {
           easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) 
         });
       } else {
-        // Native fallback - extremely resilient
         target.scrollIntoView({ behavior: "smooth", block: "start" });
       }
       setActive(id);
-    }, 150);
+    }, 300);
   };
 
   return (
@@ -110,14 +109,16 @@ export default function Navbar() {
         style={{ scaleX }}
       />
 
-      <nav className="fixed top-0 w-full z-50 flex justify-center px-6 py-6 md:px-6">
+      <nav className="fixed top-0 w-full z-50 flex justify-center p-6 pointer-events-none">
         <motion.div
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className={`panel relative px-6 py-3 flex items-center justify-between md:justify-center gap-8 md:gap-12 w-full max-w-4xl z-50 ${mounted ? "transition-all duration-500" : "transition-none"} ${
-            scrolled
-              ? "bg-black/40 shadow-2xl border-white/20 backdrop-blur-xl"
-              : "bg-transparent border-transparent"
+          className={`panel relative px-6 py-3 flex items-center justify-between md:justify-center gap-8 md:gap-12 w-full max-w-4xl z-50 pointer-events-auto ${mounted ? "transition-all duration-500" : "transition-none"} ${
+            isOpen 
+              ? "bg-transparent border-transparent backdrop-blur-none shadow-none" 
+              : scrolled
+                ? "bg-black/40 shadow-2xl border-white/20 backdrop-blur-xl"
+                : "bg-transparent border-transparent"
           }`}
         >
           <motion.h1
@@ -145,9 +146,6 @@ export default function Navbar() {
                   mounted && active === item ? "bg-cyan-500/15 rounded-full border border-cyan-400/30 shadow-[0_0_20px_rgba(34,211,238,0.3)]" : ""
                 }`}
               >
-                <motion.div
-                  className="absolute inset-0 bg-white/5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"
-                />
                 <motion.span
                   className={`relative z-10 text-xs font-bold tracking-[0.2em] uppercase transition-colors duration-300 ${
                     mounted && active === item ? "text-cyan-400" : "text-gray-400 group-hover:text-white"
@@ -162,68 +160,85 @@ export default function Navbar() {
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            className="md:hidden text-white p-2 relative z-[60]"
+            className="md:hidden text-white p-2 relative z-[70] pointer-events-auto"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle Menu"
           >
-            <AnimatePresence mode="wait">
-              {isOpen ? (
-                <motion.div
-                  key="close"
-                  initial={{ rotate: -90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: 90, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <FiX size={24} />
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="menu"
-                  initial={{ rotate: 90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: -90, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <FiMenu size={24} />
-                </motion.div>
-              )}
-            </AnimatePresence>
+            <div className="relative w-6 h-6">
+              <motion.div
+                animate={isOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
+                className="absolute top-0 left-0 w-6 h-0.5 bg-white origin-center"
+              />
+              <motion.div
+                animate={isOpen ? { opacity: 0, x: 20 } : { opacity: 1, x: 0 }}
+                className="absolute top-[10px] left-0 w-6 h-0.5 bg-white"
+              />
+              <motion.div
+                animate={isOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
+                className="absolute bottom-0 left-0 w-6 h-0.5 bg-white origin-center"
+              />
+            </div>
           </motion.button>
         </motion.div>
 
         <AnimatePresence>
           {isOpen && (
             <>
+              {/* Backing Overlay */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 bg-black/60 backdrop-blur-md z-[55] md:hidden"
+                className="fixed inset-0 bg-black/80 backdrop-blur-md z-[60] md:hidden pointer-events-auto"
                 onClick={closeMenu}
               />
+              
+              {/* Sidebar */}
               <motion.div
-                initial={{ opacity: 0, y: -20, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -20, scale: 0.95 }}
-                className="fixed top-24 left-1/2 -translate-x-1/2 panel p-8 flex flex-col items-center gap-6 md:hidden backdrop-blur-2xl bg-black/80 border-white/20 shadow-2xl z-[58] w-[85%] max-w-xs"
+                initial={{ x: "100%" }}
+                animate={{ x: 0 }}
+                exit={{ x: "100%" }}
+                transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                className="fixed top-0 right-0 bottom-0 w-[80%] max-w-sm bg-black/90 border-l border-white/10 shadow-2xl z-[65] md:hidden flex flex-col pt-32 px-10 gap-8 pointer-events-auto overflow-y-auto"
               >
-                {links.map((item, i) => (
-                  <motion.button
-                    key={item}
-                    onClick={() => scrollToSection(item)}
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                    whileHover={{ scale: 1.1, color: "#00f0ff" }}
-                    whileTap={{ scale: 0.95 }}
-                    className={`text-lg font-bold tracking-[0.2em] uppercase cursor-pointer transition-all duration-300 px-8 py-3 text-center ${
-                      active === item ? "text-cyan-400 bg-cyan-400/10 rounded-xl" : "text-gray-400 hover:text-white"
-                    }`}
-                  >
-                    {item}
-                  </motion.button>
-                ))}
+                <div className="flex flex-col gap-8">
+                  {links.map((item, i) => (
+                    <motion.button
+                      key={item}
+                      onClick={() => scrollToSection(item)}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.1 + i * 0.1 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="group flex flex-col items-start gap-1"
+                    >
+                      <span className={`text-[10px] font-mono tracking-[0.3em] uppercase ${active === item ? "text-cyan-400" : "text-gray-600"}`}>
+                        0{i + 1}.
+                      </span>
+                      <span className={`text-2xl font-black heading-font tracking-wider uppercase transition-all duration-300 ${
+                        active === item ? "text-cyan-400 translate-x-2" : "text-white/50 group-hover:text-white"
+                      }`}>
+                        {item}
+                      </span>
+                      <AnimatePresence>
+                        {active === item && (
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: "100%" }}
+                            className="h-px bg-gradient-to-r from-cyan-400 to-transparent mt-1"
+                          />
+                        )}
+                      </AnimatePresence>
+                    </motion.button>
+                  ))}
+                </div>
+
+                <div className="mt-auto pb-12">
+                  <p className="text-[10px] font-mono text-gray-600 uppercase tracking-widest leading-loose">
+                    &copy; 2026 DEBMALYO BARMAN<br />
+                    DIGITAL ARCHITECT PORTFOLIO
+                  </p>
+                </div>
               </motion.div>
             </>
           )}

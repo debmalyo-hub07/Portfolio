@@ -91,7 +91,7 @@ export default function Education() {
 
       <div ref={containerRef} className="max-w-4xl mx-auto relative">
 
-        {/* Central Dynamic Timeline Line */}
+        {/* Central Dynamic Timeline Line (Desktop Only) */}
         <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-[2px] bg-white/5 hidden md:block">
           <motion.div
             style={{ scaleY }}
@@ -99,37 +99,11 @@ export default function Education() {
           />
         </div>
 
-        {/* Mobile Tracking Line */}
-        <div className="absolute left-[14px] top-0 bottom-0 w-[2px] bg-white/5 md:hidden">
-          <motion.div
-            style={{ scaleY }}
-            className="absolute top-0 w-full h-full bg-gradient-to-b from-cyan-400 to-emerald-400 origin-top"
-          />
-        </div>
-
         <div className="space-y-16 md:space-y-32">
           {milestones.map((item, i) => (
             <div key={i} className="relative flex items-center justify-between gap-8 flex-col md:flex-row">
 
-              {/* Mobile Timeline Point */}
-              <motion.div
-                whileHover={{ scale: 1.2 }}
-                transition={{ duration: 0.3 }}
-                className="absolute left-[14px] top-4 md:hidden flex items-center justify-center z-10 -translate-x-1/2"
-              >
-                <motion.div
-                  initial={{ scale: 0 }}
-                  whileInView={{ scale: 1 }}
-                  viewport={{ once: false, amount: 0.5, margin: "-100px" }}
-                  className="w-10 h-10 rounded-full border-2 border-white/10 bg-black/50 backdrop-blur-md flex items-center justify-center"
-                >
-                  <motion.div
-                    animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_15px_#00f0ff]"
-                  />
-                </motion.div>
-              </motion.div>
+              {/* Desktop Central Point */}
 
               {/* Content Side */}
               <motion.div
