@@ -65,6 +65,7 @@ h1, h2, h3, .heading-font {
 }
 
 .panel {
+  position: relative;
   background: var(--panel-bg);
   backdrop-filter: blur(8px) saturate(160%);
   border: 1px solid var(--panel-border);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useLayoutEffect } from "react";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import { FiMenu, FiX } from "react-icons/fi";
 import { useLenis } from "lenis/react";
@@ -9,7 +9,7 @@ import { useLenis } from "lenis/react";
 const links = ["home", "about", "education", "skills", "projects", "contact"];
 
 export default function Navbar() {
-  const [active, setActive] = useState("home");
+  const [active, setActive] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -23,7 +23,7 @@ export default function Navbar() {
   });
 
   // Lock / unlock body scroll when mobile menu is open
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
     } else {
@@ -50,16 +50,20 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    setMounted(true);
+    // Immediate sync after mount to prevent flicker
+    const init = () => {
+      handleScroll();
+      setMounted(true);
+    };
+    
+    // Use timeout to avoid synchronous setState in effect
+    const timeoutId = setTimeout(init, 0);
 
     const savedScrollY = sessionStorage.getItem("scrollPosition");
     if (savedScrollY) {
       window.scrollTo({ top: parseInt(savedScrollY), behavior: "instant" });
       sessionStorage.removeItem("scrollPosition");
     }
-
-    // Immediate sync
-    handleScroll();
 
     const handleBeforeUnload = () => {
       sessionStorage.setItem("scrollPosition", window.scrollY.toString());
@@ -69,12 +73,35 @@ export default function Navbar() {
     window.addEventListener("beforeunload", handleBeforeUnload);
 
     return () => {
+      clearTimeout(timeoutId);
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, [handleScroll]);
 
   const closeMenu = () => setIsOpen(false);
+
+  const scrollToSection = (id: string) => {
+    const target = document.getElementById(id);
+    if (!target) return;
+
+    // Force an immediate unlock and close
+    closeMenu();
+
+    // Small delay to allow the state update and body unlock to propagate
+    setTimeout(() => {
+      if (lenis) {
+        lenis.scrollTo(`#${id}`, { 
+          duration: 1.2, 
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) 
+        });
+      } else {
+        // Native fallback - extremely resilient
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+      setActive(id);
+    }, 150);
+  };
 
   return (
     <>
@@ -85,9 +112,9 @@ export default function Navbar() {
 
       <nav className="fixed top-0 w-full z-50 flex justify-center p-6">
         <motion.div
-          initial={{ y: -100, opacity: 0 }}
+          initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className={`panel px-6 py-3 flex items-center justify-between md:justify-center gap-8 md:gap-12 w-full max-w-4xl ${mounted ? "transition-all duration-500" : "transition-none"} ${
+          className={`panel relative px-6 py-3 flex items-center justify-between md:justify-center gap-8 md:gap-12 w-full max-w-4xl z-50 ${mounted ? "transition-all duration-500" : "transition-none"} ${
             scrolled
               ? "bg-black/40 shadow-2xl border-white/20 backdrop-blur-xl"
               : "bg-transparent border-transparent"
@@ -96,7 +123,7 @@ export default function Navbar() {
           <motion.h1
             whileHover={{ scale: 1.05, color: "#00f0ff" }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => lenis?.scrollTo(0)}
+            onClick={() => lenis ? lenis.scrollTo(0) : window.scrollTo({ top: 0, behavior: "smooth" })}
             className="text-2xl font-black neon-text cursor-pointer transition-colors duration-300"
             aria-label="DB Logo"
           >
@@ -110,17 +137,13 @@ export default function Navbar() {
                 href={`#${item}`}
                 onClick={(e) => {
                   e.preventDefault();
-                  lenis?.scrollTo(`#${item}`, { 
-                    duration: 1.2, 
-                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) 
-                  });
-                  setActive(item);
+                  scrollToSection(item);
                 }}
                 whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.95 }}
                 className="relative group px-4 py-2"
               >
-                {active === item && (
+                {active === item && mounted && (
                   <motion.div
                     layoutId="navbarActivePill"
                     className="absolute inset-0 bg-cyan-500/15 rounded-full border border-cyan-400/30 shadow-[0_0_20px_rgba(34,211,238,0.3)]"
@@ -132,13 +155,12 @@ export default function Navbar() {
                     } : { duration: 0 }}
                   />
                 )}
-                {/* Hover Ghost Pill */}
                 <motion.div
                   className="absolute inset-0 bg-white/5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"
                 />
                 <motion.span
                   className={`relative z-10 text-xs font-bold tracking-[0.2em] uppercase transition-colors duration-300 ${
-                    active === item ? "text-cyan-400" : "text-gray-400 group-hover:text-white"
+                    mounted && active === item ? "text-cyan-400" : "text-gray-400 group-hover:text-white"
                   }`}
                 >
                   {item}
@@ -148,12 +170,35 @@ export default function Navbar() {
           </div>
 
           <motion.button
-            whileHover={{ scale: 1.1, rotate: 90 }}
+            whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            className="md:hidden text-white p-2"
+            className="md:hidden text-white p-2 relative z-[60]"
             onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle Menu"
           >
-            {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+            <AnimatePresence mode="wait">
+              {isOpen ? (
+                <motion.div
+                  key="close"
+                  initial={{ rotate: -90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: 90, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <FiX size={24} />
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="menu"
+                  initial={{ rotate: 90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: -90, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <FiMenu size={24} />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.button>
         </motion.div>
 
@@ -164,34 +209,30 @@ export default function Navbar() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 bg-black/60 backdrop-blur-sm -z-10 md:hidden"
+                className="fixed inset-0 bg-black/60 backdrop-blur-md z-[55] md:hidden"
                 onClick={closeMenu}
               />
               <motion.div
                 initial={{ opacity: 0, y: -20, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -20, scale: 0.95 }}
-                className="absolute top-24 left-6 right-6 panel p-8 flex flex-col items-center gap-6 md:hidden backdrop-blur-2xl bg-black/80 border-white/20 shadow-2xl"
+                className="absolute top-24 left-6 right-6 panel p-8 flex flex-col items-center gap-6 md:hidden backdrop-blur-2xl bg-black/80 border-white/20 shadow-2xl z-[58]"
               >
                 {links.map((item, i) => (
-                  <motion.a
+                  <motion.button
                     key={item}
-                    href={`#${item}`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      lenis?.scrollTo(`#${item}`, { duration: 1.2 });
-                      setActive(item);
-                      closeMenu();
-                    }}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.07 }}
-                    className={`text-lg font-bold tracking-widest uppercase cursor-pointer ${
-                      active === item ? "text-cyan-400" : "text-gray-400"
+                    onClick={() => scrollToSection(item)}
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                    whileHover={{ scale: 1.1, color: "#00f0ff" }}
+                    whileTap={{ scale: 0.95 }}
+                    className={`text-lg font-bold tracking-[0.2em] uppercase cursor-pointer transition-all duration-300 w-full py-2 ${
+                      active === item ? "text-cyan-400 bg-cyan-400/10 rounded-xl" : "text-gray-400 hover:text-white"
                     }`}
                   >
                     {item}
-                  </motion.a>
+                  </motion.button>
                 ))}
               </motion.div>
             </>

@@ -229,7 +229,7 @@ export default function Hero() {
 
           {/* Floating Technology Badges fixed to absolute percentages */}
           <motion.div
-            className="hidden sm:block absolute top-[12%] right-[10%] glass border border-cyan-400/40 px-3 py-1.5 rounded-lg text-xs font-mono text-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.3)] bg-black/50 backdrop-blur-md"
+            className="absolute top-[0%] right-[5%] sm:top-[12%] sm:right-[10%] glass border border-cyan-400/40 px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg text-[8px] sm:text-xs font-mono text-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.3)] bg-black/50 backdrop-blur-md z-20"
             animate={{ y: [0, -10, 0] }}
             transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
           >
@@ -237,7 +237,7 @@ export default function Hero() {
           </motion.div>
 
           <motion.div
-            className="hidden sm:block absolute bottom-[22%] left-[2%] glass border border-fuchsia-500/40 px-3 py-1.5 rounded-lg text-xs font-mono text-fuchsia-400 shadow-[0_0_20px_rgba(232,121,249,0.3)] bg-black/50 backdrop-blur-md"
+            className="absolute bottom-[15%] left-[0%] sm:bottom-[22%] sm:left-[2%] glass border border-fuchsia-500/40 px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg text-[8px] sm:text-xs font-mono text-fuchsia-400 shadow-[0_0_20px_rgba(232,121,249,0.3)] bg-black/50 backdrop-blur-md z-20"
             animate={{ y: [0, 10, 0] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
           >
@@ -245,7 +245,7 @@ export default function Hero() {
           </motion.div>
 
           <motion.div
-            className="hidden sm:block absolute top-[35%] left-[0%] glass border border-emerald-400/40 px-3 py-1.5 rounded-lg text-xs font-mono text-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.3)] bg-black/50 backdrop-blur-md"
+            className="absolute top-[25%] left-[-5%] sm:top-[35%] sm:left-[0%] glass border border-emerald-400/40 px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg text-[8px] sm:text-xs font-mono text-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.3)] bg-black/50 backdrop-blur-md z-20"
             animate={{ y: [0, -8, 0] }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
           >
@@ -253,7 +253,7 @@ export default function Hero() {
           </motion.div>
           
           <motion.div
-            className="hidden sm:block absolute bottom-[10%] right-[15%] glass border border-yellow-400/40 px-3 py-1.5 rounded-lg text-xs font-mono text-yellow-400 shadow-[0_0_20px_rgba(250,204,21,0.3)] bg-black/50 backdrop-blur-md"
+            className="absolute bottom-[5%] right-[10%] sm:bottom-[10%] sm:right-[15%] glass border border-yellow-400/40 px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg text-[8px] sm:text-xs font-mono text-yellow-400 shadow-[0_0_20px_rgba(250,204,21,0.3)] bg-black/50 backdrop-blur-md z-20"
             animate={{ y: [0, 8, 0] }}
             transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
           >
