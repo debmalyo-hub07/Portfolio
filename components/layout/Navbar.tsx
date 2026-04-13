@@ -149,9 +149,9 @@ export default function Navbar() {
                     className="absolute inset-0 bg-cyan-500/15 rounded-full border border-cyan-400/30 shadow-[0_0_20px_rgba(34,211,238,0.3)]"
                     transition={mounted ? { 
                       type: "spring", 
-                      stiffness: 220, 
-                      damping: 35,
-                      mass: 0.8
+                      stiffness: 300, 
+                      damping: 30,
+                      mass: 0.5
                     } : { duration: 0 }}
                   />
                 )}
@@ -216,7 +216,7 @@ export default function Navbar() {
                 initial={{ opacity: 0, y: -20, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -20, scale: 0.95 }}
-                className="absolute top-24 left-6 right-6 panel p-8 flex flex-col items-center gap-6 md:hidden backdrop-blur-2xl bg-black/80 border-white/20 shadow-2xl z-[58]"
+                className="absolute top-24 left-1/2 -translate-x-1/2 panel p-8 flex flex-col items-center gap-6 md:hidden backdrop-blur-2xl bg-black/80 border-white/20 shadow-2xl z-[58] w-[90%] max-w-sm"
               >
                 {links.map((item, i) => (
                   <motion.button
