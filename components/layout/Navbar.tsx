@@ -110,7 +110,7 @@ export default function Navbar() {
         style={{ scaleX }}
       />
 
-      <nav className="fixed top-0 w-full z-50 flex justify-center p-6">
+      <nav className="fixed top-0 w-full z-50 flex justify-center px-6 py-6 md:px-6">
         <motion.div
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -216,7 +216,7 @@ export default function Navbar() {
                 initial={{ opacity: 0, y: -20, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -20, scale: 0.95 }}
-                className="absolute top-24 left-1/2 -translate-x-1/2 panel p-8 flex flex-col items-center gap-6 md:hidden backdrop-blur-2xl bg-black/80 border-white/20 shadow-2xl z-[58] w-[90%] max-w-sm"
+                className="fixed top-24 left-1/2 -translate-x-1/2 panel p-8 flex flex-col items-center gap-6 md:hidden backdrop-blur-2xl bg-black/80 border-white/20 shadow-2xl z-[58] w-[85%] max-w-xs"
               >
                 {links.map((item, i) => (
                   <motion.button
@@ -227,7 +227,7 @@ export default function Navbar() {
                     transition={{ delay: i * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                     whileHover={{ scale: 1.1, color: "#00f0ff" }}
                     whileTap={{ scale: 0.95 }}
-                    className={`text-lg font-bold tracking-[0.2em] uppercase cursor-pointer transition-all duration-300 w-full py-2 ${
+                    className={`text-lg font-bold tracking-[0.2em] uppercase cursor-pointer transition-all duration-300 px-8 py-3 text-center ${
                       active === item ? "text-cyan-400 bg-cyan-400/10 rounded-xl" : "text-gray-400 hover:text-white"
                     }`}
                   >
