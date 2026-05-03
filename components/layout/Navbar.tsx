@@ -50,34 +50,40 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    // Immediate sync after mount to prevent flicker
-    const init = () => {
-      handleScroll();
-      setMounted(true);
+    // Intersection Observer for accurate section tracking
+    const observerOptions = {
+        root: null,
+        rootMargin: '-20% 0px -70% 0px',
+        threshold: 0
     };
-    
-    // Use timeout to avoid synchronous setState in effect
-    const timeoutId = setTimeout(init, 0);
 
-    const savedScrollY = sessionStorage.getItem("scrollPosition");
-    if (savedScrollY) {
-      window.scrollTo({ top: parseInt(savedScrollY), behavior: "instant" });
-      sessionStorage.removeItem("scrollPosition");
-    }
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                setActive(entry.target.id);
+            }
+        });
+    };
 
-    const handleBeforeUnload = () => {
-      sessionStorage.setItem("scrollPosition", window.scrollY.toString());
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    links.forEach((id) => {
+        const element = document.getElementById(id);
+        if (element) observer.observe(element);
+    });
+
+    // Handle scroll for navbar styling (scrolled state)
+    const handleScroll = () => {
+        setScrolled(window.scrollY > 50);
     };
 
     window.addEventListener("scroll", handleScroll);
-    window.addEventListener("beforeunload", handleBeforeUnload);
+    setMounted(true);
 
     return () => {
-      clearTimeout(timeoutId);
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("beforeunload", handleBeforeUnload);
+        observer.disconnect();
+        window.removeEventListener("scroll", handleScroll);
     };
-  }, [handleScroll]);
+  }, []);
 
   const closeMenu = () => setIsOpen(false);
 
