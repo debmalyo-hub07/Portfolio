@@ -6,20 +6,25 @@ import Skills from "@/components/sections/Skills";
 import Projects from "@/components/sections/Projects";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/layout/Footer";
+import { getResumeData, getCvUrl } from "@/lib/resume";
 
 export default function Home() {
+  // Server Component: read resume-driven content + resolve newest CV at build time.
+  const data = getResumeData();
+  const cvUrl = getCvUrl();
+
   return (
     <main>
 
-      <Navbar />
+      <Navbar cvUrl={cvUrl} />
 
       <div className="space-y-32">
-        <Hero />
-        <About />
-        <Education />
-        <Skills />
-        <Projects />
-        <Contact />
+        <Hero profile={data.profile} cvUrl={cvUrl} />
+        <About about={data.about} />
+        <Education education={data.education} />
+        <Skills skills={data.skills} />
+        <Projects projects={data.projects} />
+        <Contact profile={data.profile} />
       </div>
 
       <Footer />

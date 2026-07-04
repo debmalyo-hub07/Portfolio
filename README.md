@@ -4,24 +4,32 @@ A modern, highly interactive, and responsive personal portfolio website built wi
 
 ## ✨ Features
 
-- **Next.js 16** - Fast, optimized React framework using the App Router.
-- **Framer Motion** - Sophisticated UI animations, page transitions, and interactive elements.
+- **Interactive three.js Hero** - A live, pointer-reactive distorted 3D blob with a starfield, lazy-loaded and motion-safe (falls back gracefully on mobile / reduced-motion).
+- **Resume-driven content** - Every section (About, Education, Skills, Projects) renders from a single `data/resume.json`. Edit the JSON, rebuild, done.
+- **Auto-updating CV download** - Drop a newer PDF into `public/resume/` and the download button repoints automatically — no code change.
+- **Premium motion** - Framer Motion + GSAP, 3D tilt project cards, and magnetic CTA buttons.
 - **Lenis Smooth Scrolling** - Premium native-feeling smooth scroll experience.
-- **tsParticles** - Dynamic and engaging background particle effects.
-- **React Type Animation** - Captivating typing text effects.
-- **Tailwind CSS v4** - Rapid, utility-first styling for a beautiful, responsive UI.
-- **Fully Responsive** - Flawless experience across mobile, tablet, and desktop viewports.
-- **Modern UI/UX** - Utilizing glassmorphism, dynamic gradients, and custom modern typography.
+- **tsParticles** - Dynamic background particle effects.
+- **Tailwind CSS v4** - Utility-first styling, glassmorphism, dynamic gradients.
+- **Fully Responsive** - Flawless across mobile, tablet, and desktop.
 
 ## 🚀 Tech Stack
 
-- **Framework**: [Next.js](https://nextjs.org/)
-- **Core Library**: [React](https://react.dev/)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-- **Animations**: [Framer Motion](https://www.framer.com/motion/)
-- **Scroll Hijacking**: [Lenis](https://lenis.studiofreight.com/)
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router, Turbopack)
+- **Core Library**: [React 19](https://react.dev/)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+- **3D**: [three.js](https://threejs.org/) via [react-three-fiber](https://r3f.docs.pmnd.rs/) + [drei](https://github.com/pmndrs/drei)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/) + [GSAP](https://gsap.com/)
+- **Scroll**: [Lenis](https://lenis.studiofreight.com/)
 - **Icons**: [React Icons](https://react-icons.github.io/react-icons/)
 - **Language**: [TypeScript](https://www.typescriptlang.org/)
+
+## 🔄 Updating Content (no code)
+
+- **Text / projects / skills / education** — edit `data/resume.json`.
+- **CV file** — add a PDF to `public/resume/` with a later date suffix (e.g. `Resume_2027-01.pdf`). Newest filename wins; the Hero and Navbar download buttons auto-point to it.
+
+See `CLAUDE.md` for the full content pipeline.
 
 ## 📦 Getting Started
 
@@ -53,8 +61,10 @@ A modern, highly interactive, and responsive personal portfolio website built wi
 ## 🛠 Project Structure
 
 - `/app` - Next.js App Router pages, global styles, and root layout.
-- `/components` - Modular and reusable React UI components (e.g., Navbar, Footer, Hero Section).
-- `/public` - Static assets including images, SVGs, and fonts.
+- `/components` - Modular UI components: `sections/`, `layout/`, `ui/`, and `three/` (3D scene).
+- `/data` - `resume.json`, the single source of truth for all section content.
+- `/lib` - `resume.ts` server helpers (`getResumeData`, `getCvUrl`).
+- `/public` - Static assets; `public/resume/` holds downloadable CV PDFs.
 
 ## 🎨 Design & Aesthetics
 

@@ -3,16 +3,17 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiMail, FiLinkedin, FiGithub, FiSend, FiPhone, FiCheckCircle } from "react-icons/fi";
-
-const socialLinks = [
-  { icon: <FiGithub size={24} />, href: "https://github.com/debmalyo-hub07", label: "GitHub" },
-  { icon: <FiLinkedin size={24} />, href: "https://www.linkedin.com/in/debmalyo-barman-087429318/", label: "LinkedIn" },
-];
+import type { ResumeProfile } from "@/lib/resume";
 
 type FormStatus = "idle" | "sending" | "success" | "error";
 
-export default function Contact() {
+export default function Contact({ profile }: { profile: ResumeProfile }) {
   const [formStatus, setFormStatus] = useState<FormStatus>("idle");
+
+  const socialLinks = [
+    { icon: <FiGithub size={24} />, href: profile.socials.github, label: "GitHub" },
+    { icon: <FiLinkedin size={24} />, href: profile.socials.linkedin, label: "LinkedIn" },
+  ];
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -86,7 +87,7 @@ export default function Contact() {
                 <motion.a
                   whileHover={{ x: 10, scale: 1.02 }}
                   transition={{ duration: 0.3 }}
-                  href="mailto:debmalyobarman2003@gmail.com"
+                  href={`mailto:${profile.email}`}
                   className="flex items-center gap-4 md:gap-6 group"
                 >
                   <motion.div
@@ -98,7 +99,7 @@ export default function Contact() {
                   </motion.div>
                   <div className="min-w-0">
                     <span className="block text-[10px] uppercase tracking-widest text-gray-500 mb-1">Email Address</span>
-                    <span className="text-lg md:text-xl font-bold group-hover:text-white transition-colors lowercase cursor-default block truncate">debmalyobarman2003@gmail.com</span>
+                    <span className="text-lg md:text-xl font-bold group-hover:text-white transition-colors lowercase cursor-default block truncate">{profile.email}</span>
                   </div>
                 </motion.a>
 
@@ -128,7 +129,7 @@ export default function Contact() {
                 <motion.a
                   whileHover={{ x: 10, scale: 1.02 }}
                   transition={{ duration: 0.3 }}
-                  href="https://www.linkedin.com/in/debmalyo-barman-087429318/"
+                  href={profile.socials.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-4 md:gap-6 group"

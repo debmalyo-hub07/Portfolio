@@ -1,18 +1,42 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import { TypeAnimation } from "react-type-animation";
 import { FiDownload, FiExternalLink } from "react-icons/fi";
 import { FaReact, FaNodeJs } from "react-icons/fa";
 import { SiNextdotjs, SiMongodb } from "react-icons/si";
+import MagneticButton from "../ui/MagneticButton";
+import type { ResumeProfile } from "@/lib/resume";
 
-export default function Hero() {
+// three.js scene is client-only + lazy — kept out of the initial bundle.
+const HeroScene = dynamic(() => import("../three/HeroScene"), { ssr: false });
+
+interface HeroProps {
+  profile: ResumeProfile;
+  cvUrl: string;
+}
+
+export default function Hero({ profile, cvUrl }: HeroProps) {
   const containerRef = useRef(null);
   const { scrollY } = useScroll();
   const y1 = useTransform(scrollY, [0, 500], [0, 200]);
   const y2 = useTransform(scrollY, [0, 500], [0, -150]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
+
+  // Perf/accessibility guard: only mount the 3D canvas on capable, larger
+  // viewports and when the user hasn't asked to reduce motion.
+  const [enable3D, setEnable3D] = useState(false);
+  useEffect(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const wide = window.matchMedia("(min-width: 768px)").matches;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-shot capability probe on mount (window unavailable during SSR)
+    setEnable3D(!reduced && wide);
+  }, []);
+
+  const cvFileName = cvUrl.split("/").pop() || "Debmalyo_Barman_Resume.pdf";
+  const typeSequence = profile.taglines.flatMap((t) => [t, 3000]);
 
   return (
     <section
@@ -52,7 +76,7 @@ export default function Hero() {
               whileHover={{ scale: 1.02, borderColor: "rgba(0, 240, 255, 0.5)", backgroundColor: "rgba(0, 240, 255, 0.1)" }}
               className="px-5 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-cyan-400 text-[10px] font-bold tracking-[0.2em] uppercase transition-all shadow-[0_0_15px_rgba(34,211,238,0.1)]"
             >
-              Digital Architect &amp; Futurist
+              {profile.role}
             </motion.div>
             <motion.div
               whileHover={{ scale: 1.02, borderColor: "rgba(16, 185, 129, 0.5)", backgroundColor: "rgba(16, 185, 129, 0.1)" }}
@@ -63,7 +87,7 @@ export default function Hero() {
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
               </span>
               <span className="text-[10px] font-bold tracking-widest text-green-400 uppercase">
-                Open to Work
+                {profile.status}
               </span>
             </motion.div>
           </motion.div>
@@ -79,12 +103,12 @@ export default function Hero() {
               whileHover={{ color: "#00f0ff" }}
               transition={{ duration: 0.3 }}
               className="text-white drop-shadow-lg inline-block break-words"
-            >Debmalyo</motion.span>{" "}
+            >{profile.firstName}</motion.span>{" "}
             <br className="hidden sm:block" />
             <motion.span
               whileHover={{ textShadow: "0 0 15px rgba(0, 240, 255, 0.5)" }}
               className="neon-text inline-block mt-2 sm:mt-0"
-            >Barman</motion.span>
+            >{profile.lastName}</motion.span>
           </motion.h1>
 
           {/* Typewriter */}
@@ -95,16 +119,7 @@ export default function Hero() {
             className="h-16 sm:h-12 mb-4"
           >
             <TypeAnimation
-              sequence={[
-                "Building high-performance web systems.",
-                3000,
-                "Designing immersive digital futures.",
-                3000,
-                "Mastering the art of full-stack engineering.",
-                3000,
-                "Turning ideas into extraordinary products.",
-                3000,
-              ]}
+              sequence={typeSequence}
               speed={50}
               repeat={Infinity}
               className="text-lg md:text-xl text-gray-400 font-medium tracking-tight max-w-lg mx-auto lg:mx-0"
@@ -118,7 +133,7 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-slate-500 text-sm italic mb-10 font-mono"
           >
-            ✦ &quot;Complexity is just an unorganized system&quot; ✦
+            ✦ &quot;{profile.quote}&quot; ✦
           </motion.p>
 
           {/* CTAs */}
@@ -142,18 +157,16 @@ export default function Hero() {
               <FiExternalLink className="relative z-10" />
             </motion.a>
 
-            <motion.a
-              href="/projects/Debmalyo_Barman_Resume.pdf"
-              download="Debmalyo_Barman_Resume.pdf"
+            <MagneticButton
+              href={cvUrl}
+              download={cvFileName}
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ scale: 1.02, boxShadow: "0 0 20px rgba(255,0,255,0.3)", borderColor: "rgba(255, 0, 255, 0.5)" }}
-              whileTap={{ scale: 0.98 }}
               className="btn-secondary flex items-center justify-center gap-3 w-full sm:w-auto px-8 border border-white/20"
             >
               <span className="relative z-10">Download CV</span>
               <FiDownload className="relative z-10" />
-            </motion.a>
+            </MagneticButton>
           </motion.div>
         </div>
 
@@ -164,6 +177,13 @@ export default function Hero() {
           transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
           className="w-full lg:w-1/2 flex justify-center items-center relative aspect-square max-w-[450px]"
         >
+          {/* Interactive three.js layer (desktop, motion-safe) */}
+          {enable3D && (
+            <div className="absolute inset-[-15%] z-0 pointer-events-none">
+              <HeroScene />
+            </div>
+          )}
+
           {/* Advanced Orbital Spiral System */}
           <motion.div
             className="absolute inset-[0%] rounded-full border border-white/5 will-change-gpu"

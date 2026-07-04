@@ -5,53 +5,44 @@ import { useState } from "react";
 import { FaJava, FaReact, FaNodeJs, FaGitAlt, FaDatabase, FaLayerGroup, FaPython, FaLinux } from "react-icons/fa";
 import { SiMongodb, SiJavascript, SiTailwindcss, SiTypescript, SiFramer, SiNextdotjs, SiExpress, SiPostgresql, SiRedis, SiDocker } from "react-icons/si";
 import { TbBinaryTree } from "react-icons/tb";
-import { FiList, FiGrid } from "react-icons/fi";
+import { FiList, FiGrid, FiCode } from "react-icons/fi";
+import type { ReactNode } from "react";
+import type { SkillCategory } from "@/lib/resume";
 
-const skillCategories = [
-  {
-    id: "frontend",
-    title: "Frontend Architecture",
-    icon: <FaLayerGroup className="text-cyan-400" />,
-    color: "cyan",
-    skills: [
-      { name: "React", icon: <FaReact />, colorClass: "text-[#61DAFB]", mastery: 90 },
-      { name: "Next.js", icon: <SiNextdotjs />, colorClass: "text-white", mastery: 85 },
-      { name: "JavaScript", icon: <SiJavascript />, colorClass: "text-[#F7DF1E]", mastery: 92 },
-      { name: "TypeScript", icon: <SiTypescript />, colorClass: "text-[#3178C6]", mastery: 80 },
-      { name: "Tailwind CSS", icon: <SiTailwindcss />, colorClass: "text-[#06B6D4]", mastery: 88 },
-      { name: "Framer Motion", icon: <SiFramer />, colorClass: "text-[#E91E63]", mastery: 75 },
-    ],
-  },
-  {
-    id: "backend",
-    title: "Backend & Systems",
-    icon: <FaDatabase className="text-fuchsia-500" />,
-    color: "fuchsia",
-    skills: [
-      { name: "Node.js", icon: <FaNodeJs />, colorClass: "text-[#339933]", mastery: 82 },
-      { name: "Express.js", icon: <SiExpress />, colorClass: "text-white", mastery: 78 },
-      { name: "Java", icon: <FaJava />, colorClass: "text-[#ED8B00]", mastery: 75 },
-      { name: "Python", icon: <FaPython />, colorClass: "text-[#3776AB]", mastery: 72 },
-      { name: "MongoDB", icon: <SiMongodb />, colorClass: "text-[#47A248]", mastery: 70 },
-      { name: "PostgreSQL", icon: <SiPostgresql />, colorClass: "text-[#336791]", mastery: 65 },
-      { name: "Redis", icon: <SiRedis />, colorClass: "text-[#DC382D]", mastery: 60 },
-    ],
-  },
-  {
-    id: "tools",
-    title: "Tools & Engineering",
-    icon: <FaGitAlt className="text-emerald-400" />,
-    color: "emerald",
-    skills: [
-      { name: "Git & GitHub", icon: <FaGitAlt />, colorClass: "text-[#F05032]", mastery: 88 },
-      { name: "Docker", icon: <SiDocker />, colorClass: "text-[#2496ED]", mastery: 65 },
-      { name: "Linux", icon: <FaLinux />, colorClass: "text-yellow-400", mastery: 70 },
-      { name: "DSA & Algorithms", icon: <TbBinaryTree />, colorClass: "text-emerald-400", mastery: 80 },
-    ],
-  },
-];
+// Icon + brand-color registry, keyed by skill name. resume.json holds only
+// names + mastery; visuals are resolved here so the data stays serializable.
+const skillIcons: Record<string, { icon: ReactNode; colorClass: string }> = {
+  "React": { icon: <FaReact />, colorClass: "text-[#61DAFB]" },
+  "Next.js": { icon: <SiNextdotjs />, colorClass: "text-white" },
+  "JavaScript": { icon: <SiJavascript />, colorClass: "text-[#F7DF1E]" },
+  "TypeScript": { icon: <SiTypescript />, colorClass: "text-[#3178C6]" },
+  "Tailwind CSS": { icon: <SiTailwindcss />, colorClass: "text-[#06B6D4]" },
+  "Framer Motion": { icon: <SiFramer />, colorClass: "text-[#E91E63]" },
+  "Node.js": { icon: <FaNodeJs />, colorClass: "text-[#339933]" },
+  "Express.js": { icon: <SiExpress />, colorClass: "text-white" },
+  "Express": { icon: <SiExpress />, colorClass: "text-white" },
+  "Java": { icon: <FaJava />, colorClass: "text-[#ED8B00]" },
+  "Python": { icon: <FaPython />, colorClass: "text-[#3776AB]" },
+  "MongoDB": { icon: <SiMongodb />, colorClass: "text-[#47A248]" },
+  "PostgreSQL": { icon: <SiPostgresql />, colorClass: "text-[#336791]" },
+  "Redis": { icon: <SiRedis />, colorClass: "text-[#DC382D]" },
+  "Git & GitHub": { icon: <FaGitAlt />, colorClass: "text-[#F05032]" },
+  "Docker": { icon: <SiDocker />, colorClass: "text-[#2496ED]" },
+  "Linux": { icon: <FaLinux />, colorClass: "text-yellow-400" },
+  "DSA & Algorithms": { icon: <TbBinaryTree />, colorClass: "text-emerald-400" },
+};
+
+const categoryIcons: Record<string, ReactNode> = {
+  frontend: <FaLayerGroup className="text-cyan-400" />,
+  backend: <FaDatabase className="text-fuchsia-500" />,
+  tools: <FaGitAlt className="text-emerald-400" />,
+};
 
 type SkillCategoryColor = "cyan" | "fuchsia" | "emerald";
+
+function resolveIcon(name: string) {
+  return skillIcons[name] ?? { icon: <FiCode />, colorClass: "text-gray-400" };
+}
 
 function getBarColor(color: SkillCategoryColor) {
   switch (color) {
@@ -80,9 +71,18 @@ function getBorderHover(color: SkillCategoryColor) {
   }
 }
 
-export default function Skills() {
+export default function Skills({ skills }: { skills: SkillCategory[] }) {
   const [activeTab, setActiveTab] = useState<string>("all");
   const [viewMode, setViewMode] = useState<"bars" | "badges">("bars");
+
+  // Attach icons/colors from the registry to the serializable JSON data.
+  const skillCategories = skills.map((c) => ({
+    id: c.id,
+    title: c.title,
+    color: c.color,
+    icon: categoryIcons[c.id] ?? <FiCode className="text-cyan-400" />,
+    skills: c.items.map((s) => ({ name: s.name, mastery: s.mastery, ...resolveIcon(s.name) })),
+  }));
 
   // Determine what categories to render based on the active tab
   const visibleCategories = activeTab === "all" 

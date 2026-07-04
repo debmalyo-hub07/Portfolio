@@ -2,31 +2,10 @@
 
 import { motion, useScroll, useSpring } from "framer-motion";
 import { useRef } from "react";
+import type { EducationItem } from "@/lib/resume";
 
-const milestones = [
-  {
-    title: "The Odyssey Begins",
-    desc: "Starting the journey on 24 July 2003, driven by a growing fascination with logic and systems.",
-    date: "2003",
-  },
-  {
-    title: "Secondary (Madhyamik)",
-    desc: "Completed Madhyamik from the historic Sanskrit Collegiate School, laying the foundation for academic excellence.",
-    date: "2019",
-  },
-  {
-    title: "Diploma in CST",
-    desc: "Graduated with a Diploma in Computer Science & Technology from Canning Government Polytechnic, mastering core engineering principles.",
-    date: "2020 – 2023",
-  },
-  {
-    title: "B.Tech in CSE",
-    desc: "Currently specializing in Computer Science and Engineering at Techno Engineering College Banipur, Habra, building the next generation of digital solutions.",
-    date: "2023 – 2026",
-  },
-];
-
-export default function Education() {
+export default function Education({ education }: { education: EducationItem[] }) {
+  const milestones = education;
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -133,6 +112,9 @@ export default function Education() {
                     transition={{ duration: 0.3 }}
                     className="text-xl md:text-2xl font-bold text-white mb-4 cursor-default"
                   >{item.title}</motion.h3>
+                  {item.org && (
+                    <p className="text-gray-500 text-xs md:text-sm font-semibold mb-3 cursor-default">{item.org}</p>
+                  )}
                   <motion.p
                     whileHover={{ color: "#d1d5db" }}
                     transition={{ duration: 0.3 }}

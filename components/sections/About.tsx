@@ -66,7 +66,7 @@ function CountUp({ end, duration = 2, suffix = "" }: { end: number; duration?: n
   return <motion.span ref={ref} whileHover={{ scale: 1.1, color: "#00f0ff" }} transition={{ duration: 0.3 }}>{count}{suffix}</motion.span>;
 }
 
-export default function About() {
+export default function About({ about }: { about: string }) {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -110,8 +110,7 @@ export default function About() {
               className="space-y-8 text-gray-400 text-xl leading-relaxed"
             >
               <motion.p whileHover={{ x: 10, color: "#e5e7eb" }} transition={{ duration: 0.3 }} className="cursor-default">
-                I am a Computer Science student and Full Stack Developer with an obsession for building 
-                modern, scalable, and visually immersive web applications.
+                {about}
               </motion.p>
               <motion.p whileHover={{ x: 10, color: "#e5e7eb" }} transition={{ duration: 0.3 }} className="cursor-default">
                 My work blends technical precision with creative design, pushing the boundaries 
@@ -131,7 +130,7 @@ export default function About() {
                 className="relative cursor-pointer"
               >
                 <span className="block text-4xl sm:text-5xl font-black text-white mb-2">
-                  <CountUp end={4} suffix="+" />
+                  <CountUp end={5} suffix="+" />
                 </span>
                 <span className="text-xs text-gray-500 uppercase tracking-[0.3em] font-bold">Major Projects</span>
               </motion.div>

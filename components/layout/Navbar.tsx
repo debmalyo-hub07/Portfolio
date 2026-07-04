@@ -8,7 +8,7 @@ import { useLenis } from "lenis/react";
 // Moved outside component to prevent useEffect dep changes on every render
 const links = ["home", "about", "education", "skills", "projects", "contact"];
 
-export default function Navbar() {
+export default function Navbar({ cvUrl = "/projects/Debmalyo_Barman_Resume.pdf" }: { cvUrl?: string }) {
   const [active, setActive] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -161,6 +161,17 @@ export default function Navbar() {
                 </motion.span>
               </motion.a>
             ))}
+            <motion.a
+              href={cvUrl}
+              download
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ y: -2, scale: 1.03 }}
+              whileTap={{ scale: 0.95 }}
+              className="px-4 py-2 rounded-full border border-cyan-400/30 bg-cyan-500/10 text-cyan-300 text-xs font-bold tracking-[0.2em] uppercase hover:bg-cyan-500/20 transition-colors"
+            >
+              CV
+            </motion.a>
           </div>
 
           <motion.button
@@ -238,6 +249,16 @@ export default function Navbar() {
                     </motion.button>
                   ))}
                 </div>
+
+                <a
+                  href={cvUrl}
+                  download
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-6 inline-flex items-center justify-center px-6 py-3 rounded-xl border border-cyan-400/30 bg-cyan-500/10 text-cyan-300 text-sm font-bold tracking-widest uppercase hover:bg-cyan-500/20 transition-colors"
+                >
+                  Download CV
+                </a>
 
                 <div className="mt-auto pb-12">
                   <p className="text-[10px] font-mono text-gray-600 uppercase tracking-widest leading-loose">

@@ -1,0 +1,135 @@
+{
+  "profile": {
+    "name": "Debmalyo Barman",
+    "firstName": "Debmalyo",
+    "lastName": "Barman",
+    "role": "Digital Architect & Futurist",
+    "status": "Open to Work",
+    "quote": "Complexity is just an unorganized system",
+    "email": "debmalyobarman2003@gmail.com",
+    "taglines": [
+      "Building high-performance web systems.",
+      "Designing immersive digital futures.",
+      "Mastering the art of full-stack engineering.",
+      "Turning ideas into extraordinary products."
+    ],
+    "socials": {
+      "github": "https://github.com/debmalyo-hub07",
+      "linkedin": "https://www.linkedin.com/in/debmalyo-barman-087429318/"
+    }
+  },
+  "about": "Full-stack developer and AI enthusiast focused on high-performance web systems and immersive digital experiences. I turn complex problems into clean, scalable architectures.",
+  "education": [
+    {
+      "title": "The Odyssey Begins",
+      "org": "",
+      "date": "2003",
+      "desc": "Starting the journey on 24 July 2003, driven by a growing fascination with logic and systems."
+    },
+    {
+      "title": "Secondary (Madhyamik)",
+      "org": "Sanskrit Collegiate School",
+      "date": "2019",
+      "desc": "Completed Madhyamik from the historic Sanskrit Collegiate School, laying the foundation for academic excellence."
+    },
+    {
+      "title": "Diploma in CST",
+      "org": "Canning Government Polytechnic",
+      "date": "2020 – 2023",
+      "desc": "Graduated with a Diploma in Computer Science & Technology from Canning Government Polytechnic, mastering core engineering principles."
+    },
+    {
+      "title": "B.Tech in CSE",
+      "org": "Techno Engineering College Banipur, Habra",
+      "date": "2023 – 2026",
+      "desc": "Currently specializing in Computer Science and Engineering, building the next generation of digital solutions."
+    }
+  ],
+  "skills": [
+    {
+      "id": "frontend",
+      "title": "Frontend Architecture",
+      "color": "cyan",
+      "items": [
+        { "name": "React", "mastery": 90 },
+        { "name": "Next.js", "mastery": 85 },
+        { "name": "JavaScript", "mastery": 92 },
+        { "name": "TypeScript", "mastery": 80 },
+        { "name": "Tailwind CSS", "mastery": 88 },
+        { "name": "Framer Motion", "mastery": 75 }
+      ]
+    },
+    {
+      "id": "backend",
+      "title": "Backend & Systems",
+      "color": "fuchsia",
+      "items": [
+        { "name": "Node.js", "mastery": 82 },
+        { "name": "Express.js", "mastery": 78 },
+        { "name": "Java", "mastery": 75 },
+        { "name": "Python", "mastery": 72 },
+        { "name": "MongoDB", "mastery": 70 },
+        { "name": "PostgreSQL", "mastery": 65 },
+        { "name": "Redis", "mastery": 60 }
+      ]
+    },
+    {
+      "id": "tools",
+      "title": "Tools & Engineering",
+      "color": "emerald",
+      "items": [
+        { "name": "Git & GitHub", "mastery": 88 },
+        { "name": "Docker", "mastery": 65 },
+        { "name": "Linux", "mastery": 70 },
+        { "name": "DSA & Algorithms", "mastery": 80 }
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "title": "GrandForge Analyzer",
+      "desc": "Browser-based chess analysis platform powered by Stockfish WASM — multi-engine review, move classification, live position analysis, and game import from Chess.com and Lichess.",
+      "tech": ["React", "TypeScript", "Stockfish WASM", "MongoDB", "Framer Motion"],
+      "categories": ["AI", "Web App"],
+      "github": "https://github.com/debmalyo-hub07/GrandForge-Analyzer",
+      "live": "https://github.com/debmalyo-hub07/GrandForge-Analyzer",
+      "theme": { "glow": "rgba(59,130,246,0.3)", "stroke": "from-blue-400 to-indigo-500", "primary": "text-blue-400" }
+    },
+    {
+      "title": "NexMart",
+      "desc": "Full-stack e-commerce ecosystem with storefront, admin panel, and delivery-agent app. Razorpay payments, Redis queues, real-time Socket.io, wrapped in a Deep-Space Kinetic Glassmorphism design system.",
+      "tech": ["Next.js", "TypeScript", "MongoDB", "Redis", "Node.js"],
+      "categories": ["E-Commerce", "Full Stack"],
+      "github": "https://github.com/debmalyo-hub07/NexMart",
+      "live": "https://github.com/debmalyo-hub07/NexMart",
+      "theme": { "glow": "rgba(245,78,119,0.3)", "stroke": "from-pink-500 to-rose-600", "primary": "text-pink-400" }
+    },
+    {
+      "title": "FixMyCity",
+      "desc": "Civic complaint platform where residents report potholes, drainage, and streetlight issues with photos and track resolution. Features a TensorFlow.js image classifier in advisory mode. Built for Smart India Hackathon.",
+      "tech": ["React", "Node.js", "Express", "MongoDB", "TensorFlow.js"],
+      "categories": ["Civic-Tech", "AI", "Full Stack"],
+      "github": "https://github.com/debmalyo-hub07/FixMyCity",
+      "live": "https://github.com/debmalyo-hub07/FixMyCity",
+      "theme": { "glow": "rgba(16,185,129,0.3)", "stroke": "from-emerald-400 to-teal-500", "primary": "text-emerald-400" }
+    },
+    {
+      "title": "Job Portal 2.0",
+      "desc": "Full-stack job portal connecting seekers with listings — company dashboards, applicant tracking, and role-based authentication. Built for scale and production deployment.",
+      "tech": ["JavaScript", "Node.js", "Express"],
+      "categories": ["Platform", "Full Stack"],
+      "github": "https://github.com/debmalyo-hub07/job-portal-2.0",
+      "live": "https://github.com/debmalyo-hub07/job-portal-2.0",
+      "theme": { "glow": "rgba(34,211,238,0.3)", "stroke": "from-cyan-400 to-blue-500", "primary": "text-cyan-400" }
+    },
+    {
+      "title": "Futuristic Portfolio",
+      "desc": "This site — a premium digital portfolio with an interactive three.js hero, glassmorphism, GSAP scroll narratives, and a resume-driven content pipeline.",
+      "tech": ["Next.js", "Tailwind CSS", "three.js", "TypeScript"],
+      "categories": ["Premium", "Creative"],
+      "github": "https://github.com/debmalyo-hub07/Portfolio",
+      "live": "https://portfolio-rho-olive-95.vercel.app",
+      "theme": { "glow": "rgba(139,92,246,0.3)", "stroke": "from-violet-400 to-purple-500", "primary": "text-violet-400" }
+    }
+  ]
+}
