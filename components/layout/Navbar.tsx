@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback, useLayoutEffect } from "react";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
-import { FiDownload } from "react-icons/fi";
 import { useLenis } from "lenis/react";
 
 // Moved outside component to prevent useEffect dep changes on every render
@@ -119,7 +118,7 @@ export default function Navbar({ cvUrl = "/projects/Debmalyo_Barman_Resume.pdf" 
         <motion.div
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className={`panel relative px-5 md:px-6 py-3 flex items-center justify-between gap-4 md:gap-6 w-full max-w-5xl z-50 pointer-events-auto ${mounted ? "transition-all duration-500" : "transition-none"} ${
+          className={`panel relative px-5 md:px-6 py-3 flex items-center justify-between gap-4 md:gap-8 w-full max-w-3xl z-50 pointer-events-auto ${mounted ? "transition-all duration-500" : "transition-none"} ${
             isOpen 
               ? "bg-transparent border-transparent backdrop-blur-none shadow-none" 
               : scrolled
@@ -162,19 +161,6 @@ export default function Navbar({ cvUrl = "/projects/Debmalyo_Barman_Resume.pdf" 
               </motion.a>
             ))}
           </div>
-
-          {/* Desktop CV CTA (right zone) */}
-          <motion.a
-            href={cvUrl}
-            download
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ y: -2, scale: 1.04, boxShadow: "0 0 22px rgba(34,211,238,0.35)" }}
-            whileTap={{ scale: 0.96 }}
-            className="hidden md:inline-flex items-center gap-2 px-5 py-2 rounded-full bg-gradient-to-r from-cyan-400 to-fuchsia-500 text-black text-[11px] font-black tracking-[0.15em] uppercase shadow-lg"
-          >
-            <FiDownload size={13} /> Résumé
-          </motion.a>
 
           <motion.button
             whileHover={{ scale: 1.1 }}
