@@ -37,20 +37,32 @@ def section(title):
     c.setLineWidth(0.6); c.setStrokeColorRGB(0, 0, 0); c.line(LM, y, RM, y); y -= 13
 
 
+def link_over(text, url, x, yy, font=SERIF, size=9.5):
+    """Register a clickable hotspot over already-drawn text starting at (x, yy)."""
+    w = stringWidth(text, font, size)
+    c.linkURL(url, (x, yy - 2, x + w, yy + size), relative=0, thickness=0)
+
+
 # Header
 c.setFont(BOLD, 20); c.drawString(LM, y, "Debmalyo Barman")
 photo = ImageReader("scripts/assets/resume_photo.png")
 pw = 95; ph = pw * 531 / 413
 c.drawImage(photo, RM - pw, H - 52 - ph, width=pw, height=ph, mask='auto')
 y -= 20
-for line in [
-    "Phone: 7596810200",
-    "Email: debmalyobarman2003@gmail.com",
-    "LinkedIn: linkedin.com/in/debmalyo-barman",
-    "GitHub: github.com/debmalyo-hub07",
-    "Portfolio: portfolio-rho-olive-95.vercel.app",
-]:
-    c.setFont(SERIF, 9.5); c.drawString(LM, y, line); y -= 12.2
+# (label, value, url|None) — value is drawn after the label and linked if url given
+contacts = [
+    ("Phone: ", "7596810200", None),
+    ("Email: ", "debmalyobarman2003@gmail.com", "mailto:debmalyobarman2003@gmail.com"),
+    ("LinkedIn: ", "linkedin.com/in/debmalyo-barman", "https://linkedin.com/in/debmalyo-barman"),
+    ("GitHub: ", "github.com/debmalyo-hub07", "https://github.com/debmalyo-hub07"),
+    ("Portfolio: ", "portfolio-rho-olive-95.vercel.app", "https://portfolio-rho-olive-95.vercel.app"),
+]
+for label, val, url in contacts:
+    c.setFont(SERIF, 9.5); c.drawString(LM, y, label + val)
+    if url:
+        vx = LM + stringWidth(label, SERIF, 9.5)
+        link_over(val, url, vx, y)
+    y -= 12.2
 y = min(y, H - 52 - ph - 10)
 
 section("OBJECTIVE")
@@ -93,7 +105,11 @@ def proj(title, body, git=None, sub=None):
     if body:
         para(body)
     if git:
-        c.setFont(SERIF, 9.5); c.drawString(LM, y, "GitHub: " + git); y -= 12.5
+        prefix = "GitHub: "
+        c.setFont(SERIF, 9.5); c.drawString(LM, y, prefix + git)
+        gx = LM + stringWidth(prefix, SERIF, 9.5)
+        link_over(git, "https://" + git, gx, y)
+        y -= 12.5
     y -= 2
 
 
