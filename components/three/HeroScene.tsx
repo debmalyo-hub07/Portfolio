@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Float, MeshDistortMaterial, Icosahedron, Stars } from "@react-three/drei";
+import { Float, MeshDistortMaterial, Icosahedron } from "@react-three/drei";
 import { useRef } from "react";
 import type { Mesh } from "three";
 
@@ -49,7 +49,6 @@ export default function HeroScene() {
       <directionalLight position={[3, 3, 3]} intensity={2.2} color="#00f0ff" />
       <directionalLight position={[-3, -2, 2]} intensity={1.6} color="#ff00ff" />
       <pointLight position={[0, 0, 3]} intensity={1.4} color="#00ff88" />
-      <Stars radius={40} depth={30} count={1200} factor={3} fade speed={1} />
       <Blob />
     </Canvas>
   );

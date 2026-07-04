@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useLayoutEffect } from "react";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
-import { FiMenu, FiX } from "react-icons/fi";
+import { FiDownload } from "react-icons/fi";
 import { useLenis } from "lenis/react";
 
 // Moved outside component to prevent useEffect dep changes on every render
@@ -119,7 +119,7 @@ export default function Navbar({ cvUrl = "/projects/Debmalyo_Barman_Resume.pdf" 
         <motion.div
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className={`panel relative px-6 py-3 flex items-center justify-between md:justify-center gap-8 md:gap-12 w-full max-w-4xl z-50 pointer-events-auto ${mounted ? "transition-all duration-500" : "transition-none"} ${
+          className={`panel relative px-5 md:px-6 py-3 flex items-center justify-between gap-4 md:gap-6 w-full max-w-5xl z-50 pointer-events-auto ${mounted ? "transition-all duration-500" : "transition-none"} ${
             isOpen 
               ? "bg-transparent border-transparent backdrop-blur-none shadow-none" 
               : scrolled
@@ -137,7 +137,7 @@ export default function Navbar({ cvUrl = "/projects/Debmalyo_Barman_Resume.pdf" 
             DB.
           </motion.h1>
 
-          <div className="hidden md:flex gap-8">
+          <div className="hidden md:flex items-center gap-1 mx-auto">
             {links.map((item) => (
               <motion.a
                 key={item}
@@ -148,12 +148,12 @@ export default function Navbar({ cvUrl = "/projects/Debmalyo_Barman_Resume.pdf" 
                 }}
                 whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                className={`relative group px-4 py-2 transition-all duration-300 ${
-                  mounted && active === item ? "bg-cyan-500/15 rounded-full border border-cyan-400/30 shadow-[0_0_20px_rgba(34,211,238,0.3)]" : ""
+                className={`relative group px-3.5 py-2 rounded-full transition-all duration-300 ${
+                  mounted && active === item ? "bg-cyan-500/15 border border-cyan-400/30 shadow-[0_0_20px_rgba(34,211,238,0.25)]" : "border border-transparent"
                 }`}
               >
                 <motion.span
-                  className={`relative z-10 text-xs font-bold tracking-[0.2em] uppercase transition-colors duration-300 ${
+                  className={`relative z-10 text-[11px] font-bold tracking-[0.18em] uppercase transition-colors duration-300 ${
                     mounted && active === item ? "text-cyan-400" : "text-gray-400 group-hover:text-white"
                   }`}
                 >
@@ -161,18 +161,20 @@ export default function Navbar({ cvUrl = "/projects/Debmalyo_Barman_Resume.pdf" 
                 </motion.span>
               </motion.a>
             ))}
-            <motion.a
-              href={cvUrl}
-              download
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ y: -2, scale: 1.03 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-4 py-2 rounded-full border border-cyan-400/30 bg-cyan-500/10 text-cyan-300 text-xs font-bold tracking-[0.2em] uppercase hover:bg-cyan-500/20 transition-colors"
-            >
-              CV
-            </motion.a>
           </div>
+
+          {/* Desktop CV CTA (right zone) */}
+          <motion.a
+            href={cvUrl}
+            download
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ y: -2, scale: 1.04, boxShadow: "0 0 22px rgba(34,211,238,0.35)" }}
+            whileTap={{ scale: 0.96 }}
+            className="hidden md:inline-flex items-center gap-2 px-5 py-2 rounded-full bg-gradient-to-r from-cyan-400 to-fuchsia-500 text-black text-[11px] font-black tracking-[0.15em] uppercase shadow-lg"
+          >
+            <FiDownload size={13} /> Résumé
+          </motion.a>
 
           <motion.button
             whileHover={{ scale: 1.1 }}

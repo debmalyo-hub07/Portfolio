@@ -177,9 +177,9 @@ export default function Hero({ profile, cvUrl }: HeroProps) {
           transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
           className="w-full lg:w-1/2 flex justify-center items-center relative aspect-square max-w-[450px]"
         >
-          {/* Interactive three.js layer (desktop, motion-safe) */}
+          {/* Interactive three.js layer (desktop, motion-safe) — clipped to column */}
           {enable3D && (
-            <div className="absolute inset-[-15%] z-0 pointer-events-none">
+            <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-full">
               <HeroScene />
             </div>
           )}
