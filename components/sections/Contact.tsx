@@ -45,6 +45,9 @@ export default function Contact({ profile }: { profile: ResumeProfile }) {
           transition={{ duration: 0.8 }}
           className="text-center mb-20"
         >
+          <span className="inline-block mb-4 text-[11px] font-mono uppercase tracking-[0.4em] text-cyan-400/70">
+            05 — Contact
+          </span>
           <motion.h2
             whileHover={{ textShadow: "0 0 15px rgba(255, 255, 255, 0.2)" }}
             transition={{ duration: 0.3 }}

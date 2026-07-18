@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useLayoutEffect } from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import { useLenis } from "lenis/react";
 
@@ -33,21 +33,6 @@ export default function Navbar({ cvUrl = "/projects/Debmalyo_Barman_Resume.pdf" 
     };
   }, [isOpen]);
 
-  const handleScroll = useCallback(() => {
-    setScrolled(window.scrollY > 50);
-
-    const sections = links.map((id) => document.getElementById(id));
-    const currentSection = sections.find((section) => {
-      if (!section) return false;
-      const rect = section.getBoundingClientRect();
-      return rect.top <= 100 && rect.bottom >= 100;
-    });
-
-    if (currentSection) setActive(currentSection.id);
-
-    sessionStorage.setItem("scrollPosition", window.scrollY.toString());
-  }, []);
-
   useEffect(() => {
     // Intersection Observer for accurate section tracking
     const observerOptions = {
@@ -76,11 +61,15 @@ export default function Navbar({ cvUrl = "/projects/Debmalyo_Barman_Resume.pdf" 
     };
 
     window.addEventListener("scroll", handleScroll);
-    setMounted(true);
+
+    // Enable transitions only after first paint to avoid a hydration flash —
+    // deferred out of the effect body so it doesn't trigger a cascading render.
+    const raf = requestAnimationFrame(() => setMounted(true));
 
     return () => {
         observer.disconnect();
         window.removeEventListener("scroll", handleScroll);
+        cancelAnimationFrame(raf);
     };
   }, []);
 

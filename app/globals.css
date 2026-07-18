@@ -1,12 +1,39 @@
 @import "tailwindcss";
 
+/* ============================================================
+   DESIGN TOKENS
+   Neon triad (cyan → fuchsia → emerald) over deep space navy.
+   Surface + easing + radius scales added for consistency.
+   ============================================================ */
 :root {
+  /* Brand */
   --primary: #00f0ff;
   --secondary: #ff00ff;
   --accent: #00ff88;
+
+  /* Base */
   --background: #020617;
-  --panel-bg: rgba(255, 255, 255, 0.03);
+  --background-2: #050a1f;
+
+  /* Surface scale (glass tiers) */
+  --surface-1: rgba(255, 255, 255, 0.03);
+  --surface-2: rgba(255, 255, 255, 0.05);
+  --surface-3: rgba(255, 255, 255, 0.08);
+  --panel-bg: var(--surface-1);
   --panel-border: rgba(255, 255, 255, 0.08);
+  --panel-border-strong: rgba(255, 255, 255, 0.16);
+
+  /* Motion */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 0.3s;
+  --dur-med: 0.5s;
+
+  /* Radius */
+  --r-sm: 12px;
+  --r-md: 16px;
+  --r-lg: 24px;
+  --r-xl: 32px;
 }
 
 html {
@@ -27,42 +54,101 @@ h1, h2, h3, .heading-font {
   font-family: var(--font-syne), sans-serif;
 }
 
-/* Enhanced Background */
+/* ============================================================
+   BACKGROUND LAYERS
+   ============================================================ */
+
+/* Aurora mesh — now slowly drifts for a living backdrop */
 .bg-mesh {
   position: fixed;
   inset: 0;
   z-index: -10;
-  background: 
+  background:
     radial-gradient(circle at 0% 0%, rgba(139, 92, 246, 0.15), transparent 40%),
     radial-gradient(circle at 100% 100%, rgba(6, 182, 212, 0.15), transparent 40%),
     radial-gradient(circle at 50% 50%, rgba(217, 70, 239, 0.1), transparent 50%),
-    #020617;
+    var(--background);
 }
 
-/* Refined Grid */
+/* Separate animated aurora sheet so the base color never moves */
+.bg-aurora {
+  position: fixed;
+  inset: -20%;
+  z-index: -10;
+  pointer-events: none;
+  background:
+    radial-gradient(40% 40% at 20% 30%, rgba(0, 240, 255, 0.10), transparent 70%),
+    radial-gradient(45% 45% at 80% 20%, rgba(255, 0, 255, 0.08), transparent 70%),
+    radial-gradient(50% 50% at 60% 80%, rgba(0, 255, 136, 0.07), transparent 70%);
+  filter: blur(40px);
+  animation: aurora-drift 24s ease-in-out infinite alternate;
+}
+
+@keyframes aurora-drift {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(3%, -2%, 0) scale(1.08); }
+  100% { transform: translate3d(-3%, 2%, 0) scale(1.04); }
+}
+
+/* Refined grid */
 .bg-grid {
   position: fixed;
   inset: 0;
   z-index: -9;
-  background-image: 
+  background-image:
     linear-gradient(var(--panel-border) 1px, transparent 1px),
     linear-gradient(90deg, var(--panel-border) 1px, transparent 1px);
   background-size: 50px 50px;
-  /* Fade out edges to prevent 1px lines at viewport borders */
   mask-image: radial-gradient(circle at center, black 30%, transparent 95%);
   opacity: 0.3;
 }
 
-/* Custom Utilities */
+/* Film grain — subtle premium texture over everything */
+.bg-noise {
+  position: fixed;
+  inset: 0;
+  z-index: -8;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ============================================================
+   TEXT + SURFACE UTILITIES
+   ============================================================ */
+
+/* Neon gradient text with a slow moving sheen */
 .neon-text {
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  background: linear-gradient(
+    120deg,
+    var(--primary) 0%,
+    var(--secondary) 40%,
+    #a855f7 60%,
+    var(--primary) 100%
+  );
+  background-size: 250% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  animation: neon-sheen 8s linear infinite;
+}
+
+@keyframes neon-sheen {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 250% 50%; }
 }
 
 .glow {
   box-shadow: 0 0 25px -5px var(--primary), 0 0 50px -10px var(--secondary);
+}
+
+/* Glass utility used by floating badges + reusable chips */
+.glass {
+  background: var(--surface-2);
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  border: 1px solid var(--panel-border);
 }
 
 .panel {
@@ -70,8 +156,8 @@ h1, h2, h3, .heading-font {
   background: var(--panel-bg);
   backdrop-filter: blur(8px) saturate(160%);
   border: 1px solid var(--panel-border);
-  border-radius: 24px;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: var(--r-lg);
+  transition: all 0.4s var(--ease-smooth);
 }
 
 @media (min-width: 768px) {
@@ -86,17 +172,29 @@ h1, h2, h3, .heading-font {
 }
 
 .panel-hover:hover {
-  border-color: rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--panel-border-strong);
+  background: var(--surface-2);
   transform: translateY(-8px);
   box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
 }
 
+/* ============================================================
+   BUTTONS — now with a light sweep on hover
+   ============================================================ */
 .btn-primary {
-  @apply px-8 py-3 rounded-xl font-bold transition-all duration-300;
+  @apply relative overflow-hidden px-8 py-3 rounded-xl font-bold transition-all duration-300;
   background: linear-gradient(135deg, var(--primary), #0ea5e9);
   color: white;
   box-shadow: 0 10px 20px -10px var(--primary);
+}
+
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.45) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform 0.7s var(--ease-out-expo);
 }
 
 .btn-primary:hover {
@@ -104,10 +202,14 @@ h1, h2, h3, .heading-font {
   box-shadow: 0 15px 30px -5px var(--primary);
 }
 
+.btn-primary:hover::after {
+  transform: translateX(120%);
+}
+
 .btn-secondary {
-  @apply px-8 py-3 rounded-xl font-bold transition-all duration-300 border;
-  border-color: rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.05);
+  @apply relative overflow-hidden px-8 py-3 rounded-xl font-bold transition-all duration-300 border;
+  border-color: var(--panel-border-strong);
+  background: var(--surface-2);
 }
 
 .btn-secondary:hover {
@@ -115,6 +217,9 @@ h1, h2, h3, .heading-font {
   border-color: var(--primary);
 }
 
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
 @keyframes float {
   0%, 100% { transform: translateY(0px) }
   50% { transform: translateY(-20px) }
@@ -124,27 +229,113 @@ h1, h2, h3, .heading-font {
   animation: float 6s ease-in-out infinite;
 }
 
-/* Custom Neon Scrollbar */
+/* Infinite marquee track (tech strip) */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 40s linear infinite;
+}
+
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+  mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
+}
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #020617;
+  background: var(--background);
 }
 
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(180deg, var(--primary), var(--secondary));
   border-radius: 10px;
-  border: 2px solid #020617;
+  border: 2px solid var(--background);
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(180deg, #22d3ee, #f0abfc);
 }
 
-/* Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--primary) #020617;
+  scrollbar-color: var(--primary) var(--background);
+}
+
+/* ============================================================
+   REDUCED MOTION — respect the OS setting globally.
+   Kills the ambient loops (aurora, float, marquee, sheen)
+   without touching layout. Framer's own animations already
+   short-circuit via prefers-reduced-motion.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .bg-aurora,
+  .neon-text,
+  .animate-float,
+  .animate-marquee {
+    animation: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================================
+   MOBILE PERFORMANCE (<= 767px)
+   Phone GPUs choke on stacked backdrop-filter + animated blur
+   layers. Measured on a 4x-throttled CPU profile, full-page
+   scroll: neutralizing backdrop-filter took the frame rate from
+   ~26fps (worst frame 150ms, 17 hitches >50ms) to ~40fps (worst
+   frame 50ms, zero hitches >50ms). We trade the frosted-glass
+   blur for a denser solid fill so panels stay just as legible,
+   and freeze the always-on full-screen blur layers.
+
+   Desktop is untouched — the heavy interactive pieces (three.js
+   hero, Lenis smooth-scroll, cursor glow) are already gated to
+   >=768px / fine-pointer, so this only affects phones.
+   ============================================================ */
+@media (max-width: 767px) {
+  /* 1. Backdrop-filter is the dominant scroll-jank source. Drop it
+        everywhere it appears — the .panel / .glass utilities and
+        every Tailwind `backdrop-blur-*` element. */
+  .panel,
+  .glass,
+  [class*="backdrop-blur"] {
+    /* Standard property only — Lightning CSS auto-adds the -webkit-
+       prefix. Writing both by hand made it drop the unprefixed one. */
+    backdrop-filter: none !important;
+  }
+
+  /* Compensate for the lost blur with a solid-enough fill so the
+     frosted surfaces keep their card definition and legibility. */
+  .glass {
+    background: rgba(9, 13, 28, 0.85);
+  }
+
+  /* 2. Freeze the fixed full-screen aurora — a moving 40px blur
+        layer is re-rasterized every frame. It stays visible, just
+        stops drifting. */
+  .bg-aurora {
+    animation: none;
+  }
+
+  /* 3. The film grain uses mix-blend-mode: overlay on a fixed
+        full-screen layer, forcing a composite blend on every scroll
+        frame. It's imperceptible at phone size — drop it. */
+  .bg-noise {
+    display: none;
+  }
 }

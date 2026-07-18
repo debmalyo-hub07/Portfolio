@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useMemo } from "react";
-import { FiGithub, FiExternalLink, FiFolder } from "react-icons/fi";
+import { FiGithub, FiExternalLink, FiFolder, FiClock } from "react-icons/fi";
 import TiltCard from "../ui/TiltCard";
 import type { ProjectItem } from "@/lib/resume";
 
@@ -62,6 +62,9 @@ export default function Projects({ projects }: { projects: ProjectItem[] }) {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
+          <span className="inline-block mb-4 text-[11px] font-mono uppercase tracking-[0.4em] text-fuchsia-400/70">
+            04 — Selected Work
+          </span>
           <motion.h2
             whileHover={{ textShadow: "0 0 15px rgba(255, 255, 255, 0.2)" }}
             transition={{ duration: 0.3 }}
@@ -190,8 +193,11 @@ export default function Projects({ projects }: { projects: ProjectItem[] }) {
                           <FiExternalLink size={18} /> Live Demo
                         </motion.a>
                       ) : (
-                        <div className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border border-white/5 bg-white/5 text-gray-500 font-medium text-sm cursor-not-allowed">
-                          Development Phase
+                        <div
+                          className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl border border-white/5 bg-white/5 text-gray-500 font-medium text-sm cursor-not-allowed"
+                          title="This project isn't deployed yet"
+                        >
+                          <FiClock size={16} /> Coming Soon
                         </div>
                       )}
                     </div>

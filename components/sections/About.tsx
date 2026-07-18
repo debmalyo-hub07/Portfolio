@@ -29,19 +29,19 @@ function CountUp({ end, duration = 2, suffix = "" }: { end: number; duration?: n
   const ref = useRef(null);
 
   useEffect(() => {
+    const node = ref.current;
     const observer = new IntersectionObserver(
       ([entry]) => {
+        // Fire once — no reset/re-count when it scrolls back out.
         if (entry.isIntersecting) {
           setIsInView(true);
-        } else {
-          setIsInView(false);
-          setCount(0);
+          if (node) observer.unobserve(node);
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.3 }
     );
 
-    if (ref.current) observer.observe(ref.current);
+    if (node) observer.observe(node);
     return () => observer.disconnect();
   }, []);
 
@@ -92,7 +92,10 @@ export default function About({ about }: { about: string }) {
             transition={{ duration: 0.8 }}
             className="flex-1 text-left"
           >
-            <motion.h2 
+            <span className="inline-block mb-4 text-[11px] font-mono uppercase tracking-[0.4em] text-cyan-400/70">
+              01 — About
+            </span>
+            <motion.h2
               whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.3 }}
               className="text-4xl md:text-6xl font-black heading-font mb-10 leading-tight cursor-default"

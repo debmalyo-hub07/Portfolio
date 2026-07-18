@@ -113,6 +113,9 @@ export default function Skills({ skills }: { skills: SkillCategory[] }) {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
+          <span className="inline-block mb-4 text-[11px] font-mono uppercase tracking-[0.4em] text-emerald-400/70">
+            03 — Capabilities
+          </span>
           <motion.h2
             whileHover={{ textShadow: "0 0 15px rgba(255, 255, 255, 0.2)" }}
             transition={{ duration: 0.3 }}

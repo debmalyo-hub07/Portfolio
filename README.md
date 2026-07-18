@@ -7,9 +7,9 @@ A modern, highly interactive, and responsive personal portfolio website built wi
 - **Interactive three.js Hero** - A live, pointer-reactive distorted 3D blob with a starfield, lazy-loaded and motion-safe (falls back gracefully on mobile / reduced-motion).
 - **Resume-driven content** - Every section (About, Education, Skills, Projects) renders from a single `data/resume.json`. Edit the JSON, rebuild, done.
 - **Auto-updating CV download** - Drop a newer PDF into `public/resume/` and the download button repoints automatically — no code change.
-- **Premium motion** - Framer Motion + GSAP, 3D tilt project cards, and magnetic CTA buttons.
+- **Premium motion** - Framer Motion powered 3D tilt project cards, magnetic CTA buttons, and reduced-motion aware ambient effects.
 - **Lenis Smooth Scrolling** - Premium native-feeling smooth scroll experience.
-- **tsParticles** - Dynamic background particle effects.
+- **Living backdrop** - Drifting aurora mesh, masked grid, and a subtle film-grain texture layer.
 - **Tailwind CSS v4** - Utility-first styling, glassmorphism, dynamic gradients.
 - **Fully Responsive** - Flawless across mobile, tablet, and desktop.
 
@@ -19,7 +19,7 @@ A modern, highly interactive, and responsive personal portfolio website built wi
 - **Core Library**: [React 19](https://react.dev/)
 - **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
 - **3D**: [three.js](https://threejs.org/) via [react-three-fiber](https://r3f.docs.pmnd.rs/) + [drei](https://github.com/pmndrs/drei)
-- **Animations**: [Framer Motion](https://www.framer.com/motion/) + [GSAP](https://gsap.com/)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/)
 - **Scroll**: [Lenis](https://lenis.studiofreight.com/)
 - **Icons**: [React Icons](https://react-icons.github.io/react-icons/)
 - **Language**: [TypeScript](https://www.typescriptlang.org/)

@@ -2,7 +2,7 @@
 
 # Portfolio — project guide
 
-Next.js 16 (App Router, Turbopack) · React 19 · Tailwind 4 · framer-motion · three.js (react-three-fiber + drei) · gsap · lenis.
+Next.js 16 (App Router, Turbopack) · React 19 · Tailwind 4 · framer-motion · three.js (react-three-fiber + drei) · lenis.
 
 ## Resume-driven content pipeline
 

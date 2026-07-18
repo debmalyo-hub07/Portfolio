@@ -6,6 +6,7 @@ import Skills from "@/components/sections/Skills";
 import Projects from "@/components/sections/Projects";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/layout/Footer";
+import TechMarquee from "@/components/ui/TechMarquee";
 import { getResumeData, getCvUrl } from "@/lib/resume";
 
 export default function Home() {
@@ -21,6 +22,7 @@ export default function Home() {
       <div className="space-y-32">
         <Hero profile={data.profile} cvUrl={cvUrl} />
         <About about={data.about} />
+        <TechMarquee />
         <Education education={data.education} />
         <Skills skills={data.skills} />
         <Projects projects={data.projects} />

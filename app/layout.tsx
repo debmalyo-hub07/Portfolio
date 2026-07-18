@@ -1,8 +1,6 @@
 import "./globals.css";
 import { Outfit, Syne } from "next/font/google";
-import ParticlesBg from "@/components/ui/ParticlesBg";
 import CursorGlow from "@/components/ui/CursorGlow";
-import FloatingLogos from "@/components/ui/FloatingLogos";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -56,11 +54,11 @@ export default function RootLayout({
         <SmoothScroll>
           {/* Advanced Background Layers */}
           <div className="bg-mesh" />
+          <div className="bg-aurora" />
           <div className="bg-grid" />
-          
+          <div className="bg-noise" />
+
           {/* Interactive Elements */}
-          <FloatingLogos />
-          <ParticlesBg />
           <CursorGlow />
 
           {/* Main Content */}
