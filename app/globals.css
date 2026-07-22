@@ -37,6 +37,10 @@
 }
 
 html {
+  /* Non-static so framer-motion's useScroll({ target }) can measure offsets
+     against the document scroll root (document.scrollingElement) without
+     warning. Its dev check requires the container be relative/fixed/absolute. */
+  position: relative;
   scroll-behavior: smooth;
   scroll-padding-top: 6rem;
   background: var(--background);
