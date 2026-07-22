@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useLenis } from "lenis/react";
 import { FiGithub, FiLinkedin, FiArrowUp, FiInstagram } from "react-icons/fi";
 
 const socialLinks = [
@@ -10,8 +11,14 @@ const socialLinks = [
 ];
 
 export default function Footer() {
+  const lenis = useLenis();
+
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (lenis) {
+      lenis.scrollTo(0, { duration: 1.2 });
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   };
 
   return (

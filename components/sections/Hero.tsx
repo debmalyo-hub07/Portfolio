@@ -1,17 +1,14 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
-import dynamic from "next/dynamic";
+import { useRef } from "react";
+import { useLenis } from "lenis/react";
 import { TypeAnimation } from "react-type-animation";
-import { FiDownload, FiExternalLink } from "react-icons/fi";
+import { FiDownload, FiExternalLink, FiChevronDown } from "react-icons/fi";
 import { FaReact, FaNodeJs } from "react-icons/fa";
 import { SiNextdotjs, SiMongodb } from "react-icons/si";
 import MagneticButton from "../ui/MagneticButton";
 import type { ResumeProfile } from "@/lib/resume";
-
-// three.js scene is client-only + lazy — kept out of the initial bundle.
-const HeroScene = dynamic(() => import("../three/HeroScene"), { ssr: false });
 
 interface HeroProps {
   profile: ResumeProfile;
@@ -19,21 +16,21 @@ interface HeroProps {
 }
 
 export default function Hero({ profile, cvUrl }: HeroProps) {
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLElement>(null);
+  const lenis = useLenis();
   const { scrollY } = useScroll();
   const y1 = useTransform(scrollY, [0, 500], [0, 200]);
   const y2 = useTransform(scrollY, [0, 500], [0, -150]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
-  // Perf/accessibility guard: only mount the 3D canvas on capable, larger
-  // viewports and when the user hasn't asked to reduce motion.
-  const [enable3D, setEnable3D] = useState(false);
-  useEffect(() => {
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const wide = window.matchMedia("(min-width: 768px)").matches;
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-shot capability probe on mount (window unavailable during SSR)
-    setEnable3D(!reduced && wide);
-  }, []);
+  // Scroll-scrub fade for the whole hero: it recedes as the chapter leaves,
+  // handing the stage to the persistent WorldScene canvas behind it.
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"],
+  });
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+  const heroY = useTransform(scrollYProgress, [0, 0.7], [0, -80]);
 
   const cvFileName = cvUrl.split("/").pop() || "Debmalyo_Barman_Resume.pdf";
   const typeSequence = profile.taglines.flatMap((t) => [t, 3000]);
@@ -60,7 +57,10 @@ export default function Hero({ profile, cvUrl }: HeroProps) {
         className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-emerald-500/10 rounded-full blur-[100px] -z-10 will-change-gpu"
       />
 
-      <div className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-8 z-10 relative">
+      <motion.div
+        style={{ opacity: heroOpacity, y: heroY }}
+        className="max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-8 z-10 relative"
+      >
         
         {/* LEFT COMPONENT: Typography & CTAs */}
         <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left">
@@ -147,7 +147,11 @@ export default function Hero({ profile, cvUrl }: HeroProps) {
               href="#projects"
               onClick={(e) => {
                 e.preventDefault();
-                document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
+                if (lenis) {
+                  lenis.scrollTo("#projects", { duration: 1.2 });
+                } else {
+                  document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
+                }
               }}
               whileHover={{ scale: 1.02, boxShadow: "0 0 30px rgba(0,240,255,0.4)" }}
               whileTap={{ scale: 0.98 }}
@@ -177,12 +181,8 @@ export default function Hero({ profile, cvUrl }: HeroProps) {
           transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
           className="w-full lg:w-1/2 flex justify-center items-center relative aspect-square max-w-[450px]"
         >
-          {/* Interactive three.js layer (desktop, motion-safe) — clipped to column */}
-          {enable3D && (
-            <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-full">
-              <HeroScene />
-            </div>
-          )}
+          {/* The persistent WorldScene canvas (page-level, behind all DOM)
+              shows through here — the orbital rings below frame its core. */}
 
           {/* Advanced Orbital Spiral System */}
           <motion.div
@@ -282,7 +282,29 @@ export default function Hero({ profile, cvUrl }: HeroProps) {
 
         </motion.div>
 
-      </div>
+      </motion.div>
+
+      {/* Scroll-down cue — bounces gently, fades out as the hero recedes. */}
+      <motion.button
+        style={{ opacity: heroOpacity }}
+        onClick={() => {
+          if (lenis) {
+            lenis.scrollTo("#about", { duration: 1.2 });
+          } else {
+            document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
+          }
+        }}
+        aria-label="Scroll to about section"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 hidden sm:flex flex-col items-center gap-2 text-white/50 hover:text-cyan-400 transition-colors"
+      >
+        <span className="text-[9px] font-mono uppercase tracking-[0.3em]">Scroll</span>
+        <motion.span
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <FiChevronDown size={22} />
+        </motion.span>
+      </motion.button>
     </section>
   );
 }

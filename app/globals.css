@@ -55,6 +55,32 @@ h1, h2, h3, .heading-font {
 }
 
 /* ============================================================
+   WORLD CANVAS — persistent WebGL protagonist behind all DOM.
+   Fixed, full-viewport, non-interactive. Sits above the ambient
+   background layers (z -10..-8) but below page content (z 1).
+   ============================================================ */
+.world-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.world-canvas canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Cinematic scroll overlay wrapper. The component sets its own flex +
+   z-index inline; this just guarantees the fixed, non-interactive frame
+   even if utility classes are ever purged. */
+.scroll-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* ============================================================
    BACKGROUND LAYERS
    ============================================================ */
 

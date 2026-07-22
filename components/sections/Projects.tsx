@@ -40,7 +40,7 @@ export default function Projects({ projects }: { projects: ProjectItem[] }) {
       : projects.filter((p) => p.categories.includes(activeFilter));
 
   return (
-    <section id="projects" className="py-32 px-6 relative overflow-hidden bg-black">
+    <section id="projects" className="py-32 px-6 relative overflow-hidden">
 
       {/* Subtle Background Glows */}
       <motion.div

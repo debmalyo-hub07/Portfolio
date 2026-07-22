@@ -88,7 +88,7 @@ export default function About({ about }: { about: string }) {
           <motion.div 
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: false, amount: 0.5 }}
+            viewport={{ once: true, amount: 0.5 }}
             transition={{ duration: 0.8 }}
             className="flex-1 text-left"
           >
@@ -108,9 +108,9 @@ export default function About({ about }: { about: string }) {
               >Ideas into Impact</motion.span>
             </motion.h2>
             
-            <motion.div 
-              style={{ y: y1 }} 
-              className="space-y-8 text-gray-400 text-xl leading-relaxed"
+            <motion.div
+              style={{ y: y1 }}
+              className="space-y-8 text-gray-400 text-xl leading-relaxed will-change-gpu"
             >
               <motion.p whileHover={{ x: 10, color: "#e5e7eb" }} transition={{ duration: 0.3 }} className="cursor-default">
                 {about}
@@ -158,7 +158,7 @@ export default function About({ about }: { about: string }) {
                 initial={{ opacity: 0, x: 50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ delay: idx * 0.1, duration: 0.6 }}
-                viewport={{ once: false, amount: 0.5 }}
+                viewport={{ once: true, amount: 0.5 }}
                 whileHover={{ scale: 1.02 }}
               >
                 <Card3D>

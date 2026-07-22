@@ -7,6 +7,8 @@ import Projects from "@/components/sections/Projects";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/layout/Footer";
 import TechMarquee from "@/components/ui/TechMarquee";
+import WorldSceneLoader from "@/components/three/WorldSceneLoader";
+import { ScrollProvider } from "@/context/ScrollContext";
 import { getResumeData, getCvUrl } from "@/lib/resume";
 
 export default function Home() {
@@ -15,22 +17,40 @@ export default function Home() {
   const cvUrl = getCvUrl();
 
   return (
-    <main>
+    <ScrollProvider>
+      {/* Persistent WebGL protagonist — fixed, behind everything. Renders
+          nothing on mobile-lite / reduced-motion (CSS fallback carries it). */}
+      <WorldSceneLoader />
 
       <Navbar cvUrl={cvUrl} />
 
-      <div className="space-y-32">
-        <Hero profile={data.profile} cvUrl={cvUrl} />
-        <About about={data.about} />
-        <TechMarquee />
-        <Education education={data.education} />
-        <Skills skills={data.skills} />
-        <Projects projects={data.projects} />
-        <Contact profile={data.profile} />
-      </div>
+      {/* Page content floats above the canvas. Each chapter is tagged for the
+          IntersectionObserver in ScrollContext (index drives the morph). */}
+      <main className="relative z-[1]">
+        <div className="space-y-32">
+          <div data-chapter="home" data-chapter-index="0">
+            <Hero profile={data.profile} cvUrl={cvUrl} />
+          </div>
+          <div data-chapter="about" data-chapter-index="1">
+            <About about={data.about} />
+          </div>
+          <TechMarquee />
+          <div data-chapter="education" data-chapter-index="2">
+            <Education education={data.education} />
+          </div>
+          <div data-chapter="skills" data-chapter-index="3">
+            <Skills skills={data.skills} />
+          </div>
+          <div data-chapter="projects" data-chapter-index="4">
+            <Projects projects={data.projects} />
+          </div>
+          <div data-chapter="contact" data-chapter-index="5">
+            <Contact profile={data.profile} />
+          </div>
+        </div>
 
-      <Footer />
-
-    </main>
+        <Footer />
+      </main>
+    </ScrollProvider>
   );
 }
