@@ -10,16 +10,33 @@ import TechMarquee from "@/components/ui/TechMarquee";
 import WorldSceneLoader from "@/components/three/WorldSceneLoader";
 import { ScrollProvider } from "@/context/ScrollContext";
 import { getResumeData, getCvUrl } from "@/lib/resume";
+import { SITE_URL } from "@/lib/site";
 
 export default function Home() {
   // Server Component: read resume-driven content + resolve newest CV at build time.
   const data = getResumeData();
   const cvUrl = getCvUrl();
 
+  // Person structured data for rich results — sourced from resume.json.
+  const personJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: data.profile.name,
+    jobTitle: data.profile.role,
+    email: `mailto:${data.profile.email}`,
+    url: SITE_URL,
+    sameAs: [data.profile.socials.github, data.profile.socials.linkedin],
+  };
+
   return (
     <ScrollProvider>
-      {/* Persistent WebGL protagonist — fixed, behind everything. Renders
-          nothing on mobile-lite / reduced-motion (CSS fallback carries it). */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+      />
+      {/* Persistent WebGL protagonist — fixed, behind everything. Touch
+          devices get a trimmed particle tier without bloom; reduced-motion
+          and weak hardware get no WebGL at all (CSS fallback carries it). */}
       <WorldSceneLoader />
 
       <Navbar cvUrl={cvUrl} />
@@ -27,7 +44,7 @@ export default function Home() {
       {/* Page content floats above the canvas. Each chapter is tagged for the
           IntersectionObserver in ScrollContext (index drives the morph). */}
       <main className="relative z-[1]">
-        <div className="space-y-32">
+        <div className="space-y-16 md:space-y-32">
           <div data-chapter="home" data-chapter-index="0">
             <Hero profile={data.profile} cvUrl={cvUrl} />
           </div>
@@ -49,7 +66,7 @@ export default function Home() {
           </div>
         </div>
 
-        <Footer />
+        <Footer socials={data.profile.socials} />
       </main>
     </ScrollProvider>
   );

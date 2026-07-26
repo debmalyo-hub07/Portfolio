@@ -90,7 +90,7 @@ export default function Skills({ skills }: { skills: SkillCategory[] }) {
     : skillCategories.filter(cat => cat.id === activeTab);
 
   return (
-    <section id="skills" className="py-32 px-6 relative overflow-hidden">
+    <section id="skills" className="py-16 md:py-32 px-6 relative overflow-hidden">
 
       {/* Subtle Background Glows */}
       <motion.div
@@ -111,7 +111,7 @@ export default function Skills({ skills }: { skills: SkillCategory[] }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-10 md:mb-16"
         >
           <span className="inline-block mb-4 text-[11px] font-mono uppercase tracking-[0.4em] text-emerald-400/70">
             03 — Capabilities
@@ -152,7 +152,7 @@ export default function Skills({ skills }: { skills: SkillCategory[] }) {
                 <button
                   key={tabId}
                   onClick={() => setActiveTab(tabId)}
-                  className={`relative px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-colors duration-300 z-10 ${
+                  className={`group relative px-4 py-2.5 min-h-11 md:min-h-0 md:py-2 rounded-xl text-xs sm:text-sm font-bold transition-colors duration-300 z-10 ${
                     isActive ? "text-white" : "text-gray-400 hover:text-white"
                   }`}
                 >
@@ -183,7 +183,7 @@ export default function Skills({ skills }: { skills: SkillCategory[] }) {
               <button
                 key={mode.id}
                 onClick={() => setViewMode(mode.id as "bars" | "badges")}
-                className={`relative flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-colors duration-300 z-10 ${
+                className={`group relative flex items-center gap-2 px-4 py-2.5 min-h-11 md:min-h-0 md:py-2 rounded-xl text-xs sm:text-sm font-bold transition-colors duration-300 z-10 ${
                   viewMode === mode.id ? "text-white" : "text-gray-400 hover:text-white"
                 }`}
               >
@@ -218,8 +218,8 @@ export default function Skills({ skills }: { skills: SkillCategory[] }) {
               
               <div 
                 key={catIdx} 
-                className={viewMode === "bars" 
-                  ? "panel p-8 relative group border-white/10 bg-black/40 backdrop-blur-3xl rounded-[2.5rem]" 
+                className={viewMode === "bars"
+                  ? "panel p-5 sm:p-8 relative group border-white/10 bg-black/40 backdrop-blur-3xl rounded-3xl sm:rounded-[2.5rem]"
                   : "w-full"
                 }
               >

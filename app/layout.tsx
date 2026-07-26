@@ -1,6 +1,8 @@
 import "./globals.css";
+import type { Metadata, Viewport } from "next";
 import { Outfit, Syne } from "next/font/google";
 import CursorGlow from "@/components/ui/CursorGlow";
+import { SITE_URL } from "@/lib/site";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -14,7 +16,9 @@ const syne = Syne({
   display: "swap",
 });
 
-export const metadata = {
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  alternates: { canonical: "/" },
   title: "Debmalyo Barman | Digital Architect & Futurist",
   description: "Futuristic Portfolio of a Full Stack Developer & AI Enthusiast specializing in high-performance web systems and immersive digital experiences.",
   keywords: ["Debmalyo Barman", "Full Stack Developer", "Next.js Developer", "Portfolio", "AI Enthusiast", "Web Architect"],
@@ -23,7 +27,7 @@ export const metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://github.com/debmalyo-hub07",
+    url: "/",
     title: "Debmalyo Barman | Portfolio",
     description: "Futuristic Portfolio of a Full Stack Developer & AI Enthusiast",
     siteName: "Debmalyo Barman Portfolio",
@@ -32,12 +36,16 @@ export const metadata = {
     card: "summary_large_image",
     title: "Debmalyo Barman | Portfolio",
     description: "Futuristic Portfolio of a Full Stack Developer & AI Enthusiast",
-    creator: "@debmalyo_hub07",
   },
   robots: {
     index: true,
     follow: true,
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#020617",
+  colorScheme: "dark",
 };
 
 import SmoothScroll from "@/components/ui/SmoothScroll";
@@ -50,7 +58,15 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${outfit.variable} ${syne.variable}`}>
       <body suppressHydrationWarning className="relative selection:bg-cyan-500/30 selection:text-cyan-200">
-        
+
+        {/* Keyboard users skip the fixed nav straight to content */}
+        <a
+          href="#home"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[110] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-cyan-500 focus:text-black focus:font-bold"
+        >
+          Skip to content
+        </a>
+
         <SmoothScroll>
           {/* Advanced Background Layers */}
           <div className="bg-mesh" />

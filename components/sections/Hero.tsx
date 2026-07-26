@@ -39,7 +39,7 @@ export default function Hero({ profile, cvUrl }: HeroProps) {
     <section
       id="home"
       ref={containerRef}
-      className="relative min-h-screen flex flex-col justify-start lg:justify-center px-6 pt-32 lg:pt-24 pb-16 overflow-hidden"
+      className="relative min-h-screen flex flex-col justify-start lg:justify-center px-6 pt-24 sm:pt-32 lg:pt-24 pb-16 overflow-hidden"
     >
       {/* Parallax Background Elements */}
       <div className="absolute inset-0 bg-grid opacity-10 -z-20" />
@@ -116,7 +116,7 @@ export default function Hero({ profile, cvUrl }: HeroProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
-            className="h-16 sm:h-12 mb-4"
+            className="min-h-16 sm:min-h-12 mb-4"
           >
             <TypeAnimation
               sequence={typeSequence}
@@ -133,7 +133,8 @@ export default function Hero({ profile, cvUrl }: HeroProps) {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-slate-500 text-sm italic mb-10 font-mono"
           >
-            ✦ &quot;{profile.quote}&quot; ✦
+            <span aria-hidden="true">✦</span> &quot;{profile.quote}&quot;{" "}
+            <span aria-hidden="true">✦</span>
           </motion.p>
 
           {/* CTAs */}
@@ -179,7 +180,7 @@ export default function Hero({ profile, cvUrl }: HeroProps) {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
-          className="w-full lg:w-1/2 flex justify-center items-center relative aspect-square max-w-[450px]"
+          className="w-full lg:w-1/2 flex justify-center items-center relative aspect-square max-w-[320px] sm:max-w-[450px]"
         >
           {/* The persistent WorldScene canvas (page-level, behind all DOM)
               shows through here — the orbital rings below frame its core. */}
@@ -249,35 +250,35 @@ export default function Hero({ profile, cvUrl }: HeroProps) {
 
           {/* Floating Technology Badges fixed to absolute percentages */}
           <motion.div
-            className="absolute top-[0%] right-[5%] sm:top-[12%] sm:right-[10%] glass border border-cyan-400/40 px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg text-[8px] sm:text-xs font-mono text-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.3)] bg-black/50 backdrop-blur-md z-20"
+            className="absolute top-[0%] right-[5%] sm:top-[12%] sm:right-[10%] glass border border-cyan-400/40 px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg text-[10px] sm:text-xs font-mono text-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.3)] bg-black/50 backdrop-blur-md z-20"
             animate={{ y: [0, -10, 0] }}
             transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
           >
-            ⚡ Full Stack
+            <span aria-hidden="true">⚡</span> Full Stack
           </motion.div>
 
           <motion.div
-            className="absolute bottom-[15%] left-[0%] sm:bottom-[22%] sm:left-[2%] glass border border-fuchsia-500/40 px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg text-[8px] sm:text-xs font-mono text-fuchsia-400 shadow-[0_0_20px_rgba(232,121,249,0.3)] bg-black/50 backdrop-blur-md z-20"
+            className="absolute bottom-[15%] left-[0%] sm:bottom-[22%] sm:left-[2%] glass border border-fuchsia-500/40 px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg text-[10px] sm:text-xs font-mono text-fuchsia-400 shadow-[0_0_20px_rgba(232,121,249,0.3)] bg-black/50 backdrop-blur-md z-20"
             animate={{ y: [0, 10, 0] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
           >
-            🚀 Next.js 16
+            <span aria-hidden="true">🚀</span> Next.js 16
           </motion.div>
 
           <motion.div
-            className="absolute top-[25%] left-[5%] sm:top-[35%] sm:left-[0%] glass border border-emerald-400/40 px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg text-[8px] sm:text-xs font-mono text-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.3)] bg-black/50 backdrop-blur-md z-20"
+            className="absolute top-[25%] left-[5%] sm:top-[35%] sm:left-[0%] glass border border-emerald-400/40 px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg text-[10px] sm:text-xs font-mono text-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.3)] bg-black/50 backdrop-blur-md z-20"
             animate={{ y: [0, -8, 0] }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
           >
-            🛡️ Architecture
+            <span aria-hidden="true">🛡️</span> Architecture
           </motion.div>
           
           <motion.div
-            className="absolute bottom-[5%] right-[10%] sm:bottom-[10%] sm:right-[15%] glass border border-yellow-400/40 px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg text-[8px] sm:text-xs font-mono text-yellow-400 shadow-[0_0_20px_rgba(250,204,21,0.3)] bg-black/50 backdrop-blur-md z-20"
+            className="absolute bottom-[5%] right-[10%] sm:bottom-[10%] sm:right-[15%] glass border border-yellow-400/40 px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg text-[10px] sm:text-xs font-mono text-yellow-400 shadow-[0_0_20px_rgba(250,204,21,0.3)] bg-black/50 backdrop-blur-md z-20"
             animate={{ y: [0, 8, 0] }}
             transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
           >
-            🧠 AI Systems
+            <span aria-hidden="true">🧠</span> AI Systems
           </motion.div>
 
         </motion.div>
@@ -295,7 +296,7 @@ export default function Hero({ profile, cvUrl }: HeroProps) {
           }
         }}
         aria-label="Scroll to about section"
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 hidden sm:flex flex-col items-center gap-2 text-white/50 hover:text-cyan-400 transition-colors"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 text-white/50 hover:text-cyan-400 transition-colors"
       >
         <span className="text-[9px] font-mono uppercase tracking-[0.3em]">Scroll</span>
         <motion.span

@@ -12,7 +12,7 @@ export interface ResumeProfile {
   quote: string;
   email: string;
   taglines: string[];
-  socials: { github: string; linkedin: string };
+  socials: { github: string; linkedin: string; whatsapp?: string };
 }
 
 export interface EducationItem {
@@ -56,23 +56,28 @@ export function getResumeData(): ResumeData {
   return data as ResumeData;
 }
 
-const LEGACY_CV = "/projects/Debmalyo_Barman_Resume.pdf";
+const LEGACY_CV = "/resume/Debmalyo_Barman_Resume_2026-07.pdf";
+
+const DATED_PDF = /_(\d{4}-\d{2})\.pdf$/i;
 
 /**
  * Feature A — resolves the CV download URL at build time.
- * Scans public/resume/ for PDFs and returns the newest by filename
- * (string-sortable date suffix, e.g. *_2026-07.pdf). This is deterministic
- * on Vercel where git does not preserve file mtimes. Falls back to the
- * legacy path if the folder is empty or unreadable.
+ * Scans public/resume/ for PDFs following the dated convention
+ * (*_YYYY-MM.pdf) and returns the newest by that date. Sorting on the
+ * extracted date — not the whole filename — means an undated stray like
+ * "Resume.pdf" can never shadow a newer dated file. This is deterministic
+ * on Vercel where git does not preserve file mtimes. Falls back to any
+ * PDF present, then to the legacy path if the folder is empty/unreadable.
  */
 export function getCvUrl(): string {
   try {
     const dir = path.join(process.cwd(), "public", "resume");
-    const pdfs = fs
-      .readdirSync(dir)
-      .filter((f) => f.toLowerCase().endsWith(".pdf"))
-      .sort((a, b) => b.localeCompare(a));
-    if (pdfs.length > 0) return `/resume/${pdfs[0]}`;
+    const pdfs = fs.readdirSync(dir).filter((f) => f.toLowerCase().endsWith(".pdf"));
+    const dated = pdfs
+      .filter((f) => DATED_PDF.test(f))
+      .sort((a, b) => b.match(DATED_PDF)![1].localeCompare(a.match(DATED_PDF)![1]));
+    if (dated.length > 0) return `/resume/${dated[0]}`;
+    if (pdfs.length > 0) return `/resume/${pdfs.sort((a, b) => b.localeCompare(a))[0]}`;
   } catch {
     // folder missing / unreadable — fall through to legacy
   }

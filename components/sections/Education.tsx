@@ -19,7 +19,7 @@ export default function Education({ education }: { education: EducationItem[] })
   });
 
   return (
-    <section id="education" className="py-32 px-6 relative overflow-hidden">
+    <section id="education" className="py-16 md:py-32 px-6 relative overflow-hidden">
 
       {/* Subtle Background Glows */}
       <motion.div
@@ -44,7 +44,7 @@ export default function Education({ education }: { education: EducationItem[] })
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: false, amount: 0.5 }}
         transition={{ duration: 0.8 }}
-        className="text-center mb-32"
+        className="text-center mb-16 md:mb-32"
       >
         <span className="inline-block mb-4 text-[11px] font-mono uppercase tracking-[0.4em] text-cyan-400/70">
           02 — Journey
@@ -73,8 +73,8 @@ export default function Education({ education }: { education: EducationItem[] })
 
       <div ref={containerRef} className="max-w-4xl mx-auto relative">
 
-        {/* Central Dynamic Timeline Line (Desktop Only) */}
-        <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-[2px] bg-white/5 hidden md:block">
+        {/* Dynamic Timeline Line — hugs the left edge on mobile, centered on desktop */}
+        <div className="absolute left-5 md:left-1/2 -translate-x-1/2 top-0 bottom-0 w-[2px] bg-white/5 block">
           <motion.div
             style={{ scaleY }}
             className="absolute top-0 w-full h-full bg-gradient-to-b from-cyan-400 via-fuchsia-500 to-emerald-400 origin-top shadow-[0_0_20px_rgba(0,240,255,0.5)]"
@@ -94,7 +94,7 @@ export default function Education({ education }: { education: EducationItem[] })
                 transition={{ duration: 0.8, delay: 0.2 }}
                 viewport={{ once: false, amount: 0.5, margin: "-100px" }}
                 whileHover={{ scale: 1.02, y: -5 }}
-                className={`w-full md:w-[45%] ${i % 2 === 0 ? "md:text-right" : "md:text-left order-2 md:order-none pl-12 md:pl-0"}`}
+                className={`w-full md:w-[45%] pl-12 md:pl-0 ${i % 2 === 0 ? "md:text-right" : "md:text-left order-2 md:order-none"}`}
               >
                 <motion.div
                   whileHover={{ 
@@ -116,7 +116,7 @@ export default function Education({ education }: { education: EducationItem[] })
                     className="text-xl md:text-2xl font-bold text-white mb-4 cursor-default"
                   >{item.title}</motion.h3>
                   {item.org && (
-                    <p className="text-gray-500 text-xs md:text-sm font-semibold mb-3 cursor-default">{item.org}</p>
+                    <p className="text-gray-400 text-xs md:text-sm font-semibold mb-3 cursor-default">{item.org}</p>
                   )}
                   <motion.p
                     whileHover={{ color: "#d1d5db" }}
@@ -126,17 +126,17 @@ export default function Education({ education }: { education: EducationItem[] })
                 </motion.div>
               </motion.div>
 
-              {/* Desktop Central Point */}
+              {/* Timeline Point — pinned near the card top on mobile, flex-centered on desktop */}
               <motion.div
                 whileHover={{ scale: 1.2 }}
                 transition={{ duration: 0.3 }}
-                className="absolute left-1/2 -translate-x-1/2 hidden md:flex items-center justify-center z-10"
+                className="absolute left-5 md:left-1/2 -translate-x-1/2 top-8 md:top-auto flex items-center justify-center z-10"
               >
                 <motion.div
                   initial={{ scale: 0 }}
                   whileInView={{ scale: 1 }}
                   viewport={{ once: false, amount: 0.5, margin: "-100px" }}
-                  className="w-12 h-12 rounded-full border-2 border-white/10 bg-black/50 backdrop-blur-md flex items-center justify-center"
+                  className="w-8 h-8 md:w-12 md:h-12 rounded-full border-2 border-white/10 bg-black/50 backdrop-blur-md flex items-center justify-center"
                 >
                   <motion.div
                     animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}

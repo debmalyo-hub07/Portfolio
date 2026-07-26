@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FiMail, FiLinkedin, FiGithub, FiSend, FiPhone, FiCheckCircle } from "react-icons/fi";
 import type { ResumeProfile } from "@/lib/resume";
 
-type FormStatus = "idle" | "sending" | "success" | "error";
+type FormStatus = "idle" | "success";
 
 export default function Contact({ profile }: { profile: ResumeProfile }) {
   const [formStatus, setFormStatus] = useState<FormStatus>("idle");
@@ -15,23 +15,27 @@ export default function Contact({ profile }: { profile: ResumeProfile }) {
     { icon: <FiLinkedin size={24} />, href: profile.socials.linkedin, label: "LinkedIn" },
   ];
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  // No backend yet — compose the message in the visitor's own mail client
+  // so nothing is silently dropped. Swap for a form service / route handler
+  // when one exists.
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setFormStatus("sending");
+    const form = e.currentTarget;
+    const fields = new FormData(form);
+    const name = String(fields.get("name") ?? "").trim();
+    const email = String(fields.get("email") ?? "").trim();
+    const message = String(fields.get("message") ?? "").trim();
 
-    try {
-      await new Promise((res) => setTimeout(res, 1500));
-      setFormStatus("success");
-      (e.target as HTMLFormElement).reset();
-      setTimeout(() => setFormStatus("idle"), 4000);
-    } catch {
-      setFormStatus("error");
-      setTimeout(() => setFormStatus("idle"), 4000);
-    }
+    const subject = encodeURIComponent(`Portfolio inquiry from ${name}`);
+    const body = encodeURIComponent(`${message}\n\n— ${name} (${email})`);
+    window.location.href = `mailto:${profile.email}?subject=${subject}&body=${body}`;
+
+    setFormStatus("success");
+    setTimeout(() => setFormStatus("idle"), 6000);
   };
 
   return (
-    <section id="contact" className="py-32 px-6 relative overflow-hidden">
+    <section id="contact" className="py-16 md:py-32 px-6 relative overflow-hidden">
 
       {/* Decorative Glow Elements */}
       <div className="absolute top-1/2 left-1/4 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[120px] -z-10 animate-pulse will-change-gpu" />
@@ -43,7 +47,7 @@ export default function Contact({ profile }: { profile: ResumeProfile }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-20"
+          className="text-center mb-12 md:mb-20"
         >
           <span className="inline-block mb-4 text-[11px] font-mono uppercase tracking-[0.4em] text-cyan-400/70">
             05 — Contact
@@ -101,7 +105,7 @@ export default function Contact({ profile }: { profile: ResumeProfile }) {
                     <FiMail size={24} className="text-cyan-400" />
                   </motion.div>
                   <div className="min-w-0">
-                    <span className="block text-[10px] uppercase tracking-widest text-gray-500 mb-1">Email Address</span>
+                    <span className="block text-[10px] uppercase tracking-widest text-gray-400 mb-1">Email Address</span>
                     <span className="text-lg md:text-xl font-bold group-hover:text-white transition-colors lowercase cursor-default block truncate">{profile.email}</span>
                   </div>
                 </motion.a>
@@ -110,7 +114,7 @@ export default function Contact({ profile }: { profile: ResumeProfile }) {
                 <motion.a
                   whileHover={{ x: 10, scale: 1.02 }}
                   transition={{ duration: 0.3 }}
-                  href="https://wa.me/917596810200"
+                  href={profile.socials.whatsapp ?? `mailto:${profile.email}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-4 md:gap-6 group"
@@ -122,9 +126,9 @@ export default function Contact({ profile }: { profile: ResumeProfile }) {
                   >
                     <FiPhone size={24} className="text-emerald-400" />
                   </motion.div>
-                  <div>
-                    <span className="block text-[10px] uppercase tracking-widest text-gray-500 mb-1">Direct Liaison</span>
-                    <span className="text-lg md:text-xl font-bold group-hover:text-white transition-colors cursor-default">WhatsApp Support</span>
+                  <div className="min-w-0">
+                    <span className="block text-[10px] uppercase tracking-widest text-gray-400 mb-1">Direct Liaison</span>
+                    <span className="text-lg md:text-xl font-bold group-hover:text-white transition-colors cursor-default block truncate">WhatsApp Support</span>
                   </div>
                 </motion.a>
 
@@ -144,16 +148,16 @@ export default function Contact({ profile }: { profile: ResumeProfile }) {
                   >
                     <FiLinkedin size={24} className="text-fuchsia-400" />
                   </motion.div>
-                  <div>
-                    <span className="block text-[10px] uppercase tracking-widest text-gray-500 mb-1">Professional Network</span>
-                    <span className="text-lg md:text-xl font-bold group-hover:text-white transition-colors cursor-default">LinkedIn Profile</span>
+                  <div className="min-w-0">
+                    <span className="block text-[10px] uppercase tracking-widest text-gray-400 mb-1">Professional Network</span>
+                    <span className="text-lg md:text-xl font-bold group-hover:text-white transition-colors cursor-default block truncate">LinkedIn Profile</span>
                   </div>
                 </motion.a>
               </div>
             </div>
 
             <div>
-              <h4 className="text-xs uppercase tracking-[0.3em] text-gray-600 mb-6 ml-1">Digital Presence</h4>
+              <h4 className="text-xs uppercase tracking-[0.3em] text-gray-400 mb-6 ml-1">Digital Presence</h4>
               <div className="flex gap-4 md:gap-6">
                 {socialLinks.map((link, i) => (
                   <motion.a
@@ -189,15 +193,17 @@ export default function Contact({ profile }: { profile: ResumeProfile }) {
               <div className="relative group">
                 <input
                   id="user-identity"
+                  name="name"
+                  autoComplete="name"
                   type="text"
                   required
-                  disabled={formStatus === "sending" || formStatus === "success"}
+                  disabled={formStatus === "success"}
                   className="w-full bg-transparent border-b-2 border-white/10 py-4 outline-none focus:border-cyan-400 transition-all peer text-white font-medium disabled:opacity-50"
                   placeholder=" "
                 />
                 <label
                   htmlFor="user-identity"
-                  className="absolute left-0 top-4 text-gray-500 uppercase tracking-widest text-[10px] pointer-events-none transition-all peer-focus:-top-4 peer-focus:text-cyan-400 peer-placeholder-shown:top-4 peer-[:not(:placeholder-shown)]:-top-4"
+                  className="absolute left-0 top-4 text-gray-400 uppercase tracking-widest text-[10px] pointer-events-none transition-all peer-focus:-top-4 peer-focus:text-cyan-400 peer-placeholder-shown:top-4 peer-[:not(:placeholder-shown)]:-top-4"
                 >
                   Full Name
                 </label>
@@ -206,15 +212,17 @@ export default function Contact({ profile }: { profile: ResumeProfile }) {
               <div className="relative group">
                 <input
                   id="user-email"
+                  name="email"
+                  autoComplete="email"
                   type="email"
                   required
-                  disabled={formStatus === "sending" || formStatus === "success"}
+                  disabled={formStatus === "success"}
                   className="w-full bg-transparent border-b-2 border-white/10 py-4 outline-none focus:border-cyan-400 transition-all peer text-white font-medium disabled:opacity-50"
                   placeholder=" "
                 />
                 <label
                   htmlFor="user-email"
-                  className="absolute left-0 top-4 text-gray-500 uppercase tracking-widest text-[10px] pointer-events-none transition-all peer-focus:-top-4 peer-focus:text-cyan-400 peer-placeholder-shown:top-4 peer-[:not(:placeholder-shown)]:-top-4"
+                  className="absolute left-0 top-4 text-gray-400 uppercase tracking-widest text-[10px] pointer-events-none transition-all peer-focus:-top-4 peer-focus:text-cyan-400 peer-placeholder-shown:top-4 peer-[:not(:placeholder-shown)]:-top-4"
                 >
                   Email Address
                 </label>
@@ -224,15 +232,16 @@ export default function Contact({ profile }: { profile: ResumeProfile }) {
             <div className="relative group">
               <textarea
                 id="user-message"
+                name="message"
                 required
                 rows={4}
-                disabled={formStatus === "sending" || formStatus === "success"}
+                disabled={formStatus === "success"}
                 className="w-full bg-transparent border-b-2 border-white/10 py-4 outline-none focus:border-fuchsia-500 transition-all peer text-white font-medium resize-none disabled:opacity-50"
                 placeholder=" "
               />
               <label
                 htmlFor="user-message"
-                className="absolute left-0 top-4 text-gray-500 uppercase tracking-widest text-[10px] pointer-events-none transition-all peer-focus:-top-4 peer-focus:text-fuchsia-500 peer-placeholder-shown:top-4 peer-[:not(:placeholder-shown)]:-top-4"
+                className="absolute left-0 top-4 text-gray-400 uppercase tracking-widest text-[10px] pointer-events-none transition-all peer-focus:-top-4 peer-focus:text-fuchsia-500 peer-placeholder-shown:top-4 peer-[:not(:placeholder-shown)]:-top-4"
               >
                 Project Details / Message
               </label>
@@ -246,7 +255,7 @@ export default function Contact({ profile }: { profile: ResumeProfile }) {
               className="btn-primary w-full group overflow-hidden relative py-4 rounded-xl disabled:opacity-80 disabled:cursor-not-allowed"
             >
               <span className="relative z-10 flex items-center justify-center gap-3 font-bold tracking-[0.2em] uppercase text-sm">
-                {formStatus === "sending" ? "Transmitting…" : formStatus === "success" ? "Received" : "Send Message"}
+                {formStatus === "success" ? "Opened in Mail" : "Send Message"}
                 {formStatus === "idle" && <FiSend size={18} />}
                 {formStatus === "success" && <FiCheckCircle size={18} />}
               </span>
@@ -262,7 +271,8 @@ export default function Contact({ profile }: { profile: ResumeProfile }) {
                   className="flex items-center gap-3 px-4 py-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-medium"
                 >
                   <FiCheckCircle size={16} />
-                  Message received! I&apos;ll get back to you shortly.
+                  Your email app opened with the message pre-filled — hit send there and
+                  I&apos;ll get back to you shortly.
                 </motion.div>
               )}
             </AnimatePresence>

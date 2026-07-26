@@ -76,13 +76,13 @@ export default function About({ about }: { about: string }) {
   const y1 = useTransform(scrollYProgress, [0, 1], [0, -50]);
 
   return (
-    <section id="about" ref={containerRef} className="py-32 px-6 relative overflow-hidden">
+    <section id="about" ref={containerRef} className="py-16 md:py-32 px-6 relative overflow-hidden">
       
       {/* Background Decor */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cyan-500/5 rounded-full blur-[120px] -z-10 will-change-gpu" />
 
       <div className="max-w-6xl mx-auto">
-        <div className="flex flex-col lg:flex-row gap-20 items-center">
+        <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-center">
           
           {/* Left Side: Story */}
           <motion.div 
@@ -110,7 +110,7 @@ export default function About({ about }: { about: string }) {
             
             <motion.div
               style={{ y: y1 }}
-              className="space-y-8 text-gray-400 text-xl leading-relaxed will-change-gpu"
+              className="space-y-6 md:space-y-8 text-gray-400 text-lg lg:text-xl leading-relaxed will-change-gpu"
             >
               <motion.p whileHover={{ x: 10, color: "#e5e7eb" }} transition={{ duration: 0.3 }} className="cursor-default">
                 {about}
@@ -130,22 +130,22 @@ export default function About({ about }: { about: string }) {
               <motion.div 
                 whileHover={{ y: -5 }}
                 transition={{ duration: 0.3 }}
-                className="relative cursor-pointer"
+                className="relative cursor-default"
               >
                 <span className="block text-4xl sm:text-5xl font-black text-white mb-2">
                   <CountUp end={5} suffix="+" />
                 </span>
-                <span className="text-xs text-gray-500 uppercase tracking-[0.3em] font-bold">Major Projects</span>
+                <span className="text-xs text-gray-400 uppercase tracking-[0.3em] font-bold">Major Projects</span>
               </motion.div>
               <motion.div 
                 whileHover={{ y: -5 }}
                 transition={{ duration: 0.3 }}
-                className="relative cursor-pointer"
+                className="relative cursor-default"
               >
                 <span className="block text-4xl sm:text-5xl font-black text-white mb-2">
                   <CountUp end={10} suffix="+" />
                 </span>
-                <span className="text-xs text-gray-500 uppercase tracking-[0.3em] font-bold">Technologies</span>
+                <span className="text-xs text-gray-400 uppercase tracking-[0.3em] font-bold">Technologies</span>
               </motion.div>
             </motion.div>
           </motion.div>

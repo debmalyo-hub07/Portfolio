@@ -68,6 +68,9 @@ export default function TechMarquee() {
       aria-label="Technology stack"
       className="relative py-10 border-y border-white/5 overflow-hidden"
     >
+      {/* Both visual tracks are aria-hidden (duplicated + auto-moving); this
+          static line is what screen readers get instead. */}
+      <p className="sr-only">{items.map((it) => it.label).join(", ")}</p>
       <div className="marquee-mask flex w-max animate-marquee">
         {/* Two identical tracks → seamless -50% loop */}
         <Track />

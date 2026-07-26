@@ -35,7 +35,10 @@ export default function MagneticButton({
   const sx = useSpring(x, { stiffness: 180, damping: 15, mass: 0.3 });
   const sy = useSpring(y, { stiffness: 180, damping: 15, mass: 0.3 });
 
-  const handleMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  // pointerType guard: taps synthesize a mousemove at the touch point but no
+  // mouseleave, which left the button stuck displaced toward the tap.
+  const handleMove = (e: React.PointerEvent<HTMLAnchorElement>) => {
+    if (e.pointerType !== "mouse") return;
     const el = ref.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
@@ -58,8 +61,8 @@ export default function MagneticButton({
       target={target}
       rel={rel}
       onClick={onClick}
-      onMouseMove={handleMove}
-      onMouseLeave={reset}
+      onPointerMove={handleMove}
+      onPointerLeave={reset}
       style={{ x: sx, y: sy }}
       whileTap={{ scale: 0.97 }}
       className={className}

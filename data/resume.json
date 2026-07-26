@@ -15,7 +15,8 @@
     ],
     "socials": {
       "github": "https://github.com/debmalyo-hub07",
-      "linkedin": "https://www.linkedin.com/in/debmalyo-barman-087429318/"
+      "linkedin": "https://www.linkedin.com/in/debmalyo-barman-087429318/",
+      "whatsapp": "https://wa.me/917596810200"
     }
   },
   "about": "Full-stack developer and AI enthusiast focused on high-performance web systems and immersive digital experiences. I turn complex problems into clean, scalable architectures.",
@@ -124,7 +125,7 @@
     },
     {
       "title": "Futuristic Portfolio",
-      "desc": "This site — a premium digital portfolio with an interactive three.js hero, glassmorphism, GSAP scroll narratives, and a resume-driven content pipeline.",
+      "desc": "This site — a premium digital portfolio with an interactive three.js particle hero, glassmorphism, framer-motion scroll narratives, and a resume-driven content pipeline.",
       "tech": ["Next.js", "Tailwind CSS", "three.js", "TypeScript"],
       "categories": ["Premium", "Creative"],
       "github": "https://github.com/debmalyo-hub07/Portfolio",

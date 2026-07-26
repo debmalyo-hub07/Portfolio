@@ -23,6 +23,17 @@ const techBadgeColors: Record<string, string> = {
   "JavaScript": "border-yellow-400/30 text-yellow-400 bg-yellow-400/5",
 };
 
+// Full variant strings keyed by theme.primary — Tailwind's scanner only
+// generates classes it can see in source, so runtime interpolation like
+// `group-hover:${...}` silently produces no CSS.
+const titleHoverColors: Record<string, string> = {
+  "text-blue-400": "group-hover:text-blue-400",
+  "text-pink-400": "group-hover:text-pink-400",
+  "text-emerald-400": "group-hover:text-emerald-400",
+  "text-cyan-400": "group-hover:text-cyan-400",
+  "text-violet-400": "group-hover:text-violet-400",
+};
+
 export default function Projects({ projects }: { projects: ProjectItem[] }) {
   const [activeFilter, setActiveFilter] = useState("All");
 
@@ -40,7 +51,7 @@ export default function Projects({ projects }: { projects: ProjectItem[] }) {
       : projects.filter((p) => p.categories.includes(activeFilter));
 
   return (
-    <section id="projects" className="py-32 px-6 relative overflow-hidden">
+    <section id="projects" className="py-16 md:py-32 px-6 relative overflow-hidden">
 
       {/* Subtle Background Glows */}
       <motion.div
@@ -68,7 +79,7 @@ export default function Projects({ projects }: { projects: ProjectItem[] }) {
           <motion.h2
             whileHover={{ textShadow: "0 0 15px rgba(255, 255, 255, 0.2)" }}
             transition={{ duration: 0.3 }}
-            className="text-5xl md:text-6xl font-black heading-font mb-4 cursor-default"
+            className="text-4xl sm:text-5xl md:text-6xl font-black heading-font mb-4 cursor-default"
           >
             <motion.span whileHover={{ color: "#00f0ff" }} transition={{ duration: 0.3 }}>Featured</motion.span>{" "}
             <motion.span
@@ -93,7 +104,7 @@ export default function Projects({ projects }: { projects: ProjectItem[] }) {
                 <button
                   key={cat}
                   onClick={() => setActiveFilter(cat)}
-                  className={`relative px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-colors duration-300 z-10 ${
+                  className={`relative px-4 py-2.5 min-h-11 md:min-h-0 md:py-2 rounded-xl text-xs sm:text-sm font-bold transition-colors duration-300 z-10 ${
                     isActive ? "text-white" : "text-gray-400 hover:text-white"
                   }`}
                 >
@@ -140,7 +151,7 @@ export default function Projects({ projects }: { projects: ProjectItem[] }) {
                         <div className="p-3 rounded-xl bg-white/5 border border-white/10 text-white/50 group-hover:text-white transition-colors shadow-inner">
                           <FiFolder size={24} />
                         </div>
-                        <h3 className={`text-xl sm:text-2xl font-black heading-font tracking-tight transition-colors duration-300 group-hover:${project.theme.primary} text-gray-100`}>
+                        <h3 className={`text-xl sm:text-2xl font-black heading-font tracking-tight transition-colors duration-300 ${titleHoverColors[project.theme.primary] ?? ""} text-gray-100`}>
                           {project.title}
                         </h3>
                       </div>

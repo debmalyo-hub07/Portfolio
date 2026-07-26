@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, useEffect, useLayoutEffect } from "react";
+import { useState, useEffect, useLayoutEffect, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 import { useLenis } from "lenis/react";
 
 // Moved outside component to prevent useEffect dep changes on every render
 const links = ["home", "about", "education", "skills", "projects", "contact"];
 
-export default function Navbar({ cvUrl = "/projects/Debmalyo_Barman_Resume.pdf" }: { cvUrl?: string }) {
+export default function Navbar({ cvUrl = "/resume/Debmalyo_Barman_Resume_2026-07.pdf" }: { cvUrl?: string }) {
   const [active, setActive] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -21,16 +21,41 @@ export default function Navbar({ cvUrl = "/projects/Debmalyo_Barman_Resume.pdf" 
     restDelta: 0.001,
   });
 
-  // Lock / unlock body scroll when mobile menu is open
+  // Lock / unlock body scroll when mobile menu is open.
+  // iOS Safari ignores overflow:hidden on body while the document scrolls,
+  // so the robust lock is position:fixed at the current offset, restored
+  // (instantly, bypassing scroll-behavior:smooth) on close.
   useLayoutEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    if (!isOpen) return;
+    const scrollY = window.scrollY;
+    const body = document.body;
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.left = "0";
+    body.style.right = "0";
+    body.style.width = "100%";
+    body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = "";
+      body.style.position = "";
+      body.style.top = "";
+      body.style.left = "";
+      body.style.right = "";
+      body.style.width = "";
+      body.style.overflow = "";
+      window.scrollTo({ top: scrollY, behavior: "instant" as ScrollBehavior });
     };
+  }, [isOpen]);
+
+  // Close the mobile menu on Escape and move focus into the dialog.
+  const sidebarRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!isOpen) return;
+    sidebarRef.current?.focus();
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
   }, [isOpen]);
 
   useEffect(() => {
@@ -115,15 +140,22 @@ export default function Navbar({ cvUrl = "/projects/Debmalyo_Barman_Resume.pdf" 
                 : "bg-transparent border-transparent"
           }`}
         >
-          <motion.h1
+          {/* Anchor, not <h1>: the page's single h1 lives in the Hero, and a
+              link keeps back-to-top reachable by keyboard. */}
+          <motion.a
+            href="#home"
             whileHover={{ scale: 1.05, color: "#00f0ff" }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => lenis ? lenis.scrollTo(0) : window.scrollTo({ top: 0, behavior: "smooth" })}
+            onClick={(e) => {
+              e.preventDefault();
+              if (lenis) lenis.scrollTo(0);
+              else window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
             className="text-2xl font-black neon-text cursor-pointer transition-colors duration-300"
-            aria-label="DB Logo"
+            aria-label="DB — back to top"
           >
             DB.
-          </motion.h1>
+          </motion.a>
 
           <div className="hidden md:flex items-center gap-1 mx-auto">
             {links.map((item) => (
@@ -136,6 +168,7 @@ export default function Navbar({ cvUrl = "/projects/Debmalyo_Barman_Resume.pdf" 
                 }}
                 whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.95 }}
+                aria-current={mounted && active === item ? "true" : undefined}
                 className={`relative group px-3.5 py-2 rounded-full transition-all duration-300 ${
                   mounted && active === item ? "bg-cyan-500/15 border border-cyan-400/30 shadow-[0_0_20px_rgba(34,211,238,0.25)]" : "border border-transparent"
                 }`}
@@ -154,9 +187,11 @@ export default function Navbar({ cvUrl = "/projects/Debmalyo_Barman_Resume.pdf" 
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            className="md:hidden text-white p-2 relative z-[70] pointer-events-auto"
+            className="md:hidden text-white p-3 -m-1 relative z-[70] pointer-events-auto"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle Menu"
+            aria-expanded={isOpen}
+            aria-controls="mobile-menu"
           >
             <div className="relative w-6 h-6">
               <motion.div
@@ -183,17 +218,23 @@ export default function Navbar({ cvUrl = "/projects/Debmalyo_Barman_Resume.pdf" 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 bg-black/80 backdrop-blur-md z-[60] md:hidden pointer-events-auto"
+                className="fixed inset-0 bg-black/80 backdrop-blur-md z-[60] md:hidden pointer-events-auto touch-none"
                 onClick={closeMenu}
               />
-              
+
               {/* Sidebar */}
               <motion.div
+                ref={sidebarRef}
+                id="mobile-menu"
+                role="dialog"
+                aria-modal="true"
+                aria-label="Navigation menu"
+                tabIndex={-1}
                 initial={{ x: "100%" }}
                 animate={{ x: 0 }}
                 exit={{ x: "100%" }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="fixed top-0 right-0 bottom-0 w-[80%] max-w-sm bg-black/90 border-l border-white/10 shadow-2xl z-[65] md:hidden flex flex-col pt-32 px-10 gap-8 pointer-events-auto overflow-y-auto"
+                className="fixed top-0 right-0 bottom-0 w-[80%] max-w-sm bg-black/90 border-l border-white/10 shadow-2xl z-[65] md:hidden flex flex-col pt-24 sm:pt-32 px-8 gap-8 pointer-events-auto overflow-y-auto overscroll-contain outline-none"
               >
                 <div className="flex flex-col gap-8">
                   {links.map((item, i) => (
@@ -204,9 +245,10 @@ export default function Navbar({ cvUrl = "/projects/Debmalyo_Barman_Resume.pdf" 
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.1 + i * 0.1 }}
                       whileTap={{ scale: 0.95 }}
+                      aria-current={active === item ? "true" : undefined}
                       className="group flex flex-col items-start gap-1"
                     >
-                      <span className={`text-[10px] font-mono tracking-[0.3em] uppercase ${active === item ? "text-cyan-400" : "text-gray-600"}`}>
+                      <span className={`text-[10px] font-mono tracking-[0.3em] uppercase ${active === item ? "text-cyan-400" : "text-gray-400"}`}>
                         0{i + 1}.
                       </span>
                       <span className={`text-2xl font-black heading-font tracking-wider uppercase transition-all duration-300 ${
@@ -238,7 +280,7 @@ export default function Navbar({ cvUrl = "/projects/Debmalyo_Barman_Resume.pdf" 
                 </a>
 
                 <div className="mt-auto pb-12">
-                  <p className="text-[10px] font-mono text-gray-600 uppercase tracking-widest leading-loose">
+                  <p className="text-[10px] font-mono text-gray-400 uppercase tracking-widest leading-loose">
                     &copy; 2026 DEBMALYO BARMAN<br />
                     DIGITAL ARCHITECT PORTFOLIO
                   </p>

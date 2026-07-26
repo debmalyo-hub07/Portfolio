@@ -44,6 +44,9 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: 6rem;
   background: var(--background);
+  /* iOS Safari can ignore body-level overflow-x when the document is the
+     scroller — clip at the root as the real backstop. */
+  overflow-x: clip;
 }
 
 body {
@@ -201,11 +204,15 @@ h1, h2, h3, .heading-font {
   transform: translateZ(0);
 }
 
-.panel-hover:hover {
-  border-color: var(--panel-border-strong);
-  background: var(--surface-2);
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+/* Hover lifts are gated to real hover devices — on touch, the synthetic
+   :hover sticks after every tap and leaves panels frozen mid-lift. */
+@media (hover: hover) and (pointer: fine) {
+  .panel-hover:hover {
+    border-color: var(--panel-border-strong);
+    background: var(--surface-2);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+  }
 }
 
 /* ============================================================
@@ -227,24 +234,28 @@ h1, h2, h3, .heading-font {
   transition: transform 0.7s var(--ease-out-expo);
 }
 
-.btn-primary:hover {
-  @apply scale-105;
-  box-shadow: 0 15px 30px -5px var(--primary);
-}
-
-.btn-primary:hover::after {
-  transform: translateX(120%);
-}
-
 .btn-secondary {
   @apply relative overflow-hidden px-8 py-3 rounded-xl font-bold transition-all duration-300 border;
   border-color: var(--panel-border-strong);
   background: var(--surface-2);
 }
 
-.btn-secondary:hover {
-  @apply bg-white/10 -translate-y-1;
-  border-color: var(--primary);
+/* Same hover-device gate as .panel-hover — prevents buttons sticking
+   scaled/shifted after a tap on touch screens. */
+@media (hover: hover) and (pointer: fine) {
+  .btn-primary:hover {
+    @apply scale-105;
+    box-shadow: 0 15px 30px -5px var(--primary);
+  }
+
+  .btn-primary:hover::after {
+    transform: translateX(120%);
+  }
+
+  .btn-secondary:hover {
+    @apply bg-white/10 -translate-y-1;
+    border-color: var(--primary);
+  }
 }
 
 /* ============================================================
@@ -267,6 +278,15 @@ h1, h2, h3, .heading-font {
 
 .animate-marquee {
   animation: marquee 40s linear infinite;
+}
+
+/* WCAG 2.2.2 — auto-moving content must be pausable. Hover pauses on real
+   hover devices; reduced-motion already stops it entirely. */
+@media (hover: hover) and (pointer: fine) {
+  .marquee-mask:hover .animate-marquee,
+  .animate-marquee:hover {
+    animation-play-state: paused;
+  }
 }
 
 .marquee-mask {
@@ -303,8 +323,8 @@ h1, h2, h3, .heading-font {
 /* ============================================================
    REDUCED MOTION — respect the OS setting globally.
    Kills the ambient loops (aurora, float, marquee, sheen)
-   without touching layout. Framer's own animations already
-   short-circuit via prefers-reduced-motion.
+   without touching layout. Framer-motion is handled separately
+   via <MotionConfig reducedMotion="user"> in SmoothScroll.
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -334,8 +354,8 @@ h1, h2, h3, .heading-font {
    and freeze the always-on full-screen blur layers.
 
    Desktop is untouched — the heavy interactive pieces (three.js
-   hero, Lenis smooth-scroll, cursor glow) are already gated to
-   >=768px / fine-pointer, so this only affects phones.
+   hero, Lenis smooth-scroll, cursor glow) are gated to fine-pointer
+   devices, so this only affects phones.
    ============================================================ */
 @media (max-width: 767px) {
   /* 1. Backdrop-filter is the dominant scroll-jank source. Drop it
@@ -350,9 +370,15 @@ h1, h2, h3, .heading-font {
   }
 
   /* Compensate for the lost blur with a solid-enough fill so the
-     frosted surfaces keep their card definition and legibility. */
+     frosted surfaces keep their card definition and legibility.
+     .panel gets the same treatment (slightly lighter) — without it,
+     panels sit at 3% white and content bleeds straight through. */
   .glass {
     background: rgba(9, 13, 28, 0.85);
+  }
+
+  .panel {
+    background: rgba(9, 13, 28, 0.75);
   }
 
   /* 2. Freeze the fixed full-screen aurora — a moving 40px blur

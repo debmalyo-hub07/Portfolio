@@ -2,16 +2,17 @@
 
 import { motion } from "framer-motion";
 import { useLenis } from "lenis/react";
-import { FiGithub, FiLinkedin, FiArrowUp, FiInstagram } from "react-icons/fi";
+import { FiGithub, FiLinkedin, FiArrowUp } from "react-icons/fi";
+import type { ResumeProfile } from "@/lib/resume";
 
-const socialLinks = [
-  { icon: <FiGithub size={20} />, href: "https://github.com/debmalyo-hub07", label: "GitHub" },
-  { icon: <FiLinkedin size={20} />, href: "https://www.linkedin.com/in/debmalyo-barman-087429318/", label: "LinkedIn" },
-  { icon: <FiInstagram size={20} />, href: "https://www.instagram.com/", label: "Instagram" },
-];
-
-export default function Footer() {
+export default function Footer({ socials }: { socials: ResumeProfile["socials"] }) {
   const lenis = useLenis();
+
+  // Driven by resume.json via page.tsx — no hardcoded URL duplicates.
+  const socialLinks = [
+    { icon: <FiGithub size={20} />, href: socials.github, label: "GitHub" },
+    { icon: <FiLinkedin size={20} />, href: socials.linkedin, label: "LinkedIn" },
+  ];
 
   const scrollToTop = () => {
     if (lenis) {
@@ -61,7 +62,7 @@ export default function Footer() {
             <motion.p
               whileHover={{ color: "#d1d5db" }}
               transition={{ duration: 0.3 }}
-              className="text-gray-500 max-w-xs cursor-default"
+              className="text-gray-400 max-w-xs cursor-default"
             >
               Engineering futuristic digital experiences with precision and creativity.
             </motion.p>
@@ -98,10 +99,10 @@ export default function Footer() {
         <motion.div
           whileHover={{ scale: 1.01 }}
           transition={{ duration: 0.3 }}
-          className="flex flex-col md:flex-row justify-between items-center w-full gap-4 text-xs font-mono tracking-widest text-gray-600 uppercase cursor-default"
+          className="flex flex-col md:flex-row justify-between items-center w-full gap-4 text-xs font-mono tracking-widest text-gray-400 uppercase cursor-default"
         >
-          <motion.p whileHover={{ color: "#9ca3af" }} transition={{ duration: 0.3 }}>© 2026 DEBMALYO BARMAN. ALL RIGHTS RESERVED.</motion.p>
-          <div className="flex gap-8">
+          <motion.p whileHover={{ color: "#e5e7eb" }} transition={{ duration: 0.3 }}>© 2026 DEBMALYO BARMAN. ALL RIGHTS RESERVED.</motion.p>
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-2">
             <motion.span
               whileHover={{ color: "#10b981" }}
               transition={{ duration: 0.3 }}
