@@ -1,0 +1,27 @@
+# Proprietary Portfolio License
+
+Copyright (c) 2026 Debmalyo Barman. All rights reserved.
+
+## Scope and Intent
+
+This source code repository constitutes the personal portfolio, engineering proof-of-work, and digital presentation of Debmalyo Barman. It is made publicly accessible on GitHub solely for demonstration, code inspection, recruiter assessment, and technical review.
+
+## Terms of Use
+
+1. **Permitted Use**:
+   - You may view, browse, inspect, and evaluate this codebase locally or via GitHub for non-commercial educational review and evaluation of engineering skills.
+
+2. **Prohibited Use**:
+   - **Identity & Case Studies**: You may not duplicate, copy, or redistribute the personal identity, name, biography, contact information, project case studies, or written copy contained within this project.
+   - **Design & Layout**: You may not reproduce, clone, or publish the distinctive visual design, architectural drawings, custom SVG schematics, or isometric layout as a live portfolio or website for yourself or any third party.
+   - **Commercial Exploitation**: No portion of this proprietary software, design, or written content may be sold, licensed, or used in any commercial service or product.
+   - **Public Hosting & Re-distribution**: You may not deploy, host, mirror, or publish duplicate instances of this site on public web servers or cloud providers.
+
+## Third-Party Components
+
+Libraries, frameworks, and third-party dependencies utilized in this project (including Next.js, React, Tailwind CSS, Three.js, GSAP, and others) remain subject to their respective open-source licenses.
+
+---
+
+For inquiries, permissions, or questions regarding this work, contact:
+Debmalyo Barman — debmalyobarman2003@gmail.com

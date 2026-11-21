@@ -1,0 +1,10 @@
+# Files not needed on Vercel (the build only needs source, configs, public/).
+node_modules
+.next
+.vercel
+/Resume.pdf
+CLAUDE.md
+AGENTS.md
+tests
+*.log
+.env*.local

@@ -1,0 +1,315 @@
+@import "tailwindcss";
+
+/*
+  Palette (built in OKLCH, checked for WCAG contrast):
+  - Vellum (light): warm cream drafting vellum under a soft lamp glow, cool graphite ink, slate-blue line work.
+  - Blueprint (dark): desaturated slate-blue ground (not saturated navy, not black),
+    soft cyan line work, off-white ink.
+  - Accent: ochre "marker" — warm complement to the blues, used for ~10% (marks, focus,
+    progress). Replaces red: red-on-blue causes chromostereopsis (text appears to float).
+*/
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+:root,
+[data-theme="light"] {
+  /* Warm vellum under a soft lamp glow; cool graphite ink keeps it from reading as "beige". */
+  --paper: #f5f0e4; /* oklch(0.955 0.016 85) */
+  --paper-2: #ede5d8;
+  --glow: #fffaea; /* lamp highlight, top-right */
+  --ink: #252c38; /* 12.3:1 — softer than near-black */
+  --ink-2: #4b5361; /* 6.8:1 */
+  --ink-3: #666e7a; /* 4.5:1 */
+  --rule: #d8d0c3;
+  --grid: rgb(62 94 141 / 0.07);
+  --line: #3e5e8d; /* 5.8:1 */
+  --accent: #ba6818; /* burnt ochre, marks/graphics 3.6:1 */
+  --accent-text: #944e12; /* 5.5:1 */
+  --accent-ink: #fffaea;
+  --focus: #ba6818;
+}
+
+[data-theme="dark"] {
+  --paper: #192431; /* oklch(0.255 0.03 255) */
+  --paper-2: #202c3c;
+  --ink: #e7ecf0; /* 13.2:1 — off-white, not pure white */
+  --ink-2: #bdc5ce; /* 9.0:1 */
+  --ink-3: #929da8; /* 5.7:1 */
+  --rule: #354150;
+  --grid: rgb(150 197 226 / 0.06);
+  --line: #96c5e2; /* 8.5:1 */
+  --accent: #f2b95a; /* 8.9:1 */
+  --accent-text: #f2b95a;
+  --accent-ink: #192431;
+  --focus: #f2b95a;
+  --glow: #22324a; /* faint cool lamp */
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-rule: var(--rule);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-text: var(--accent-text);
+
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, monospace;
+
+  --ease-draft: cubic-bezier(0.2, 0.7, 0.1, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html {
+    background: var(--paper);
+    color: var(--ink);
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    transition: background-color 0.4s var(--ease-draft);
+  }
+  body {
+    background:
+      radial-gradient(90rem 60rem at 80% -10%, var(--glow), transparent 62%) fixed,
+      var(--paper);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    line-height: 1.55;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+@layer utilities {
+  /* Drafting grid: 8px minor, 64px major. Decorative. */
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, var(--grid) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid) 1px, transparent 1px),
+      linear-gradient(to right, var(--grid) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+    background-size:
+      64px 64px,
+      64px 64px,
+      8px 8px,
+      8px 8px;
+    background-position: -1px -1px;
+  }
+  /* Thin scrollbar for in-panel lists. */
+  .scroll-thin {
+    scrollbar-width: thin;
+    scrollbar-color: var(--rule) transparent;
+  }
+  /* Condensed technical lettering via the variable width axis. */
+  .type-condensed {
+    font-stretch: 78%;
+  }
+  /* Redline underline: markup stroke drawn on hover/active. */
+  .redline {
+    background-image: linear-gradient(var(--accent), var(--accent));
+    background-size: 0% 2px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.45s var(--ease-out-expo);
+  }
+  .redline:hover,
+  .redline[aria-current] {
+    background-size: 100% 2px;
+  }
+  /* Marker highlight on key phrases; animated via --mark (0→100%). */
+  .marker {
+    background-image: linear-gradient(
+      color-mix(in oklab, var(--accent) 38%, transparent),
+      color-mix(in oklab, var(--accent) 38%, transparent)
+    );
+    background-size: var(--mark, 100%) 0.32em;
+    background-position: 0 88%;
+    background-repeat: no-repeat;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+}
+
+/* Hero load sequence (single orchestrated moment). */
+@keyframes rise-in {
+  from {
+    transform: translateY(105%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.mask-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.06em;
+}
+.mask-line > span {
+  display: block;
+  animation: rise-in 0.75s var(--ease-out-expo) both;
+  animation-delay: var(--d, 0ms);
+}
+@keyframes draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.draw-in path,
+path.draw-in {
+  stroke-dasharray: 1;
+  animation: draw 1.4s var(--ease-draft) both;
+  animation-delay: var(--d, 0ms);
+}
+.fade-late {
+  animation: fade-in 0.9s var(--ease-draft) both;
+  animation-delay: var(--d, 600ms);
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+/* Page transitions (React <ViewTransition>): project title + drawing morph card ⇄ case study. */
+::view-transition-group(.morph) {
+  animation-duration: 550ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 280ms;
+}
+
+/* Schematic: hovering a box marks it, like tapping a part on the drawing. */
+[data-node] rect {
+  transition:
+    stroke 0.25s var(--ease-draft),
+    stroke-width 0.25s var(--ease-draft);
+}
+[data-node]:hover rect {
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Print: ink on white, no chrome, everything in its final state, links spelled out. */
+@media print {
+  :root,
+  [data-theme] {
+    --paper: #ffffff;
+    --paper-2: #ffffff;
+    --glow: #ffffff;
+    --ink: #000000;
+    --ink-2: #222222;
+    --ink-3: #444444;
+    --rule: #bbbbbb;
+    --line: #333333;
+    --grid: transparent;
+    --accent: #000000;
+  }
+  body {
+    background: #fff !important;
+  }
+  body > header,
+  footer ul,
+  nav,
+  dialog,
+  canvas,
+  [aria-label="Sheet progress"],
+  [role="group"],
+  [data-hero-canvas],
+  a[href="#main"] {
+    display: none !important;
+  }
+  * {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+    box-shadow: none !important;
+  }
+  .md\:sticky {
+    position: static !important;
+  }
+  article,
+  [data-row],
+  [data-layer] ul,
+  [data-card] {
+    break-inside: avoid;
+  }
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+  /* Drawn lines: show fully (scroll animations leave them partially drawn). */
+  path,
+  rect,
+  line,
+  polygon {
+    stroke-dasharray: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    color: #444;
+  }
+  .bg-grid {
+    background-image: none !important;
+  }
+}
