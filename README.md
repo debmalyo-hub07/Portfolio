@@ -32,6 +32,9 @@
   - [Prerequisites](#prerequisites)
   - [Installation & Setup](#installation--setup)
   - [Available Scripts](#available-scripts)
+- [📄 Automated Resume Drop-In Pipeline](#-automated-resume-drop-in-pipeline)
+  - [Architectural Mechanics](#architectural-mechanics)
+  - [Developer Update Workflow](#developer-update-workflow)
 - [🛡️ Security & Integrity](#️-security--integrity)
 - [📄 Copyright & License](#-copyright--license)
 - [📬 Contact & Coordinates](#-contact--coordinates)
@@ -173,17 +176,108 @@ npm install
 
 ### Available Scripts
 
-| Command             | Purpose                                                                                                       |
-| :------------------ | :------------------------------------------------------------------------------------------------------------ |
-| `npm run dev`       | Starts local Turbopack dev server on [http://localhost:3000](http://localhost:3000) (auto-runs `sync:resume`) |
-| `npm run build`     | Compiles optimized Next.js production build, prerendering all 15 static routes                                |
-| `npm run start`     | Serves the production build locally                                                                           |
-| `npm run lint`      | Runs ESLint 9 code checks with Next.js core Web Vitals & TypeScript rules                                     |
-| `npm run typecheck` | Synchronizes résumé metadata and validates types via `tsc --noEmit`                                           |
-| `npm run test`      | Runs unit and schema contract tests via Vitest (configured with `--passWithNoTests`)                          |
-| `npm run check`     | Comprehensive pipeline check: executes lint, typecheck, test, and build                                       |
+| Command               | Purpose                                                                                                       |
+| :-------------------- | :------------------------------------------------------------------------------------------------------------ |
+| `npm run dev`         | Starts local Turbopack dev server on [http://localhost:3000](http://localhost:3000) (auto-runs `sync:resume`) |
+| `npm run sync:resume` | Scans `public/resume/`, parses embedded PDF metadata, and updates `src/content/resume.generated.ts`           |
+| `npm run build`       | Compiles optimized Next.js production build, prerendering all 15 static routes                                |
+| `npm run start`       | Serves the production build locally                                                                           |
+| `npm run lint`        | Runs ESLint 9 code checks with Next.js core Web Vitals & TypeScript rules                                     |
+| `npm run typecheck`   | Synchronizes résumé metadata and validates types via `tsc --noEmit`                                           |
+| `npm run test`        | Runs unit and schema contract tests via Vitest (configured with `--passWithNoTests`)                          |
+| `npm run check`       | Comprehensive pipeline check: executes lint, typecheck, test, and build                                       |
 
 > _Note: Local developer instruction files (`CLAUDE.md`), duplicate root PDFs (`Resume.pdf`), and local test suites (`tests/`, `vitest.config.*`) are excluded from Git tracking via `.gitignore`. Vitest is configured to run cleanly in both local and fresh public checkouts._
+
+---
+
+## 📄 Automated Resume Drop-In Pipeline
+
+The portfolio features a zero-maintenance drop-in architecture for updating the professional curriculum vitae. Instead of hardcoding file sizes, revision timestamps, or direct paths in React components, the application parses the document's binary payload and generates typed contracts ahead of compilation.
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  1. Drop new PDF into public/resume/Resume.pdf               │
+└──────────────────────────────┬───────────────────────────────┘
+                               │
+                               ▼
+┌──────────────────────────────────────────────────────────────┐
+│  2. git push origin main                                     │
+└──────────────────────────────┬───────────────────────────────┘
+                               │
+                               ▼
+┌──────────────────────────────────────────────────────────────┐
+│  3. Cloud CI/CD Trigger (Vercel)                             │
+│     npm run prebuild ➔ tsx scripts/sync-resume.ts            │
+│     ├── Scans public/resume/ for primary PDF                 │
+│     ├── Reads embedded /ModDate or /CreationDate binary tags │
+│     ├── Measures physical payload size in KB                 │
+│     └── Emits src/content/resume.generated.ts                │
+└──────────────────────────────┬───────────────────────────────┘
+                               │
+                               ▼
+┌──────────────────────────────────────────────────────────────┐
+│  4. Next.js App Router Compilation                           │
+│     ├── Hero download CTA: dynamic size & revision badges    │
+│     ├── Nav Header & Command Palette download actions        │
+│     ├── Footer schematic stamp (CV revision date)            │
+│     └── Dynamic XML sitemap sync (/sitemap.xml)              │
+└──────────────────────────────┬───────────────────────────────┘
+                               │
+                               ▼
+┌──────────────────────────────────────────────────────────────┐
+│  5. Live Deployment (~30 seconds)                            │
+│     https://debmalyo-barman.vercel.app                       │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Architectural Mechanics
+
+1. **Embedded PDF Metadata Extraction**:
+   - In cloud CI/CD environments (such as Vercel or GitHub Actions), fresh Git clones assign the current checkout timestamp to the filesystem `mtime`.
+   - `scripts/sync-resume.ts` bypasses filesystem timestamps by inspecting the PDF byte stream using Latin-1 encoding, searching for internal PDF dictionary tags:
+     ```ts
+     /\/(?:ModDate|CreationDate)\s*\(D:(\d{4})(\d{2})(\d{2})(\d{2})?(\d{2})?(\d{2})?/;
+     ```
+   - This guarantees that the portfolio displays the genuine authoring date (e.g., `"Updated Oct 2026"`) rather than the arbitrary cloud deployment timestamp.
+2. **Deterministic Code Generation**:
+   - Before Next.js or Turbopack begins compiling (`prebuild` and `predev` lifecycle hooks), `npm run sync:resume` executes automatically.
+   - It outputs an immutable, strongly-typed module at `src/content/resume.generated.ts` conforming to `ResumeData`:
+     ```ts
+     export const resume: ResumeData = {
+       primary: {
+         href: "/resume/Resume.pdf",
+         ext: ".pdf",
+         sizeKB: 151,
+         updatedISO: "2026-10-31T15:35:07.000Z",
+       },
+       alt: null,
+     };
+     ```
+3. **Omnipresent UI Synchronization**:
+   - **Hero Section**: Displays the exact payload size and human-formatted revision date alongside the instant download trigger.
+   - **Navigation & Mobile Palette**: Provides direct access to the latest CV asset with sanitized filename formatting (`Debmalyo_Barman_CV.pdf`).
+   - **Footer Architecture Stamp**: Renders the active revision month/year in the technical metadata panel.
+   - **Search Engine Optimization**: Automatically registers the fresh resume link in `src/app/sitemap.ts`.
+
+### Developer Update Workflow
+
+Whenever a new version of the resume is generated, execute this quick reference workflow:
+
+```bash
+# 1. Replace public/resume/Resume.pdf
+git add public/resume/Resume.pdf
+git commit -m "chore: update resume to latest version"
+git push
+```
+
+> ⚠️ **File Placement**: Ensure the updated PDF is saved directly to `public/resume/Resume.pdf`. Avoid dropping the file in the project root directory (`./Resume.pdf`), as root PDFs are excluded by `.gitignore` and bypassed by the extraction pipeline.
+
+#### What Happens Next?
+
+- **Zero Manual Build Commands**: No manual export, upload, or CLI deployment is required.
+- **Automated Vercel Edge Build**: Vercel detects the push on the main branch, initiates the pipeline, executes `npm run prebuild` (`scripts/sync-resume.ts`), extracts updated metadata, compiles static routes, and redeploys live to **[debmalyo-barman.vercel.app](https://debmalyo-barman.vercel.app)** within **~30 seconds**.
+- **Optional Local Validation**: To preview changes locally prior to pushing, simply run `npm run dev` or `npm run sync:resume`.
 
 ---
 
